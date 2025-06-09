@@ -3,7 +3,7 @@ import { DndContext, useSensor, useSensors, MouseSensor } from "@dnd-kit/core";
 import type { DragEndEvent } from "@dnd-kit/core";
 import type { ModuleValue } from "../types/module";
 import { useSnapshot } from "valtio";
-import { state, actions } from "../store";
+import { state, actions, subscribeWithStorage } from "../store";
 import { moduleRegistry } from "../modules";
 import { BaseModule } from "./BaseModule";
 import { calculateModuleInputs } from "../utils/renderer";
@@ -39,6 +39,12 @@ interface ConnectionInfo {
 }
 
 export const App: React.FC = () => {
+  // Initialize localStorage subscription
+  useEffect(() => {
+    const unsubscribe = subscribeWithStorage();
+    return () => unsubscribe();
+  }, []);
+
   const snap = useSnapshot(state);
   const [connectionStart, setConnectionStart] = useState<ConnectionInfo | null>(
     null

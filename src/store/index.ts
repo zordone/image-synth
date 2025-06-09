@@ -1,4 +1,4 @@
-import { proxy } from "valtio";
+import { proxy, subscribe } from "valtio";
 import type { ModuleInstance, Connection, ModuleValue } from "../types/module";
 
 interface AppState {
@@ -6,10 +6,24 @@ interface AppState {
   connections: Connection[];
 }
 
-export const state = proxy<AppState>({
-  modules: [],
-  connections: [],
-});
+// Load initial state from localStorage or use empty state
+const savedState = localStorage.getItem("imageSynthState");
+const initialState: AppState = savedState
+  ? JSON.parse(savedState)
+  : {
+      modules: [],
+      connections: [],
+    };
+
+export const state = proxy<AppState>(initialState);
+
+// Subscribe to state changes and save to localStorage
+export const subscribeWithStorage = () => {
+  const unsubscribe = subscribe(state, () => {
+    localStorage.setItem("imageSynthState", JSON.stringify(state));
+  });
+  return unsubscribe;
+};
 
 export const actions = {
   addModule: (module: ModuleInstance) => {
