@@ -180,6 +180,48 @@ export const OutputModule: ModuleDefinition = {
   calculate: () => ({}), // No outputs to calculate
 };
 
+export const DivisionModule: ModuleDefinition = {
+  id: "division",
+  type: "Math",
+  name: "Division",
+  inputs: [
+    { name: "A", type: "number", required: true },
+    { name: "B", type: "number", required: true },
+  ],
+  outputs: [
+    { name: "Quotient", type: "number" },
+    { name: "Whole", type: "number" },
+    { name: "Remainder", type: "number" },
+  ],
+  parameters: [],
+  calculate: (inputs) => {
+    // Validate inputs
+    if (!validateRequiredInputs(inputs, DivisionModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.A) || !isNumber(inputs.B)) {
+      throw new Error("Invalid input types");
+    }
+    if (inputs.B === 0) {
+      return {
+        Quotient: 0,
+        Whole: 0,
+        Remainder: 0,
+      };
+    }
+
+    const quotient = inputs.A / inputs.B;
+    const whole = Math.floor(quotient);
+    const remainder = inputs.A - whole * inputs.B;
+
+    return {
+      Quotient: quotient,
+      Whole: whole,
+      Remainder: remainder,
+    };
+  },
+};
+
 export const moduleRegistry: ModuleDefinition[] = [
   CoordinateModule,
   NumberModule,
@@ -189,4 +231,5 @@ export const moduleRegistry: ModuleDefinition[] = [
   ClampModule,
   RGBColorModule,
   OutputModule,
+  DivisionModule,
 ];

@@ -428,6 +428,7 @@ export const App: React.FC = () => {
                   actions.updateModuleParameter(module.id, name, value)
                 }
                 onStartConnectionFrom={handleStartConnection}
+                onDelete={actions.removeModule}
               />
             );
           })}

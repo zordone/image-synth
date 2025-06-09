@@ -18,6 +18,7 @@ export const actions = {
 
   removeModule: (moduleId: string) => {
     state.modules = state.modules.filter((m) => m.id !== moduleId);
+    // Also remove any connections to/from this module
     state.connections = state.connections.filter(
       (c) => c.fromModuleId !== moduleId && c.toModuleId !== moduleId
     );

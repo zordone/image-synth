@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import type { ModuleDefinition, ModuleValue } from "../types/module";
-import { validateInput } from "../types/module";
+import { validateInput, isNumber } from "../types/module";
 import {
   ModuleContainer,
   ModuleHeader,
@@ -14,6 +14,8 @@ import {
   ParameterLabel,
   RotaryEncoder,
   ErrorTooltip,
+  ValueDisplay,
+  DeleteButton,
 } from "./styled";
 
 interface BaseModuleProps {
@@ -28,6 +30,7 @@ interface BaseModuleProps {
     portName: string,
     isInput: boolean
   ) => void;
+  onDelete?: (moduleId: string) => void;
 }
 
 export const BaseModule: React.FC<BaseModuleProps> = ({
@@ -38,6 +41,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
   inputs,
   onParameterChange,
   onStartConnectionFrom,
+  onDelete,
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -99,13 +103,16 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       id={`module-${id}`}
       {...attributes}
       {...listeners}
-      onMouseEnter={() => errors.size > 0 && setShowTooltip(true)}
-      onMouseLeave={() => setShowTooltip(false)}
     >
       {errorMessage && (
         <ErrorTooltip $show={showTooltip}>{errorMessage}</ErrorTooltip>
       )}
-      <ModuleHeader>{definition.name}</ModuleHeader>
+      <ModuleHeader>
+        {definition.name}
+        {onDelete && (
+          <DeleteButton onClick={() => onDelete(id)}>×</DeleteButton>
+        )}
+      </ModuleHeader>
       <ModuleBody>
         <PortsContainer>
           {definition.inputs.map((input) => (
@@ -132,6 +139,12 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
             </PortRow>
           ))}
         </PortsContainer>
+
+        {definition.type === "Input" && definition.id === "number" && (
+          <ValueDisplay>
+            {isNumber(parameters.Value) ? parameters.Value.toFixed(3) : "0.000"}
+          </ValueDisplay>
+        )}
 
         {definition.parameters.map((param) => (
           <ParameterRow key={param.name}>

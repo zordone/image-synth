@@ -233,3 +233,30 @@ export const ErrorTooltip = styled.div<{ $show: boolean }>`
     border-top-color: #ff4444;
   }
 `;
+
+export const ValueDisplay = styled.div`
+  background: #1e1e1e;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 12px;
+  text-align: center;
+  margin: 4px 0;
+`;
+
+export const DeleteButton = styled.button`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+
+  &:hover {
+    color: #ff4444;
+  }
+`;
