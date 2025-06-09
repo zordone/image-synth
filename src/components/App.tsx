@@ -71,9 +71,7 @@ export const App: React.FC = () => {
       }
 
       return {
-        x: isInput
-          ? portRect.left - moduleAreaRect.left
-          : portRect.right - moduleAreaRect.left,
+        x: portRect.left + portRect.width / 2 - moduleAreaRect.left,
         y: portRect.top + portRect.height / 2 - moduleAreaRect.top,
         side: isInput ? "input" : "output",
       };
@@ -245,6 +243,17 @@ export const App: React.FC = () => {
     actions.removeConnection(connectionId);
   }, []);
 
+  const handleBackgroundClick = useCallback(
+    (e: React.MouseEvent) => {
+      // Only cancel if clicking directly on the ModuleArea, not on a module or connection
+      if (e.target === e.currentTarget && connectionStart) {
+        setConnectionStart(null);
+        setTempConnection(null);
+      }
+    },
+    [connectionStart]
+  );
+
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <Workspace>
@@ -259,7 +268,11 @@ export const App: React.FC = () => {
           ))}
         </LeftPanel>
 
-        <ModuleArea ref={moduleAreaRef} onMouseMove={handleMouseMove}>
+        <ModuleArea
+          ref={moduleAreaRef}
+          onMouseMove={handleMouseMove}
+          onClick={handleBackgroundClick}
+        >
           <ConnectionsOverlay>
             {snap.connections.map((connection) => {
               const fromPos =
@@ -283,11 +296,13 @@ export const App: React.FC = () => {
             {connectionStart && tempConnection && (
               <TemporaryConnectionPath
                 d={createConnectionPath(
+                  // If starting from an input, use mouse position as start and port position as end
                   connectionStart.isInput
                     ? tempConnection
                     : portPositions[
                         `${connectionStart.moduleId}-${connectionStart.portName}-output`
                       ] || tempConnection,
+                  // If starting from an output, use mouse position as end and port position as start
                   connectionStart.isInput
                     ? portPositions[
                         `${connectionStart.moduleId}-${connectionStart.portName}-input`

@@ -16,7 +16,6 @@ export const LeftPanel = styled.div`
 `;
 
 export const RightPanel = styled.div`
-  width: 200px;
   background: #252526;
   border-left: 1px solid #3c3c3c;
   padding: 16px;
@@ -26,6 +25,7 @@ export const ModuleArea = styled.div`
   flex: 1;
   position: relative;
   overflow: hidden;
+  cursor: default;
 `;
 
 export const ModuleContainer = styled.div<{ $isDragging?: boolean }>`
@@ -35,6 +35,7 @@ export const ModuleContainer = styled.div<{ $isDragging?: boolean }>`
   border-radius: 4px;
   min-width: 120px;
   user-select: none;
+  z-index: 1;
   opacity: ${(props) => (props.$isDragging ? 0.7 : 1)};
 
   &:hover {
@@ -78,13 +79,24 @@ export const PortRow = styled.div`
 `;
 
 export const Port = styled.div<{ $isInput?: boolean }>`
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border: 2px solid #666;
   border-radius: 50%;
   background: #2d2d2d;
   cursor: pointer;
   order: ${(props) => (props.$isInput ? 0 : 2)};
+  position: relative;
+
+  /* Add a larger clickable area without affecting visuals */
+  &::after {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+  }
 
   &:hover {
     border-color: #999;
@@ -103,23 +115,31 @@ export const ConnectionsOverlay = styled.svg`
   width: 100%;
   height: 100%;
   pointer-events: none;
+  z-index: 2;
 `;
 
 export const ConnectionPath = styled.path<{ $isError?: boolean }>`
   fill: none;
   stroke: ${(props) => (props.$isError ? "#ff4444" : "#666")};
-  stroke-width: 2;
+  stroke-width: 8;
   pointer-events: auto;
   cursor: pointer;
   transition: stroke 0.2s ease;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 1px #000a);
 
+  /* Add transparent stroke for easier clicking */
+  paint-order: stroke;
   &:hover {
     stroke: ${(props) => (props.$isError ? "#ff6666" : "#999")};
   }
 `;
 
 export const TemporaryConnectionPath = styled(ConnectionPath)`
-  stroke-dasharray: 4;
+  stroke-dasharray: 8 10;
+  stroke-opacity: 0.7;
+  stroke-width: 8;
+  pointer-events: none;
 `;
 
 export const ModuleBody = styled.div`
