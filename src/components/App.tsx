@@ -17,6 +17,7 @@ import {
   ConnectionPath,
   TemporaryConnectionPath,
 } from "./styled";
+import { renderToCanvas } from "../utils/renderer";
 
 interface Point {
   x: number;
@@ -44,6 +45,7 @@ export const App: React.FC = () => {
     y: number;
   } | null>(null);
   const moduleAreaRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -254,6 +256,21 @@ export const App: React.FC = () => {
     [connectionStart]
   );
 
+  // Update canvas when modules, connections, or parameters change
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = 200;
+      canvas.height = 200;
+      requestAnimationFrame(() => {
+        renderToCanvas(canvas, {
+          modules: snap.modules,
+          connections: snap.connections,
+        });
+      });
+    }
+  }, [snap.modules, snap.connections]);
+
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <Workspace>
@@ -336,7 +353,7 @@ export const App: React.FC = () => {
         </ModuleArea>
 
         <RightPanel>
-          <CanvasOutput width={200} height={200} />
+          <CanvasOutput ref={canvasRef} />
         </RightPanel>
       </Workspace>
     </DndContext>

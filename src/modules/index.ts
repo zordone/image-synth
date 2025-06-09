@@ -90,6 +90,26 @@ export const ClampModule: ModuleDefinition = {
   }),
 };
 
+export const RGBColorModule: ModuleDefinition = {
+  id: "rgbcolor",
+  type: "Color",
+  name: "RGB Color",
+  inputs: [
+    { name: "R", type: "number", required: true },
+    { name: "G", type: "number", required: true },
+    { name: "B", type: "number", required: true },
+  ],
+  outputs: [{ name: "Color", type: "color" }],
+  parameters: [],
+  calculate: (inputs) => ({
+    Color: {
+      r: Math.max(0, Math.min(1, inputs.R as number)),
+      g: Math.max(0, Math.min(1, inputs.G as number)),
+      b: Math.max(0, Math.min(1, inputs.B as number)),
+    },
+  }),
+};
+
 export const moduleRegistry: ModuleDefinition[] = [
   CoordinateModule,
   NumberModule,
@@ -97,4 +117,5 @@ export const moduleRegistry: ModuleDefinition[] = [
   MultiplyModule,
   MixModule,
   ClampModule,
+  RGBColorModule,
 ];

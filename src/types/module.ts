@@ -1,5 +1,12 @@
-export type DataType = "number";
-export type ModuleValue = number;
+export type DataType = "number" | "color";
+
+export interface Color {
+  r: number;
+  g: number;
+  b: number;
+}
+
+export type ModuleValue = number | Color;
 
 export interface ModuleInput {
   name: string;
@@ -20,6 +27,22 @@ export interface ModuleParameter {
   max?: number;
   default?: ModuleValue;
 }
+
+export type TypedInputs<T extends Record<string, DataType>> = {
+  [K in keyof T]: T[K] extends "number"
+    ? number
+    : T[K] extends "color"
+    ? Color
+    : never;
+};
+
+export type TypedOutputs<T extends Record<string, DataType>> = {
+  [K in keyof T]: T[K] extends "number"
+    ? number
+    : T[K] extends "color"
+    ? Color
+    : never;
+};
 
 export interface ModuleDefinition {
   id: string;

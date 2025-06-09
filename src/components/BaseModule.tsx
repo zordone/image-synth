@@ -67,6 +67,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
               <Port
                 id={`port-${id}-${input.name}`}
                 $isInput
+                $type={input.type}
                 onClick={() => onStartConnectionFrom(id, input.name, true)}
               />
               <PortLabel $isInput>{input.name}</PortLabel>
@@ -78,6 +79,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
               <PortLabel>{output.name}</PortLabel>
               <Port
                 id={`port-${id}-${output.name}`}
+                $type={output.type}
                 onClick={() => onStartConnectionFrom(id, output.name, false)}
               />
             </PortRow>
@@ -87,15 +89,17 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
         {definition.parameters.map((param) => (
           <ParameterRow key={param.name}>
             <ParameterLabel>{param.name}</ParameterLabel>
-            <RotaryEncoder
-              min={param.min ?? 0}
-              max={param.max ?? 1}
-              step={0.01}
-              value={parameters[param.name] ?? param.default ?? 0}
-              onChange={(e) =>
-                onParameterChange(param.name, parseFloat(e.target.value))
-              }
-            />
+            {param.type === "number" && (
+              <RotaryEncoder
+                min={param.min ?? 0}
+                max={param.max ?? 1}
+                step={0.01}
+                value={(parameters[param.name] as number) ?? param.default ?? 0}
+                onChange={(e) =>
+                  onParameterChange(param.name, parseFloat(e.target.value))
+                }
+              />
+            )}
           </ParameterRow>
         ))}
       </ModuleBody>

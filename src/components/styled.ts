@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import type { DataType } from "../types/module";
 
 export const Workspace = styled.div`
   width: 100vw;
@@ -78,10 +79,19 @@ export const PortRow = styled.div`
   height: 24px;
 `;
 
-export const Port = styled.div<{ $isInput?: boolean }>`
+export const Port = styled.div<{ $isInput?: boolean; $type?: DataType }>`
   width: 16px;
   height: 16px;
-  border: 2px solid #666;
+  border: 2px solid
+    ${(props) => {
+      switch (props.$type) {
+        case "color":
+          return "#c678dd";
+        case "number":
+        default:
+          return "#666";
+      }
+    }};
   border-radius: 50%;
   background: #2d2d2d;
   cursor: pointer;
@@ -99,7 +109,15 @@ export const Port = styled.div<{ $isInput?: boolean }>`
   }
 
   &:hover {
-    border-color: #999;
+    border-color: ${(props) => {
+      switch (props.$type) {
+        case "color":
+          return "#e39ff6";
+        case "number":
+        default:
+          return "#999";
+      }
+    }};
   }
 `;
 
