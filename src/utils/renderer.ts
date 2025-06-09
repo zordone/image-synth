@@ -69,6 +69,12 @@ function calculateModule(
     return result;
   }
 
+  // Special handling for output module - return its input color directly
+  if (module.definitionId === "output") {
+    cache.set(moduleId, inputs);
+    return inputs;
+  }
+
   // Calculate module outputs
   const result = definition.calculate(inputs, module.parameters);
   cache.set(moduleId, result);
@@ -82,10 +88,10 @@ export function renderToCanvas(canvas: HTMLCanvasElement, graph: ModuleGraph) {
   const imageData = ctx.createImageData(canvas.width, canvas.height);
   const data = imageData.data;
 
-  // Find output module (any module with color output)
+  // Find the Output module
   const outputModule = graph.modules.find((module) => {
     const definition = moduleRegistry.find((m) => m.id === module.definitionId);
-    return definition?.outputs.some((output) => output.type === "color");
+    return definition?.id === "output";
   });
 
   if (!outputModule) {
@@ -110,7 +116,7 @@ export function renderToCanvas(canvas: HTMLCanvasElement, graph: ModuleGraph) {
         normalizedX,
         normalizedY
       );
-      const outputColor = Object.values(result)[0];
+      const outputColor = result.Image; // Use the "Image" input from the output module
 
       const i = (y * canvas.width + x) * 4;
       if (isColor(outputColor)) {
@@ -123,4 +129,60 @@ export function renderToCanvas(canvas: HTMLCanvasElement, graph: ModuleGraph) {
   }
 
   ctx.putImageData(imageData, 0, 0);
+}
+
+export function calculateModuleInputs(
+  moduleId: string,
+  graph: ModuleGraph
+): Record<string, ModuleValue> {
+  const module = graph.modules.find((m) => m.id === moduleId);
+  if (!module) return {};
+
+  const definition = moduleRegistry.find((m) => m.id === module.definitionId);
+  if (!definition) return {};
+
+  const inputs: Record<string, ModuleValue> = {};
+
+  definition.inputs.forEach((input) => {
+    // Find connection to this input
+    const connection = graph.connections.find(
+      (c) => c.toModuleId === moduleId && c.toInputName === input.name
+    );
+
+    if (connection) {
+      // Find source module
+      const sourceModule = graph.modules.find(
+        (m) => m.id === connection.fromModuleId
+      );
+      if (!sourceModule) return;
+
+      const sourceDefinition = moduleRegistry.find(
+        (m) => m.id === sourceModule.definitionId
+      );
+      if (!sourceDefinition) return;
+
+      // For coordinate module, handle coordinate input specially
+      if (sourceModule.definitionId === "coordinate") {
+        inputs[input.name] = input.name === "X" ? 0.5 : 0.5; // Default to center
+        return;
+      }
+
+      // Otherwise use the module's calculate function
+      try {
+        const sourceOutputs = calculateModule(
+          connection.fromModuleId,
+          graph,
+          new Map(),
+          0.5,
+          0.5
+        );
+        inputs[input.name] = sourceOutputs[connection.fromOutputName];
+      } catch (err) {
+        // If calculation fails, input remains undefined
+        console.error("Error calculating module input:", err);
+      }
+    }
+  });
+
+  return inputs;
 }

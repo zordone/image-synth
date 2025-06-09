@@ -29,10 +29,13 @@ export const ModuleArea = styled.div`
   cursor: default;
 `;
 
-export const ModuleContainer = styled.div<{ $isDragging?: boolean }>`
+export const ModuleContainer = styled.div<{
+  $isDragging?: boolean;
+  $hasError?: boolean;
+}>`
   position: absolute;
   background: #2d2d2d;
-  border: 1px solid #3c3c3c;
+  border: 1px solid ${(props) => (props.$hasError ? "#ff4444" : "#3c3c3c")};
   border-radius: 4px;
   min-width: 120px;
   user-select: none;
@@ -40,7 +43,7 @@ export const ModuleContainer = styled.div<{ $isDragging?: boolean }>`
   opacity: ${(props) => (props.$isDragging ? 0.7 : 1)};
 
   &:hover {
-    border-color: #4c4c4c;
+    border-color: ${(props) => (props.$hasError ? "#ff6666" : "#4c4c4c")};
   }
 `;
 
@@ -79,11 +82,16 @@ export const PortRow = styled.div`
   height: 24px;
 `;
 
-export const Port = styled.div<{ $isInput?: boolean; $type?: DataType }>`
+export const Port = styled.div<{
+  $isInput?: boolean;
+  $type?: DataType;
+  $isError?: boolean;
+}>`
   width: 16px;
   height: 16px;
   border: 2px solid
     ${(props) => {
+      if (props.$isError) return "#ff4444";
       switch (props.$type) {
         case "color":
           return "#c678dd";
@@ -109,15 +117,12 @@ export const Port = styled.div<{ $isInput?: boolean; $type?: DataType }>`
   }
 
   &:hover {
-    border-color: ${(props) => {
-      switch (props.$type) {
-        case "color":
-          return "#e39ff6";
-        case "number":
-        default:
-          return "#999";
-      }
-    }};
+    border-color: ${(props) =>
+      props.$isError
+        ? "#ff6666"
+        : props.$type === "color"
+        ? "#e39ff6"
+        : "#999"};
   }
 `;
 
@@ -146,10 +151,24 @@ export const ConnectionPath = styled.path<{ $isError?: boolean }>`
   stroke-linecap: round;
   filter: drop-shadow(0 0 1px #000a);
 
-  /* Add transparent stroke for easier clicking */
-  paint-order: stroke;
   &:hover {
     stroke: ${(props) => (props.$isError ? "#ff6666" : "#999")};
+  }
+
+  /* Add tooltip on hover if error */
+  &[data-error]:hover::after {
+    content: attr(data-error);
+    position: absolute;
+    background: #ff4444;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translate(-50%, -100%);
+    left: 50%;
+    top: -8px;
   }
 `;
 
@@ -187,4 +206,30 @@ export const CanvasOutput = styled.canvas`
 
 export const RotaryEncoder = styled.input.attrs({ type: "range" })`
   width: 60px;
+`;
+
+export const ErrorTooltip = styled.div<{ $show: boolean }>`
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff4444;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: ${(props) => (props.$show ? 1 : 0)};
+  transition: opacity 0.2s;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: #ff4444;
+  }
 `;

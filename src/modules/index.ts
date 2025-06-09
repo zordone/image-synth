@@ -1,4 +1,17 @@
-import type { ModuleDefinition } from "../types/module";
+import type { ModuleDefinition, ModuleValue } from "../types/module";
+import { isNumber, validateInput } from "../types/module";
+
+// Helper to validate all required inputs
+function validateRequiredInputs(
+  inputs: Record<string, ModuleValue>,
+  definition: ModuleDefinition
+): boolean {
+  return definition.inputs.every((input) => {
+    if (!input.required) return true;
+    const value = inputs[input.name];
+    return value !== undefined && validateInput(value, input.type);
+  });
+}
 
 export const CoordinateModule: ModuleDefinition = {
   id: "coordinate",
@@ -22,10 +35,15 @@ export const NumberModule: ModuleDefinition = {
   name: "Number",
   inputs: [],
   outputs: [{ name: "Value", type: "number" }],
-  parameters: [{ name: "Value", type: "number", default: 0 }],
-  calculate: (_, params) => ({
-    Value: params.Value,
-  }),
+  parameters: [
+    { name: "Value", type: "number", min: -5, max: 5, step: 0.1, default: 0 },
+  ],
+  calculate: (_, params) => {
+    if (!isNumber(params.Value)) {
+      throw new Error("Invalid parameter value");
+    }
+    return { Value: params.Value };
+  },
 };
 
 export const AddModule: ModuleDefinition = {
@@ -38,9 +56,15 @@ export const AddModule: ModuleDefinition = {
   ],
   outputs: [{ name: "Result", type: "number" }],
   parameters: [],
-  calculate: (inputs) => ({
-    Result: inputs.A + inputs.B,
-  }),
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, AddModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.A) || !isNumber(inputs.B)) {
+      throw new Error("Invalid input types");
+    }
+    return { Result: inputs.A + inputs.B };
+  },
 };
 
 export const MultiplyModule: ModuleDefinition = {
@@ -53,9 +77,15 @@ export const MultiplyModule: ModuleDefinition = {
   ],
   outputs: [{ name: "Result", type: "number" }],
   parameters: [],
-  calculate: (inputs) => ({
-    Result: inputs.A * inputs.B,
-  }),
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, MultiplyModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.A) || !isNumber(inputs.B)) {
+      throw new Error("Invalid input types");
+    }
+    return { Result: inputs.A * inputs.B };
+  },
 };
 
 export const MixModule: ModuleDefinition = {
@@ -70,9 +100,21 @@ export const MixModule: ModuleDefinition = {
   parameters: [
     { name: "Factor", type: "number", min: 0, max: 1, default: 0.5 },
   ],
-  calculate: (inputs, params) => ({
-    Result: inputs.A * (1 - params.Factor) + inputs.B * params.Factor,
-  }),
+  calculate: (inputs, params) => {
+    if (!validateRequiredInputs(inputs, MixModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (
+      !isNumber(inputs.A) ||
+      !isNumber(inputs.B) ||
+      !isNumber(params.Factor)
+    ) {
+      throw new Error("Invalid input types or parameters");
+    }
+    return {
+      Result: inputs.A * (1 - params.Factor) + inputs.B * params.Factor,
+    };
+  },
 };
 
 export const ClampModule: ModuleDefinition = {
@@ -85,9 +127,19 @@ export const ClampModule: ModuleDefinition = {
     { name: "Min", type: "number", default: 0 },
     { name: "Max", type: "number", default: 1 },
   ],
-  calculate: (inputs, params) => ({
-    Result: Math.min(Math.max(inputs.Value, params.Min), params.Max),
-  }),
+  calculate: (inputs, params) => {
+    if (!validateRequiredInputs(inputs, ClampModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (
+      !isNumber(inputs.Value) ||
+      !isNumber(params.Min) ||
+      !isNumber(params.Max)
+    ) {
+      throw new Error("Invalid input types or parameters");
+    }
+    return { Result: Math.min(Math.max(inputs.Value, params.Min), params.Max) };
+  },
 };
 
 export const RGBColorModule: ModuleDefinition = {
@@ -95,19 +147,37 @@ export const RGBColorModule: ModuleDefinition = {
   type: "Color",
   name: "RGB Color",
   inputs: [
-    { name: "R", type: "number", required: true },
-    { name: "G", type: "number", required: true },
-    { name: "B", type: "number", required: true },
+    { name: "R", type: "number", default: 0 },
+    { name: "G", type: "number", default: 0 },
+    { name: "B", type: "number", default: 0 },
   ],
   outputs: [{ name: "Color", type: "color" }],
   parameters: [],
-  calculate: (inputs) => ({
-    Color: {
-      r: Math.max(0, Math.min(1, inputs.R as number)),
-      g: Math.max(0, Math.min(1, inputs.G as number)),
-      b: Math.max(0, Math.min(1, inputs.B as number)),
-    },
-  }),
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, RGBColorModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.R) || !isNumber(inputs.G) || !isNumber(inputs.B)) {
+      throw new Error("Invalid input types");
+    }
+    return {
+      Color: {
+        r: Math.max(0, Math.min(1, inputs.R)),
+        g: Math.max(0, Math.min(1, inputs.G)),
+        b: Math.max(0, Math.min(1, inputs.B)),
+      },
+    };
+  },
+};
+
+export const OutputModule: ModuleDefinition = {
+  id: "output",
+  type: "Output",
+  name: "Output",
+  inputs: [{ name: "Image", type: "color", required: true }],
+  outputs: [], // No outputs since this is the final destination
+  parameters: [],
+  calculate: () => ({}), // No outputs to calculate
 };
 
 export const moduleRegistry: ModuleDefinition[] = [
@@ -118,4 +188,5 @@ export const moduleRegistry: ModuleDefinition[] = [
   MixModule,
   ClampModule,
   RGBColorModule,
+  OutputModule,
 ];

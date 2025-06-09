@@ -6,6 +6,7 @@ import { useSnapshot } from "valtio";
 import { state, actions } from "../store";
 import { moduleRegistry } from "../modules";
 import { BaseModule } from "./BaseModule";
+import { calculateModuleInputs } from "../utils/renderer";
 import {
   Workspace,
   LeftPanel,
@@ -30,13 +31,18 @@ interface PortPosition {
   side: "input" | "output";
 }
 
+interface ConnectionInfo {
+  moduleId: string;
+  portName: string;
+  isInput: boolean;
+  type?: string;
+}
+
 export const App: React.FC = () => {
   const snap = useSnapshot(state);
-  const [connectionStart, setConnectionStart] = useState<{
-    moduleId: string;
-    portName: string;
-    isInput: boolean;
-  } | null>(null);
+  const [connectionStart, setConnectionStart] = useState<ConnectionInfo | null>(
+    null
+  );
   const [portPositions, setPortPositions] = useState<
     Record<string, PortPosition>
   >({});
@@ -126,6 +132,37 @@ export const App: React.FC = () => {
     [snap.modules, updateAllPortPositions]
   );
 
+  const validateConnection = useCallback(
+    (
+      fromModuleId: string,
+      fromOutputName: string,
+      toModuleId: string,
+      toInputName: string
+    ): boolean => {
+      const fromModule = snap.modules.find((m) => m.id === fromModuleId);
+      const toModule = snap.modules.find((m) => m.id === toModuleId);
+      if (!fromModule || !toModule) return false;
+
+      const fromDefinition = moduleRegistry.find(
+        (m) => m.id === fromModule.definitionId
+      );
+      const toDefinition = moduleRegistry.find(
+        (m) => m.id === toModule.definitionId
+      );
+      if (!fromDefinition || !toDefinition) return false;
+
+      const outputDef = fromDefinition.outputs.find(
+        (o) => o.name === fromOutputName
+      );
+      const inputDef = toDefinition.inputs.find((i) => i.name === toInputName);
+      if (!outputDef || !inputDef) return false;
+
+      // Validate types match
+      return outputDef.type === inputDef.type;
+    },
+    [snap.modules]
+  );
+
   const handleStartConnection = useCallback(
     (moduleId: string, portName: string, isInput: boolean) => {
       if (connectionStart) {
@@ -145,6 +182,14 @@ export const App: React.FC = () => {
                 portName,
               ];
 
+          // Validate connection types
+          if (!validateConnection(fromId, fromPort, toId, toPort)) {
+            console.error("Invalid connection: Types don't match");
+            setConnectionStart(null);
+            setTempConnection(null);
+            return;
+          }
+
           actions.addConnection({
             id: `${fromId}-${fromPort}-${toId}-${toPort}`,
             fromModuleId: fromId,
@@ -157,12 +202,26 @@ export const App: React.FC = () => {
         setTempConnection(null);
       } else {
         // Start new connection
-        setConnectionStart({ moduleId, portName, isInput });
-        // Update port positions when starting a connection
+        const module = snap.modules.find((m) => m.id === moduleId);
+        if (!module) return;
+
+        const definition = moduleRegistry.find(
+          (m) => m.id === module.definitionId
+        );
+        if (!definition) return;
+
+        // Get the port type
+        const port = isInput
+          ? definition.inputs.find((i) => i.name === portName)
+          : definition.outputs.find((o) => o.name === portName);
+
+        if (!port) return;
+
+        setConnectionStart({ moduleId, portName, isInput, type: port.type });
         updateAllPortPositions();
       }
     },
-    [connectionStart, updateAllPortPositions]
+    [connectionStart, updateAllPortPositions, validateConnection, snap.modules]
   );
 
   const handleMouseMove = useCallback(
@@ -271,6 +330,18 @@ export const App: React.FC = () => {
     }
   }, [snap.modules, snap.connections]);
 
+  // Calculate inputs for each module
+  const moduleInputs = React.useMemo(() => {
+    const inputs: Record<string, Record<string, ModuleValue>> = {};
+    snap.modules.forEach((module) => {
+      inputs[module.id] = calculateModuleInputs(module.id, {
+        modules: snap.modules,
+        connections: snap.connections,
+      });
+    });
+    return inputs;
+  }, [snap.modules, snap.connections]);
+
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <Workspace>
@@ -302,11 +373,20 @@ export const App: React.FC = () => {
                 ];
               if (!fromPos || !toPos) return null;
 
+              // Validate connection types
+              const isValid = validateConnection(
+                connection.fromModuleId,
+                connection.fromOutputName,
+                connection.toModuleId,
+                connection.toInputName
+              );
+
               return (
                 <ConnectionPath
                   key={connection.id}
                   d={createConnectionPath(fromPos, toPos)}
                   onClick={() => handleRemoveConnection(connection.id)}
+                  $isError={!isValid}
                 />
               );
             })}
@@ -343,6 +423,7 @@ export const App: React.FC = () => {
                 definition={definition}
                 position={module.position}
                 parameters={module.parameters}
+                inputs={moduleInputs[module.id]}
                 onParameterChange={(name, value) =>
                   actions.updateModuleParameter(module.id, name, value)
                 }

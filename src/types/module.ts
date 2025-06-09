@@ -11,7 +11,7 @@ export type ModuleValue = number | Color;
 export interface ModuleInput {
   name: string;
   type: DataType;
-  required: boolean;
+  required?: boolean;
   default?: ModuleValue;
 }
 
@@ -25,10 +25,70 @@ export interface ModuleParameter {
   type: DataType;
   min?: number;
   max?: number;
+  step?: number;
   default?: ModuleValue;
 }
 
-export type TypedInputs<T extends Record<string, DataType>> = {
+// Helper type to infer output types from module definition
+export type InferModuleOutputs<T extends ModuleDefinition> = {
+  [K in T["outputs"][number]["name"]]: T["outputs"][number] extends {
+    name: K;
+    type: infer Type;
+  }
+    ? Type extends "number"
+      ? number
+      : Type extends "color"
+      ? Color
+      : never
+    : never;
+};
+
+// Helper type to infer input types from module definition
+export type InferModuleInputs<T extends ModuleDefinition> = {
+  [K in T["inputs"][number]["name"]]: T["inputs"][number] extends {
+    name: K;
+    type: infer Type;
+  }
+    ? Type extends "number"
+      ? number
+      : Type extends "color"
+      ? Color
+      : never
+    : never;
+};
+
+// Type guard functions
+export function isNumber(value: ModuleValue | undefined): value is number {
+  return typeof value === "number";
+}
+
+export function isColor(value: ModuleValue | undefined): value is Color {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "r" in value &&
+    "g" in value &&
+    "b" in value
+  );
+}
+
+export function validateInput(
+  value: ModuleValue | undefined,
+  type: DataType
+): boolean {
+  if (value === undefined) return false;
+  switch (type) {
+    case "number":
+      return isNumber(value);
+    case "color":
+      return isColor(value);
+    default:
+      return false;
+  }
+}
+
+// Helper type to ensure module inputs match their declared types
+export type TypedModuleInputs<T extends { [key: string]: DataType }> = {
   [K in keyof T]: T[K] extends "number"
     ? number
     : T[K] extends "color"
@@ -36,13 +96,11 @@ export type TypedInputs<T extends Record<string, DataType>> = {
     : never;
 };
 
-export type TypedOutputs<T extends Record<string, DataType>> = {
-  [K in keyof T]: T[K] extends "number"
-    ? number
-    : T[K] extends "color"
-    ? Color
-    : never;
-};
+// Helper type for module calculation function
+export type ModuleCalculator = (
+  inputs: Record<string, ModuleValue>,
+  parameters: Record<string, ModuleValue>
+) => Record<string, ModuleValue>;
 
 export interface ModuleDefinition {
   id: string;
@@ -51,10 +109,7 @@ export interface ModuleDefinition {
   inputs: ModuleInput[];
   outputs: ModuleOutput[];
   parameters: ModuleParameter[];
-  calculate: (
-    inputs: Record<string, ModuleValue>,
-    parameters: Record<string, ModuleValue>
-  ) => Record<string, ModuleValue>;
+  calculate: ModuleCalculator;
 }
 
 export interface ModuleInstance {
