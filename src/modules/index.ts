@@ -180,10 +180,10 @@ export const OutputModule: ModuleDefinition = {
   calculate: () => ({}), // No outputs to calculate
 };
 
-export const DivisionModule: ModuleDefinition = {
-  id: "division",
+export const DivideModule: ModuleDefinition = {
+  id: "divide",
   type: "Math",
-  name: "Division",
+  name: "Divide",
   inputs: [
     { name: "A", type: "number", required: true },
     { name: "B", type: "number", required: true },
@@ -196,7 +196,7 @@ export const DivisionModule: ModuleDefinition = {
   parameters: [],
   calculate: (inputs) => {
     // Validate inputs
-    if (!validateRequiredInputs(inputs, DivisionModule)) {
+    if (!validateRequiredInputs(inputs, DivideModule)) {
       throw new Error("Missing required inputs");
     }
     if (!isNumber(inputs.A) || !isNumber(inputs.B)) {
@@ -227,9 +227,9 @@ export const moduleRegistry: ModuleDefinition[] = [
   NumberModule,
   AddModule,
   MultiplyModule,
+  DivideModule,
   MixModule,
   ClampModule,
   RGBColorModule,
   OutputModule,
-  DivisionModule,
 ];

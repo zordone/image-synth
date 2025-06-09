@@ -58,6 +58,7 @@ export const App: React.FC = () => {
   } | null>(null);
   const moduleAreaRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const prevLastUpdatedRef = useRef<number | null>(null);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -323,6 +324,11 @@ export const App: React.FC = () => {
 
   // Update canvas when modules, connections, or parameters change
   useEffect(() => {
+    // Skip if lastUpdated hasn't changed (only positions were updated)
+    if (prevLastUpdatedRef.current === snap.lastUpdated) {
+      return;
+    }
+
     const canvas = canvasRef.current;
     if (canvas) {
       canvas.width = 200;
@@ -334,7 +340,10 @@ export const App: React.FC = () => {
         });
       });
     }
-  }, [snap.modules, snap.connections]);
+
+    // Update the previous value
+    prevLastUpdatedRef.current = snap.lastUpdated;
+  }, [snap.lastUpdated, snap.modules, snap.connections]);
 
   // Calculate inputs for each module
   const moduleInputs = React.useMemo(() => {

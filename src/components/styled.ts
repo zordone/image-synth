@@ -75,11 +75,12 @@ export const PortsContainer = styled.div`
   padding: 8px;
 `;
 
-export const PortRow = styled.div`
+export const PortRow = styled.div<{ $isInput?: boolean }>`
   display: flex;
   align-items: center;
   margin: 4px 0;
   height: 24px;
+  justify-content: ${(props) => (props.$isInput ? "flex-start" : "flex-end")};
 `;
 
 export const Port = styled.div<{

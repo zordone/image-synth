@@ -4,6 +4,7 @@ import type { ModuleInstance, Connection, ModuleValue } from "../types/module";
 interface AppState {
   modules: ModuleInstance[];
   connections: Connection[];
+  lastUpdated: number;
 }
 
 // Load initial state from localStorage or use empty state
@@ -28,6 +29,7 @@ export const subscribeWithStorage = () => {
 export const actions = {
   addModule: (module: ModuleInstance) => {
     state.modules.push(module);
+    state.lastUpdated = Date.now();
   },
 
   removeModule: (moduleId: string) => {
@@ -36,6 +38,7 @@ export const actions = {
     state.connections = state.connections.filter(
       (c) => c.fromModuleId !== moduleId && c.toModuleId !== moduleId
     );
+    state.lastUpdated = Date.now();
   },
 
   updateModulePosition: (moduleId: string, x: number, y: number) => {
@@ -53,6 +56,7 @@ export const actions = {
     const module = state.modules.find((m) => m.id === moduleId);
     if (module) {
       module.parameters[paramName] = value;
+      state.lastUpdated = Date.now();
     }
   },
 
@@ -72,9 +76,11 @@ export const actions = {
     } else {
       state.connections.push(connection);
     }
+    state.lastUpdated = Date.now();
   },
 
   removeConnection: (connectionId: string) => {
     state.connections = state.connections.filter((c) => c.id !== connectionId);
+    state.lastUpdated = Date.now();
   },
 };

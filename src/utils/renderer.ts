@@ -161,12 +161,6 @@ export function calculateModuleInputs(
       );
       if (!sourceDefinition) return;
 
-      // For coordinate module, handle coordinate input specially
-      if (sourceModule.definitionId === "coordinate") {
-        inputs[input.name] = input.name === "X" ? 0.5 : 0.5; // Default to center
-        return;
-      }
-
       // Otherwise use the module's calculate function
       try {
         const sourceOutputs = calculateModule(

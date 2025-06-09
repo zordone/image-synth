@@ -101,6 +101,8 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       $isDragging={isDragging}
       $hasError={errors.size > 0}
       id={`module-${id}`}
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
       {...attributes}
       {...listeners}
     >
@@ -116,7 +118,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       <ModuleBody>
         <PortsContainer>
           {definition.inputs.map((input) => (
-            <PortRow key={input.name}>
+            <PortRow key={input.name} $isInput>
               <Port
                 id={`port-${id}-${input.name}`}
                 $isInput
