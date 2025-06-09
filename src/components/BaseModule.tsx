@@ -5,9 +5,12 @@ import {
   ModuleContainer,
   ModuleHeader,
   ModuleBody,
+  PortsContainer,
   PortRow,
   Port,
   PortLabel,
+  ParameterRow,
+  ParameterLabel,
   RotaryEncoder,
 } from "./styled";
 
@@ -48,48 +51,52 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       };
 
   return (
-    <ModuleContainer ref={setNodeRef} style={style} $isDragging={isDragging}>
-      <ModuleHeader {...attributes} {...listeners}>
-        {definition.name}
-      </ModuleHeader>
+    <ModuleContainer
+      ref={setNodeRef}
+      style={style}
+      $isDragging={isDragging}
+      id={`module-${id}`}
+      {...attributes}
+      {...listeners}
+    >
+      <ModuleHeader>{definition.name}</ModuleHeader>
       <ModuleBody>
-        {definition.inputs.map((input) => (
-          <PortRow key={input.name}>
-            <Port onClick={() => onStartConnectionFrom(id, input.name, true)} />
-            <PortLabel>{input.name}</PortLabel>
-          </PortRow>
-        ))}
+        <PortsContainer>
+          {definition.inputs.map((input) => (
+            <PortRow key={input.name}>
+              <Port
+                id={`port-${id}-${input.name}`}
+                $isInput
+                onClick={() => onStartConnectionFrom(id, input.name, true)}
+              />
+              <PortLabel $isInput>{input.name}</PortLabel>
+            </PortRow>
+          ))}
+
+          {definition.outputs.map((output) => (
+            <PortRow key={output.name}>
+              <PortLabel>{output.name}</PortLabel>
+              <Port
+                id={`port-${id}-${output.name}`}
+                onClick={() => onStartConnectionFrom(id, output.name, false)}
+              />
+            </PortRow>
+          ))}
+        </PortsContainer>
 
         {definition.parameters.map((param) => (
-          <PortRow key={param.name}>
+          <ParameterRow key={param.name}>
+            <ParameterLabel>{param.name}</ParameterLabel>
             <RotaryEncoder
-              onClick={() => {
-                // For now, just increment by 0.1
-                const currentValue =
-                  parameters[param.name] ?? param.default ?? 0;
-                const newValue =
-                  param.min !== undefined && param.max !== undefined
-                    ? Math.min(
-                        param.max,
-                        Math.max(param.min, currentValue + 0.1)
-                      )
-                    : currentValue + 0.1;
-                onParameterChange(param.name, newValue);
-              }}
+              min={param.min ?? 0}
+              max={param.max ?? 1}
+              step={0.01}
+              value={parameters[param.name] ?? param.default ?? 0}
+              onChange={(e) =>
+                onParameterChange(param.name, parseFloat(e.target.value))
+              }
             />
-            <PortLabel>{`${param.name}: ${
-              parameters[param.name]?.toFixed(2) ?? param.default
-            }`}</PortLabel>
-          </PortRow>
-        ))}
-
-        {definition.outputs.map((output) => (
-          <PortRow key={output.name}>
-            <Port
-              onClick={() => onStartConnectionFrom(id, output.name, false)}
-            />
-            <PortLabel>{output.name}</PortLabel>
-          </PortRow>
+          </ParameterRow>
         ))}
       </ModuleBody>
     </ModuleContainer>

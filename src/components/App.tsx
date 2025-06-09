@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { DndContext, useSensor, useSensors, MouseSensor } from "@dnd-kit/core";
 import type { DragEndEvent } from "@dnd-kit/core";
 import type { ModuleValue } from "../types/module";
@@ -13,7 +13,21 @@ import {
   ModuleArea,
   ModuleMenuButton,
   CanvasOutput,
+  ConnectionsOverlay,
+  ConnectionPath,
+  TemporaryConnectionPath,
 } from "./styled";
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface PortPosition {
+  x: number;
+  y: number;
+  side: "input" | "output";
+}
 
 export const App: React.FC = () => {
   const snap = useSnapshot(state);
@@ -22,6 +36,14 @@ export const App: React.FC = () => {
     portName: string;
     isInput: boolean;
   } | null>(null);
+  const [portPositions, setPortPositions] = useState<
+    Record<string, PortPosition>
+  >({});
+  const [tempConnection, setTempConnection] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const moduleAreaRef = useRef<HTMLDivElement>(null);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -31,75 +53,197 @@ export const App: React.FC = () => {
     })
   );
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, delta } = event;
-    const moduleId = active.id as string;
-    const module = snap.modules.find((m) => m.id === moduleId);
+  const calculatePortPosition = useCallback(
+    (moduleId: string, portName: string, isInput: boolean): PortPosition => {
+      const module = snap.modules.find((m) => m.id === moduleId);
+      if (!module) return { x: 0, y: 0, side: "input" };
 
-    if (module) {
-      actions.updateModulePosition(
-        moduleId,
-        module.position.x + delta.x,
-        module.position.y + delta.y
+      const moduleRect = document
+        .getElementById(`module-${moduleId}`)
+        ?.getBoundingClientRect();
+      const portRect = document
+        .getElementById(`port-${moduleId}-${portName}`)
+        ?.getBoundingClientRect();
+      const moduleAreaRect = moduleAreaRef.current?.getBoundingClientRect();
+
+      if (!moduleRect || !portRect || !moduleAreaRect) {
+        return { x: 0, y: 0, side: isInput ? "input" : "output" };
+      }
+
+      return {
+        x: isInput
+          ? portRect.left - moduleAreaRect.left
+          : portRect.right - moduleAreaRect.left,
+        y: portRect.top + portRect.height / 2 - moduleAreaRect.top,
+        side: isInput ? "input" : "output",
+      };
+    },
+    [snap.modules]
+  );
+
+  const updateAllPortPositions = useCallback(() => {
+    const newPositions: Record<string, PortPosition> = {};
+    snap.modules.forEach((module) => {
+      const definition = moduleRegistry.find(
+        (m) => m.id === module.definitionId
       );
-    }
-  };
+      if (!definition) return;
 
-  const handleStartConnection = (
-    moduleId: string,
-    portName: string,
-    isInput: boolean
-  ) => {
-    if (connectionStart) {
-      // Complete connection
-      if (connectionStart.isInput !== isInput) {
-        const [fromId, fromPort, toId, toPort] = connectionStart.isInput
-          ? [
-              moduleId,
-              portName,
-              connectionStart.moduleId,
-              connectionStart.portName,
-            ]
-          : [
-              connectionStart.moduleId,
-              connectionStart.portName,
-              moduleId,
-              portName,
-            ];
+      definition.inputs.forEach((input) => {
+        const key = `${module.id}-${input.name}-input`;
+        newPositions[key] = calculatePortPosition(module.id, input.name, true);
+      });
 
-        actions.addConnection({
-          id: `${fromId}-${fromPort}-${toId}-${toPort}`,
-          fromModuleId: fromId,
-          fromOutputName: fromPort,
-          toModuleId: toId,
-          toInputName: toPort,
+      definition.outputs.forEach((output) => {
+        const key = `${module.id}-${output.name}-output`;
+        newPositions[key] = calculatePortPosition(
+          module.id,
+          output.name,
+          false
+        );
+      });
+    });
+
+    setPortPositions(newPositions);
+  }, [calculatePortPosition, snap.modules]);
+
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, delta } = event;
+      const moduleId = active.id as string;
+      const module = snap.modules.find((m) => m.id === moduleId);
+
+      if (module) {
+        actions.updateModulePosition(
+          moduleId,
+          module.position.x + delta.x,
+          module.position.y + delta.y
+        );
+        // Update port positions after module movement
+        requestAnimationFrame(updateAllPortPositions);
+      }
+    },
+    [snap.modules, updateAllPortPositions]
+  );
+
+  const handleStartConnection = useCallback(
+    (moduleId: string, portName: string, isInput: boolean) => {
+      if (connectionStart) {
+        // Complete connection
+        if (connectionStart.isInput !== isInput) {
+          const [fromId, fromPort, toId, toPort] = connectionStart.isInput
+            ? [
+                moduleId,
+                portName,
+                connectionStart.moduleId,
+                connectionStart.portName,
+              ]
+            : [
+                connectionStart.moduleId,
+                connectionStart.portName,
+                moduleId,
+                portName,
+              ];
+
+          actions.addConnection({
+            id: `${fromId}-${fromPort}-${toId}-${toPort}`,
+            fromModuleId: fromId,
+            fromOutputName: fromPort,
+            toModuleId: toId,
+            toInputName: toPort,
+          });
+        }
+        setConnectionStart(null);
+        setTempConnection(null);
+      } else {
+        // Start new connection
+        setConnectionStart({ moduleId, portName, isInput });
+        // Update port positions when starting a connection
+        updateAllPortPositions();
+      }
+    },
+    [connectionStart, updateAllPortPositions]
+  );
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (connectionStart && moduleAreaRef.current) {
+        const rect = moduleAreaRef.current.getBoundingClientRect();
+        setTempConnection({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
         });
       }
-      setConnectionStart(null);
-    } else {
-      // Start new connection
-      setConnectionStart({ moduleId, portName, isInput });
+    },
+    [connectionStart]
+  );
+
+  const createConnectionPath = useCallback((start: Point, end: Point) => {
+    const dx = end.x - start.x;
+    const controlPointOffset = Math.min(Math.abs(dx) * 0.5, 100);
+    return `M ${start.x},${start.y} C ${start.x + controlPointOffset},${
+      start.y
+    } ${end.x - controlPointOffset},${end.y} ${end.x},${end.y}`;
+  }, []);
+
+  const addModule = useCallback(
+    (definitionId: string) => {
+      const definition = moduleRegistry.find((m) => m.id === definitionId);
+      if (!definition) return;
+
+      const parameters: Record<string, ModuleValue> = {};
+      definition.parameters.forEach((param) => {
+        if (param.default !== undefined) {
+          parameters[param.name] = param.default;
+        }
+      });
+
+      actions.addModule({
+        id: `${definitionId}-${Date.now()}`,
+        definitionId,
+        position: { x: 100, y: 100 },
+        parameters,
+      });
+
+      // Update port positions after adding a module
+      requestAnimationFrame(updateAllPortPositions);
+    },
+    [updateAllPortPositions]
+  );
+
+  // Add mutation observer to detect DOM changes that might affect port positions
+  useEffect(() => {
+    const observer = new MutationObserver(updateAllPortPositions);
+    if (moduleAreaRef.current) {
+      observer.observe(moduleAreaRef.current, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["style"],
+      });
     }
-  };
+    return () => observer.disconnect();
+  }, [updateAllPortPositions]);
 
-  const addModule = (definitionId: string) => {
-    const definition = moduleRegistry.find((m) => m.id === definitionId);
-    if (!definition) return;
-
-    const parameters: Record<string, ModuleValue> = {};
-    definition.parameters.forEach((param) => {
-      if (param.default !== undefined) {
-        parameters[param.name] = param.default;
-      }
+  // Monitor DOM resize events
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      updateAllPortPositions();
     });
 
-    actions.addModule({
-      id: `${definitionId}-${Date.now()}`,
-      definitionId,
-      position: { x: 100, y: 100 },
-      parameters,
-    });
-  };
+    if (moduleAreaRef.current) {
+      observer.observe(moduleAreaRef.current);
+      document.querySelectorAll('[id^="module-"]').forEach((el) => {
+        observer.observe(el);
+      });
+    }
+
+    return () => observer.disconnect();
+  }, [updateAllPortPositions]);
+
+  const handleRemoveConnection = useCallback((connectionId: string) => {
+    actions.removeConnection(connectionId);
+  }, []);
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
@@ -115,7 +259,45 @@ export const App: React.FC = () => {
           ))}
         </LeftPanel>
 
-        <ModuleArea>
+        <ModuleArea ref={moduleAreaRef} onMouseMove={handleMouseMove}>
+          <ConnectionsOverlay>
+            {snap.connections.map((connection) => {
+              const fromPos =
+                portPositions[
+                  `${connection.fromModuleId}-${connection.fromOutputName}-output`
+                ];
+              const toPos =
+                portPositions[
+                  `${connection.toModuleId}-${connection.toInputName}-input`
+                ];
+              if (!fromPos || !toPos) return null;
+
+              return (
+                <ConnectionPath
+                  key={connection.id}
+                  d={createConnectionPath(fromPos, toPos)}
+                  onClick={() => handleRemoveConnection(connection.id)}
+                />
+              );
+            })}
+            {connectionStart && tempConnection && (
+              <TemporaryConnectionPath
+                d={createConnectionPath(
+                  connectionStart.isInput
+                    ? tempConnection
+                    : portPositions[
+                        `${connectionStart.moduleId}-${connectionStart.portName}-output`
+                      ] || tempConnection,
+                  connectionStart.isInput
+                    ? portPositions[
+                        `${connectionStart.moduleId}-${connectionStart.portName}-input`
+                      ] || tempConnection
+                    : tempConnection
+                )}
+              />
+            )}
+          </ConnectionsOverlay>
+
           {snap.modules.map((module) => {
             const definition = moduleRegistry.find(
               (m) => m.id === module.definitionId

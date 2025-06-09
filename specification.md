@@ -4,7 +4,7 @@ We are creating an app similar to a modular synthesizer, but for images instead 
 
 ## General Idea
 
-Small simple modules, with inputs, outputs, and changeable parameters can be connected together to achieve a more complex final output that will be rendered on the screen.
+Small simple modules, with inputs (on the left), outputs (on the right), and changeable parameters can be connected together to achieve a more complex final output that will be rendered on the screen.
 
 The most basic inputs are screen coordinates (normalized between 0 and 1), this is what the first modules will receive as input. Following modules can be added, connected, disconnected, and their parameters can be changed by the user at runtime.
 
@@ -196,3 +196,15 @@ I know per pixel calculation won't be very fast, so make the output image a reas
 See the `example-ui.png` file for inspiration on how the UI should work and look like.
 
 As a first step, just define a few basic math nodes to add, multiply, mix, clamp, numerical values.
+
+## Reverts
+
+1. Unsolvable issue around making connections.
+
+See `specification.md`.
+We ran into an issue we couldn't resolve during an earlier try, so I reverted all changes since the last commit.
+We have our basic project setup, and our module system. Next up, we should work on making the connections between modules.
+
+Please make sure to pay attention to how we calculate, store and update the coordinates of our input/output ports. Coordinates should be relative to our working area. The left sidebar should be acounted for. And the port locations should be updated when we move our modules around.
+
+And in general, please continue implementing the spec.

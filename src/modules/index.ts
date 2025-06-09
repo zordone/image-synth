@@ -79,14 +79,14 @@ export const ClampModule: ModuleDefinition = {
   id: "clamp",
   type: "Math",
   name: "Clamp",
-  inputs: [{ name: "Input", type: "number", required: true }],
+  inputs: [{ name: "Value", type: "number", required: true }],
   outputs: [{ name: "Result", type: "number" }],
   parameters: [
     { name: "Min", type: "number", default: 0 },
     { name: "Max", type: "number", default: 1 },
   ],
   calculate: (inputs, params) => ({
-    Result: Math.min(Math.max(inputs.Input, params.Min), params.Max),
+    Result: Math.min(Math.max(inputs.Value, params.Min), params.Max),
   }),
 };
 

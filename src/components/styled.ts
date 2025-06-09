@@ -5,6 +5,7 @@ export const Workspace = styled.div`
   height: 100vh;
   background: #1e1e1e;
   display: flex;
+  color: #e0e0e0;
 `;
 
 export const LeftPanel = styled.div`
@@ -50,79 +51,102 @@ export const ModuleHeader = styled.div`
   font-weight: bold;
 `;
 
-export const ModuleBody = styled.div`
-  padding: 8px;
-`;
-
 export const ModuleMenuButton = styled.button`
   width: 100%;
   padding: 8px;
-  margin: 4px 0;
   background: #2d2d2d;
   border: 1px solid #3c3c3c;
-  color: #ffffff;
-  cursor: pointer;
   border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+  margin-bottom: 8px;
 
   &:hover {
     background: #3c3c3c;
   }
 `;
 
-export const Port = styled.div`
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #4c4c4c;
-  border: 2px solid #3c3c3c;
-  margin: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background: #6c6c6c;
-  }
+export const PortsContainer = styled.div`
+  padding: 8px;
 `;
 
 export const PortRow = styled.div`
   display: flex;
   align-items: center;
   margin: 4px 0;
+  height: 24px;
 `;
 
-export const PortLabel = styled.span`
-  margin: 0 8px;
-  color: #cccccc;
-`;
-
-export const RotaryEncoder = styled.div`
-  width: 40px;
-  height: 40px;
+export const Port = styled.div<{ $isInput?: boolean }>`
+  width: 12px;
+  height: 12px;
+  border: 2px solid #666;
   border-radius: 50%;
-  background: #3c3c3c;
-  border: 2px solid #4c4c4c;
+  background: #2d2d2d;
   cursor: pointer;
-  position: relative;
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 2px;
-    height: 16px;
-    background: #cccccc;
-    transform-origin: bottom center;
-  }
+  order: ${(props) => (props.$isInput ? 0 : 2)};
 
   &:hover {
-    border-color: #6c6c6c;
+    border-color: #999;
   }
+`;
+
+export const PortLabel = styled.span<{ $isInput?: boolean }>`
+  margin: ${(props) => (props.$isInput ? "0 8px 0 4px" : "0 4px 0 8px")};
+  order: 1;
+`;
+
+export const ConnectionsOverlay = styled.svg`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+`;
+
+export const ConnectionPath = styled.path<{ $isError?: boolean }>`
+  fill: none;
+  stroke: ${(props) => (props.$isError ? "#ff4444" : "#666")};
+  stroke-width: 2;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: stroke 0.2s ease;
+
+  &:hover {
+    stroke: ${(props) => (props.$isError ? "#ff6666" : "#999")};
+  }
+`;
+
+export const TemporaryConnectionPath = styled(ConnectionPath)`
+  stroke-dasharray: 4;
+`;
+
+export const ModuleBody = styled.div`
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const ParameterRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const ParameterLabel = styled.span`
+  flex: 1;
 `;
 
 export const CanvasOutput = styled.canvas`
-  width: 100%;
+  width: 200px;
   height: 200px;
-  background: #000000;
+  background: #1e1e1e;
   border: 1px solid #3c3c3c;
   border-radius: 4px;
+`;
+
+export const RotaryEncoder = styled.input.attrs({ type: "range" })`
+  width: 60px;
 `;
