@@ -3,12 +3,16 @@ import type {
   Connection,
   ModuleValue,
   Color,
+  ModuleDefinition,
 } from "../types/module";
 import { moduleRegistry } from "../modules";
 
 interface ModuleGraph {
   modules: ReadonlyArray<ModuleInstance>;
   connections: ReadonlyArray<Connection>;
+  moduleMap: ReadonlyMap<string, ModuleInstance>;
+  connectionsByInput: ReadonlyMap<string, Connection>;
+  definitionMap: ReadonlyMap<string, ModuleDefinition>;
 }
 
 function isColor(value: ModuleValue): value is Color {
@@ -29,19 +33,19 @@ function calculateModule(
     return cache.get(moduleId)!;
   }
 
-  const module = graph.modules.find((m) => m.id === moduleId);
+  const module = graph.moduleMap.get(moduleId);
   if (!module) return {};
 
-  const definition = moduleRegistry.find((m) => m.id === module.definitionId);
+  const definition = graph.definitionMap.get(module.definitionId);
   if (!definition) return {};
 
   // Get the input values for this module
   const inputs: Record<string, ModuleValue> = {};
 
   definition.inputs.forEach((input) => {
-    // Find connection to this input
-    const connection = graph.connections.find(
-      (c) => c.toModuleId === moduleId && c.toInputName === input.name
+    // Find connection to this input using the map
+    const connection = graph.connectionsByInput.get(
+      `${moduleId}-${input.name}`
     );
 
     if (connection) {
@@ -82,17 +86,14 @@ function calculateModule(
 }
 
 export function renderToCanvas(canvas: HTMLCanvasElement, graph: ModuleGraph) {
+  const started = performance.now();
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
   const imageData = ctx.createImageData(canvas.width, canvas.height);
   const data = imageData.data;
 
-  // Find the Output module
-  const outputModule = graph.modules.find((module) => {
-    const definition = moduleRegistry.find((m) => m.id === module.definitionId);
-    return definition?.id === "output";
-  });
+  const outputModule = graph.moduleMap.get("output");
 
   if (!outputModule) {
     // Clear canvas if no output module is found
@@ -129,13 +130,15 @@ export function renderToCanvas(canvas: HTMLCanvasElement, graph: ModuleGraph) {
   }
 
   ctx.putImageData(imageData, 0, 0);
+  const ended = performance.now();
+  console.log(`renderToCanvas: ${ended - started}ms`);
 }
 
 export function calculateModuleInputs(
   moduleId: string,
   graph: ModuleGraph
 ): Record<string, ModuleValue> {
-  const module = graph.modules.find((m) => m.id === moduleId);
+  const module = graph.moduleMap.get(moduleId);
   if (!module) return {};
 
   const definition = moduleRegistry.find((m) => m.id === module.definitionId);
@@ -144,24 +147,12 @@ export function calculateModuleInputs(
   const inputs: Record<string, ModuleValue> = {};
 
   definition.inputs.forEach((input) => {
-    // Find connection to this input
-    const connection = graph.connections.find(
-      (c) => c.toModuleId === moduleId && c.toInputName === input.name
+    // Find connection to this input using the map
+    const connection = graph.connectionsByInput.get(
+      `${moduleId}-${input.name}`
     );
 
     if (connection) {
-      // Find source module
-      const sourceModule = graph.modules.find(
-        (m) => m.id === connection.fromModuleId
-      );
-      if (!sourceModule) return;
-
-      const sourceDefinition = moduleRegistry.find(
-        (m) => m.id === sourceModule.definitionId
-      );
-      if (!sourceDefinition) return;
-
-      // Otherwise use the module's calculate function
       try {
         const sourceOutputs = calculateModule(
           connection.fromModuleId,

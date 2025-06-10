@@ -70,7 +70,7 @@ export const App: React.FC = () => {
 
   const calculatePortPosition = useCallback(
     (moduleId: string, portName: string, isInput: boolean): PortPosition => {
-      const module = snap.modules.find((m) => m.id === moduleId);
+      const module = snap.moduleMap.get(moduleId);
       if (!module) return { x: 0, y: 0, side: "input" };
 
       const moduleRect = document
@@ -91,7 +91,7 @@ export const App: React.FC = () => {
         side: isInput ? "input" : "output",
       };
     },
-    [snap.modules]
+    [snap.moduleMap]
   );
 
   const updateAllPortPositions = useCallback(() => {
@@ -146,16 +146,12 @@ export const App: React.FC = () => {
       toModuleId: string,
       toInputName: string
     ): boolean => {
-      const fromModule = snap.modules.find((m) => m.id === fromModuleId);
-      const toModule = snap.modules.find((m) => m.id === toModuleId);
+      const fromModule = snap.moduleMap.get(fromModuleId);
+      const toModule = snap.moduleMap.get(toModuleId);
       if (!fromModule || !toModule) return false;
 
-      const fromDefinition = moduleRegistry.find(
-        (m) => m.id === fromModule.definitionId
-      );
-      const toDefinition = moduleRegistry.find(
-        (m) => m.id === toModule.definitionId
-      );
+      const fromDefinition = snap.definitionMap.get(fromModule.definitionId);
+      const toDefinition = snap.definitionMap.get(toModule.definitionId);
       if (!fromDefinition || !toDefinition) return false;
 
       const outputDef = fromDefinition.outputs.find(
@@ -167,7 +163,7 @@ export const App: React.FC = () => {
       // Validate types match
       return outputDef.type === inputDef.type;
     },
-    [snap.modules]
+    [snap.moduleMap, snap.definitionMap]
   );
 
   const handleStartConnection = useCallback(
@@ -209,12 +205,10 @@ export const App: React.FC = () => {
         setTempConnection(null);
       } else {
         // Start new connection
-        const module = snap.modules.find((m) => m.id === moduleId);
+        const module = snap.moduleMap.get(moduleId);
         if (!module) return;
 
-        const definition = moduleRegistry.find(
-          (m) => m.id === module.definitionId
-        );
+        const definition = snap.definitionMap.get(module.definitionId);
         if (!definition) return;
 
         // Get the port type
@@ -228,7 +222,13 @@ export const App: React.FC = () => {
         updateAllPortPositions();
       }
     },
-    [connectionStart, updateAllPortPositions, validateConnection, snap.modules]
+    [
+      connectionStart,
+      updateAllPortPositions,
+      validateConnection,
+      snap.moduleMap,
+      snap.definitionMap,
+    ]
   );
 
   const handleMouseMove = useCallback(
@@ -257,6 +257,10 @@ export const App: React.FC = () => {
       const definition = moduleRegistry.find((m) => m.id === definitionId);
       if (!definition) return;
 
+      if (definitionId === "output" && snap.moduleMap.has("output")) {
+        return; // Prevent adding multiple output modules
+      }
+
       const parameters: Record<string, ModuleValue> = {};
       definition.parameters.forEach((param) => {
         if (param.default !== undefined) {
@@ -265,7 +269,10 @@ export const App: React.FC = () => {
       });
 
       actions.addModule({
-        id: `${definitionId}-${Date.now()}`,
+        id:
+          definitionId === "output"
+            ? "output"
+            : `${definitionId}-${Date.now()}`,
         definitionId,
         position: { x: 100, y: 100 },
         parameters,
@@ -274,7 +281,7 @@ export const App: React.FC = () => {
       // Update port positions after adding a module
       requestAnimationFrame(updateAllPortPositions);
     },
-    [updateAllPortPositions]
+    [snap.moduleMap, updateAllPortPositions]
   );
 
   // Add mutation observer to detect DOM changes that might affect port positions
@@ -337,13 +344,23 @@ export const App: React.FC = () => {
         renderToCanvas(canvas, {
           modules: snap.modules,
           connections: snap.connections,
+          moduleMap: snap.moduleMap,
+          connectionsByInput: snap.connectionsByInput,
+          definitionMap: snap.definitionMap,
         });
       });
     }
 
     // Update the previous value
     prevLastUpdatedRef.current = snap.lastUpdated;
-  }, [snap.lastUpdated, snap.modules, snap.connections]);
+  }, [
+    snap.lastUpdated,
+    snap.modules,
+    snap.connections,
+    snap.moduleMap,
+    snap.connectionsByInput,
+    snap.definitionMap,
+  ]);
 
   // Calculate inputs for each module
   const moduleInputs = React.useMemo(() => {
@@ -352,10 +369,19 @@ export const App: React.FC = () => {
       inputs[module.id] = calculateModuleInputs(module.id, {
         modules: snap.modules,
         connections: snap.connections,
+        moduleMap: snap.moduleMap,
+        connectionsByInput: snap.connectionsByInput,
+        definitionMap: snap.definitionMap,
       });
     });
     return inputs;
-  }, [snap.modules, snap.connections]);
+  }, [
+    snap.modules,
+    snap.connections,
+    snap.moduleMap,
+    snap.connectionsByInput,
+    snap.definitionMap,
+  ]);
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
@@ -426,9 +452,7 @@ export const App: React.FC = () => {
           </ConnectionsOverlay>
 
           {snap.modules.map((module) => {
-            const definition = moduleRegistry.find(
-              (m) => m.id === module.definitionId
-            );
+            const definition = snap.definitionMap.get(module.definitionId);
             if (!definition) return null;
 
             return (
