@@ -37,6 +37,19 @@ export const ModuleContainer = styled.div.withConfig({
   user-select: none;
   z-index: 1;
   opacity: ${(props) => (props.$isDragging ? 0.7 : 1)};
+  box-shadow: 0 0 15px #0008;
+
+  /* Enable pointer events for the header */
+  & > *:first-child {
+    pointer-events: auto;
+  }
+
+  /* Enable pointer events for interactive elements in the body */
+  & input,
+  & button,
+  & canvas {
+    pointer-events: auto;
+  }
 
   &:hover {
     border-color: ${(props) => (props.$hasError ? "#ff6666" : "#4c4c4c")};
@@ -55,6 +68,8 @@ export const ModuleHeader = styled.div.withConfig({
   border-top-right-radius: 3px;
   cursor: move;
   font-weight: bold;
+  user-select: none;
+  touch-action: none;
 `;
 
 export const ModuleMenuButton = styled.button.withConfig({
@@ -153,10 +168,10 @@ export const ConnectionsOverlay = styled.svg.withConfig({
 
 export const ConnectionPath = styled.path.withConfig({
   displayName: "ConnectionPath",
-})<{ $isError?: boolean; $scale: number }>`
+})<{ $isError?: boolean }>`
   fill: none;
   stroke: ${(props) => (props.$isError ? "#ff4444" : "#666")};
-  stroke-width: ${(props) => 8 * props.$scale};
+  stroke-width: calc(8px * var(--scale, 1));
   pointer-events: auto;
   cursor: pointer;
   transition: stroke 0.2s ease;
@@ -187,7 +202,7 @@ export const ConnectionPath = styled.path.withConfig({
 export const TemporaryConnectionPath = styled(ConnectionPath).withConfig({
   displayName: "TemporaryConnectionPath",
 })`
-  stroke-dasharray: ${(props) => `${8 * props.$scale} ${10 * props.$scale}`};
+  stroke-dasharray: calc(8px * var(--scale, 1)) calc(10px * var(--scale, 1));
   stroke-opacity: 0.7;
   pointer-events: none;
 `;
@@ -223,10 +238,15 @@ export const CanvasOutput = styled.canvas.withConfig({
   border-radius: 4px;
 `;
 
-export const RotaryEncoder = styled.input
-  .attrs({ type: "range" })
-  .withConfig({ displayName: "RotaryEncoder" })`
+export const RotaryEncoder = styled.input.attrs({ type: "range" }).withConfig({
+  displayName: "RotaryEncoder",
+})`
   width: 60px;
+  cursor: pointer;
+  &:active {
+    cursor: ew-resize;
+  }
+  pointer-events: auto;
 `;
 
 export const ErrorTooltip = styled.div.withConfig({

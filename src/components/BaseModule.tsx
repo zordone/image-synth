@@ -109,13 +109,11 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       id={`module-${id}`}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
-      {...attributes}
-      {...listeners}
     >
       {errorMessage && (
         <ErrorTooltip $show={showTooltip}>{errorMessage}</ErrorTooltip>
       )}
-      <ModuleHeader>
+      <ModuleHeader {...attributes} {...listeners}>
         {definition.name}
         {onDelete && (
           <DeleteButton onClick={() => onDelete(id)}>×</DeleteButton>

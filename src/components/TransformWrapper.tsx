@@ -12,6 +12,7 @@ const Container = styled.div.withConfig({ displayName: "Container" })`
   overflow: hidden;
   user-select: none;
   cursor: grab;
+  background: radial-gradient(circle, #aaa2 1px, #0000 0px) 0 / 15px 15px;
 
   &:active {
     cursor: grabbing;
@@ -55,7 +56,7 @@ export const TransformWrapper: React.FC<TransformWrapperProps> = ({
     (e: WheelEvent) => {
       e.preventDefault();
 
-      newScale = Math.max(Math.min(newScale + e.deltaY / 100, 3), 0.1);
+      newScale = Math.max(Math.min(newScale + e.deltaY / 400, 3), 0.1);
 
       // Calculate cursor position relative to the container
       const container = contentRef.current?.parentElement;

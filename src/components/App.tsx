@@ -385,6 +385,11 @@ export const App: React.FC = () => {
     snap.definitionMap,
   ]);
 
+  moduleAreaRef.current?.style.setProperty(
+    "--scale",
+    snap.transform.scale.toPrecision(3)
+  );
+
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <Workspace>
@@ -468,7 +473,6 @@ export const App: React.FC = () => {
                   d={createConnectionPath(fromPos, toPos)}
                   onClick={() => handleRemoveConnection(connection.id)}
                   $isError={!isValid}
-                  $scale={snap.transform.scale}
                 />
               );
             })}
@@ -488,7 +492,6 @@ export const App: React.FC = () => {
                       ] || tempConnection
                     : tempConnection
                 )}
-                $scale={snap.transform.scale}
               />
             )}
           </ConnectionsOverlay>
