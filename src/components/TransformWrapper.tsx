@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import styled from "styled-components";
+import { useSnapshot } from "valtio";
+import { state, actions } from "../store";
 
 const Container = styled.div.withConfig({ displayName: "Container" })`
   position: absolute;
@@ -28,7 +30,6 @@ const Content = styled.div.withConfig({ displayName: "Content" })`
 interface TransformWrapperProps {
   children: React.ReactNode;
   onTransform?: (transform: { scale: number; x: number; y: number }) => void;
-  onScaleChange?: (scale: number) => void;
   onCancelConnection?: () => void;
 }
 
@@ -38,13 +39,17 @@ let newScale = 1;
 export const TransformWrapper: React.FC<TransformWrapperProps> = ({
   children,
   onTransform,
-  onScaleChange,
   onCancelConnection,
 }) => {
-  const [transform, setTransform] = useState({ scale: 1, x: 0, y: 0 });
+  const snap = useSnapshot(state);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Sync the scale global with stored state on mount
+  useEffect(() => {
+    newScale = snap.transform.scale;
+  }, [snap.transform.scale]);
 
   const handleWheel = useCallback(
     (e: WheelEvent) => {
@@ -61,16 +66,15 @@ export const TransformWrapper: React.FC<TransformWrapperProps> = ({
       const y = e.clientY - rect.top;
 
       // Calculate new position to zoom into the cursor point
-      const scaleDiff = newScale / transform.scale;
-      const newX = x - (x - transform.x) * scaleDiff;
-      const newY = y - (y - transform.y) * scaleDiff;
+      const scaleDiff = newScale / snap.transform.scale;
+      const newX = x - (x - snap.transform.x) * scaleDiff;
+      const newY = y - (y - snap.transform.y) * scaleDiff;
 
       const newTransform = { scale: newScale, x: newX, y: newY };
-      setTransform(newTransform);
+      actions.updateTransform(newTransform);
       onTransform?.(newTransform);
-      onScaleChange?.(newScale);
     },
-    [transform, onTransform, onScaleChange]
+    [snap.transform, onTransform]
   );
 
   const handleMouseDown = useCallback(
@@ -86,14 +90,14 @@ export const TransformWrapper: React.FC<TransformWrapperProps> = ({
 
       setIsDragging(true);
       setDragStart({
-        x: e.clientX - transform.x,
-        y: e.clientY - transform.y,
+        x: e.clientX - snap.transform.x,
+        y: e.clientY - snap.transform.y,
       });
 
       e.preventDefault();
       e.stopPropagation();
     },
-    [transform, onCancelConnection]
+    [snap.transform.x, snap.transform.y, onCancelConnection]
   );
 
   const handleMouseMove = useCallback(
@@ -101,15 +105,15 @@ export const TransformWrapper: React.FC<TransformWrapperProps> = ({
       if (isDragging) {
         e.preventDefault();
         const newTransform = {
-          ...transform,
+          ...snap.transform,
           x: e.clientX - dragStart.x,
           y: e.clientY - dragStart.y,
         };
-        setTransform(newTransform);
+        actions.updateTransform(newTransform);
         onTransform?.(newTransform);
       }
     },
-    [isDragging, dragStart, transform, onTransform]
+    [isDragging, dragStart, snap.transform, onTransform]
   );
 
   const handleMouseUp = useCallback(
@@ -140,14 +144,14 @@ export const TransformWrapper: React.FC<TransformWrapperProps> = ({
   return (
     <Container
       onMouseDown={handleMouseDown}
-      style={{ cursor: isDragging ? "grabbing" : "default" }}
+      style={{ cursor: isDragging ? "grabbing" : "grab" }}
     >
       <Content
         ref={contentRef}
         style={{
-          transform: `scale(${transform.scale}) translate(${
-            transform.x / transform.scale
-          }px, ${transform.y / transform.scale}px)`,
+          transform: `scale(${snap.transform.scale}) translate(${
+            snap.transform.x / snap.transform.scale
+          }px, ${snap.transform.y / snap.transform.scale}px)`,
         }}
       >
         {children}

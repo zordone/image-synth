@@ -55,7 +55,6 @@ export const App: React.FC = () => {
     x: number;
     y: number;
   } | null>(null);
-  const [currentScale, setCurrentScale] = useState(1);
   const moduleAreaRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prevLastUpdatedRef = useRef<number | null>(null);
@@ -386,15 +385,6 @@ export const App: React.FC = () => {
     snap.definitionMap,
   ]);
 
-  // Update port positions when transform changes
-  const handleTransform = useCallback(
-    ({ scale }: { scale: number }) => {
-      requestAnimationFrame(updateAllPortPositions);
-      setCurrentScale(scale);
-    },
-    [updateAllPortPositions]
-  );
-
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <Workspace>
@@ -415,7 +405,6 @@ export const App: React.FC = () => {
           onClick={handleBackgroundClick}
         >
           <TransformWrapper
-            onTransform={handleTransform}
             onCancelConnection={() => {
               setConnectionStart(null);
               setTempConnection(null);
@@ -479,7 +468,7 @@ export const App: React.FC = () => {
                   d={createConnectionPath(fromPos, toPos)}
                   onClick={() => handleRemoveConnection(connection.id)}
                   $isError={!isValid}
-                  $scale={currentScale}
+                  $scale={snap.transform.scale}
                 />
               );
             })}
@@ -499,7 +488,7 @@ export const App: React.FC = () => {
                       ] || tempConnection
                     : tempConnection
                 )}
-                $scale={currentScale}
+                $scale={snap.transform.scale}
               />
             )}
           </ConnectionsOverlay>

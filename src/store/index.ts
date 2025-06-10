@@ -15,6 +15,11 @@ interface AppState {
   connectionMap: Map<string, Connection>;
   connectionsByInput: Map<string, Connection>; // key: `${moduleId}-${inputName}`
   definitionMap: Map<string, ModuleDefinition>; // key: definition.id
+  transform: {
+    scale: number;
+    x: number;
+    y: number;
+  };
 }
 
 // Create module definition map once since it never changes
@@ -28,6 +33,11 @@ let initialState: AppState;
 if (savedState) {
   const parsed = JSON.parse(savedState);
   initialState = {
+    transform: {
+      scale: 1,
+      x: 0,
+      y: 0,
+    },
     ...parsed,
     moduleMap: new Map(),
     connectionMap: new Map(),
@@ -51,6 +61,11 @@ if (savedState) {
     connectionMap: new Map(),
     connectionsByInput: new Map(),
     definitionMap, // Add our static definition map
+    transform: {
+      scale: 1,
+      x: 0,
+      y: 0,
+    },
   };
 }
 
@@ -129,6 +144,10 @@ export const actions = {
       state.connectionsByInput.set(inputKey, connection);
     }
     state.lastUpdated = Date.now();
+  },
+
+  updateTransform: (transform: { scale: number; x: number; y: number }) => {
+    state.transform = transform;
   },
 
   removeConnection: (connectionId: string) => {
