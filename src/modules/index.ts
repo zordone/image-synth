@@ -252,15 +252,74 @@ export const LengthModule: ModuleDefinition = {
   },
 };
 
+export const AngleModule: ModuleDefinition = {
+  id: "angle",
+  type: "Math",
+  name: "Angle",
+  inputs: [
+    { name: "X1", type: "number", default: 0 },
+    { name: "Y1", type: "number", default: 0 },
+    { name: "X2", type: "number", default: 0 },
+    { name: "Y2", type: "number", default: 0 },
+  ],
+  outputs: [{ name: "Angle", type: "number" }],
+  parameters: [],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, AngleModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (
+      !isNumber(inputs.X1) ||
+      !isNumber(inputs.Y1) ||
+      !isNumber(inputs.X2) ||
+      !isNumber(inputs.Y2)
+    ) {
+      throw new Error("Invalid input types");
+    }
+    const dx = inputs.X2 - inputs.X1;
+    const dy = inputs.Y2 - inputs.Y1;
+    return { Angle: Math.atan2(dy, dx) };
+  },
+};
+
+export const TrigonometryModule: ModuleDefinition = {
+  id: "trigonometry",
+  type: "Math",
+  name: "Trigonometry",
+  inputs: [{ name: "Angle", type: "number", default: 0 }],
+  outputs: [
+    { name: "Sin", type: "number" },
+    { name: "Cos", type: "number" },
+    { name: "Tan", type: "number" },
+  ],
+  parameters: [],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, TrigonometryModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.Angle)) {
+      throw new Error("Invalid input type");
+    }
+    const angle = inputs.Angle;
+    return {
+      Sin: Math.sin(angle),
+      Cos: Math.cos(angle),
+      Tan: Math.tan(angle),
+    };
+  },
+};
+
 export const moduleRegistry: ModuleDefinition[] = [
   CoordinateModule,
   NumberModule,
   AddModule,
   MultiplyModule,
   DivideModule,
-  LengthModule,
   MixModule,
   ClampModule,
+  LengthModule,
+  AngleModule,
+  TrigonometryModule,
   RGBColorModule,
   OutputModule,
 ];

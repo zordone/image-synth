@@ -14,6 +14,7 @@ export const LeftPanel = styled.div.withConfig({ displayName: "LeftPanel" })`
   background: #252526;
   border-right: 1px solid #3c3c3c;
   padding: 16px;
+  overflow-y: scroll;
 `;
 
 export const ModuleArea = styled.div.withConfig({ displayName: "ModuleArea" })`
