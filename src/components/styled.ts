@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import type { DataType } from "../types/module";
 
-export const Workspace = styled.div`
+export const Workspace = styled.div.withConfig({ displayName: "Workspace" })`
   width: 100vw;
   height: 100vh;
   background: #1e1e1e;
@@ -9,27 +9,29 @@ export const Workspace = styled.div`
   color: #e0e0e0;
 `;
 
-export const LeftPanel = styled.div`
+export const LeftPanel = styled.div.withConfig({ displayName: "LeftPanel" })`
   width: 200px;
   background: #252526;
   border-right: 1px solid #3c3c3c;
   padding: 16px;
 `;
 
-export const RightPanel = styled.div`
+export const RightPanel = styled.div.withConfig({ displayName: "RightPanel" })`
   background: #252526;
   border-left: 1px solid #3c3c3c;
   padding: 16px;
 `;
 
-export const ModuleArea = styled.div`
+export const ModuleArea = styled.div.withConfig({ displayName: "ModuleArea" })`
   flex: 1;
   position: relative;
   overflow: hidden;
   cursor: default;
 `;
 
-export const ModuleContainer = styled.div<{
+export const ModuleContainer = styled.div.withConfig({
+  displayName: "ModuleContainer",
+})<{
   $isDragging?: boolean;
   $hasError?: boolean;
 }>`
@@ -47,7 +49,12 @@ export const ModuleContainer = styled.div<{
   }
 `;
 
-export const ModuleHeader = styled.div`
+export const ModuleHeader = styled.div.withConfig({
+  displayName: "ModuleHeader",
+})`
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
   padding: 8px;
   background: #3c3c3c;
   border-top-left-radius: 3px;
@@ -56,7 +63,9 @@ export const ModuleHeader = styled.div`
   font-weight: bold;
 `;
 
-export const ModuleMenuButton = styled.button`
+export const ModuleMenuButton = styled.button.withConfig({
+  displayName: "ModuleMenuButton",
+})`
   width: 100%;
   padding: 8px;
   background: #2d2d2d;
@@ -71,11 +80,15 @@ export const ModuleMenuButton = styled.button`
   }
 `;
 
-export const PortsContainer = styled.div`
+export const PortsContainer = styled.div.withConfig({
+  displayName: "PortsContainer",
+})`
   padding: 8px;
 `;
 
-export const PortRow = styled.div<{ $isInput?: boolean }>`
+export const PortRow = styled.div.withConfig({ displayName: "PortRow" })<{
+  $isInput?: boolean;
+}>`
   display: flex;
   align-items: center;
   margin: 4px 0;
@@ -83,20 +96,21 @@ export const PortRow = styled.div<{ $isInput?: boolean }>`
   justify-content: ${(props) => (props.$isInput ? "flex-start" : "flex-end")};
 `;
 
-export const Port = styled.div<{
+export const Port = styled.div.withConfig({ displayName: "Port" })<{
   $isInput?: boolean;
   $type?: DataType;
   $isError?: boolean;
 }>`
   width: 16px;
   height: 16px;
-  border: 2px solid
+  border: 3px solid
     ${(props) => {
       if (props.$isError) return "#ff4444";
       switch (props.$type) {
         case "color":
-          return "#c678dd";
+          return "#c786da";
         case "number":
+          return "#86b2da";
         default:
           return "#666";
       }
@@ -127,12 +141,16 @@ export const Port = styled.div<{
   }
 `;
 
-export const PortLabel = styled.span<{ $isInput?: boolean }>`
+export const PortLabel = styled.span.withConfig({ displayName: "PortLabel" })<{
+  $isInput?: boolean;
+}>`
   margin: ${(props) => (props.$isInput ? "0 8px 0 4px" : "0 4px 0 8px")};
   order: 1;
 `;
 
-export const ConnectionsOverlay = styled.svg`
+export const ConnectionsOverlay = styled.svg.withConfig({
+  displayName: "ConnectionsOverlay",
+})`
   position: absolute;
   top: 0;
   left: 0;
@@ -142,7 +160,9 @@ export const ConnectionsOverlay = styled.svg`
   z-index: 2;
 `;
 
-export const ConnectionPath = styled.path<{ $isError?: boolean }>`
+export const ConnectionPath = styled.path.withConfig({
+  displayName: "ConnectionPath",
+})<{ $isError?: boolean }>`
   fill: none;
   stroke: ${(props) => (props.$isError ? "#ff4444" : "#666")};
   stroke-width: 8;
@@ -173,31 +193,39 @@ export const ConnectionPath = styled.path<{ $isError?: boolean }>`
   }
 `;
 
-export const TemporaryConnectionPath = styled(ConnectionPath)`
+export const TemporaryConnectionPath = styled(ConnectionPath).withConfig({
+  displayName: "TemporaryConnectionPath",
+})`
   stroke-dasharray: 8 10;
   stroke-opacity: 0.7;
   stroke-width: 8;
   pointer-events: none;
 `;
 
-export const ModuleBody = styled.div`
+export const ModuleBody = styled.div.withConfig({ displayName: "ModuleBody" })`
   padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 `;
 
-export const ParameterRow = styled.div`
+export const ParameterRow = styled.div.withConfig({
+  displayName: "ParameterRow",
+})`
   display: flex;
   align-items: center;
   gap: 8px;
 `;
 
-export const ParameterLabel = styled.span`
+export const ParameterLabel = styled.span.withConfig({
+  displayName: "ParameterLabel",
+})`
   flex: 1;
 `;
 
-export const CanvasOutput = styled.canvas`
+export const CanvasOutput = styled.canvas.withConfig({
+  displayName: "CanvasOutput",
+})`
   width: 200px;
   height: 200px;
   background: #1e1e1e;
@@ -205,11 +233,15 @@ export const CanvasOutput = styled.canvas`
   border-radius: 4px;
 `;
 
-export const RotaryEncoder = styled.input.attrs({ type: "range" })`
+export const RotaryEncoder = styled.input
+  .attrs({ type: "range" })
+  .withConfig({ displayName: "RotaryEncoder" })`
   width: 60px;
 `;
 
-export const ErrorTooltip = styled.div<{ $show: boolean }>`
+export const ErrorTooltip = styled.div.withConfig({
+  displayName: "ErrorTooltip",
+})<{ $show: boolean }>`
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
@@ -235,7 +267,9 @@ export const ErrorTooltip = styled.div<{ $show: boolean }>`
   }
 `;
 
-export const ValueDisplay = styled.div`
+export const ValueDisplay = styled.div.withConfig({
+  displayName: "ValueDisplay",
+})`
   background: #1e1e1e;
   padding: 4px 8px;
   border-radius: 4px;
@@ -245,10 +279,9 @@ export const ValueDisplay = styled.div`
   margin: 4px 0;
 `;
 
-export const DeleteButton = styled.button`
-  position: absolute;
-  top: 8px;
-  right: 8px;
+export const DeleteButton = styled.button.withConfig({
+  displayName: "DeleteButton",
+})`
   background: none;
   border: none;
   color: #666;

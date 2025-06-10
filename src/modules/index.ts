@@ -36,7 +36,7 @@ export const NumberModule: ModuleDefinition = {
   inputs: [],
   outputs: [{ name: "Value", type: "number" }],
   parameters: [
-    { name: "Value", type: "number", min: -5, max: 5, step: 0.1, default: 0 },
+    { name: "Value", type: "number", min: -5, max: 5, step: 0.05, default: 0 },
   ],
   calculate: (_, params) => {
     if (!isNumber(params.Value)) {
