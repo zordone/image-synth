@@ -5,6 +5,7 @@ import type { ModuleValue } from "../types/module";
 import { useSnapshot } from "valtio";
 import { state, actions, subscribeWithStorage } from "../store";
 import { moduleRegistry } from "../modules";
+import { TransformWrapper } from "./TransformWrapper";
 import { BaseModule } from "./BaseModule";
 import { calculateModuleInputs } from "../utils/renderer";
 import {
@@ -54,6 +55,7 @@ export const App: React.FC = () => {
     x: number;
     y: number;
   } | null>(null);
+  const [currentScale, setCurrentScale] = useState(1);
   const moduleAreaRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const prevLastUpdatedRef = useRef<number | null>(null);
@@ -83,6 +85,7 @@ export const App: React.FC = () => {
         return { x: 0, y: 0, side: isInput ? "input" : "output" };
       }
 
+      // Use absolute coordinates - transform is handled by the parent
       return {
         x: portRect.left + portRect.width / 2 - moduleAreaRect.left,
         y: portRect.top + portRect.height / 2 - moduleAreaRect.top,
@@ -95,9 +98,7 @@ export const App: React.FC = () => {
   const updateAllPortPositions = useCallback(() => {
     const newPositions: Record<string, PortPosition> = {};
     snap.modules.forEach((module) => {
-      const definition = moduleRegistry.find(
-        (m) => m.id === module.definitionId
-      );
+      const definition = snap.definitionMap.get(module.definitionId);
       if (!definition) return;
 
       definition.inputs.forEach((input) => {
@@ -116,13 +117,13 @@ export const App: React.FC = () => {
     });
 
     setPortPositions(newPositions);
-  }, [calculatePortPosition, snap.modules]);
+  }, [calculatePortPosition, snap.definitionMap, snap.modules]);
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
       const { active, delta } = event;
       const moduleId = active.id as string;
-      const module = snap.modules.find((m) => m.id === moduleId);
+      const module = snap.moduleMap.get(moduleId);
 
       if (module) {
         actions.updateModulePosition(
@@ -134,7 +135,7 @@ export const App: React.FC = () => {
         requestAnimationFrame(updateAllPortPositions);
       }
     },
-    [snap.modules, updateAllPortPositions]
+    [snap.moduleMap, updateAllPortPositions]
   );
 
   const validateConnection = useCallback(
@@ -233,6 +234,7 @@ export const App: React.FC = () => {
     (e: React.MouseEvent) => {
       if (connectionStart && moduleAreaRef.current) {
         const rect = moduleAreaRef.current.getBoundingClientRect();
+        // Use absolute coordinates for temporary connections
         setTempConnection({
           x: e.clientX - rect.left,
           y: e.clientY - rect.top,
@@ -252,7 +254,7 @@ export const App: React.FC = () => {
 
   const addModule = useCallback(
     (definitionId: string) => {
-      const definition = moduleRegistry.find((m) => m.id === definitionId);
+      const definition = snap.definitionMap.get(definitionId);
       if (!definition) return;
 
       if (definitionId === "output" && snap.moduleMap.has("output")) {
@@ -279,7 +281,7 @@ export const App: React.FC = () => {
       // Update port positions after adding a module
       requestAnimationFrame(updateAllPortPositions);
     },
-    [snap.moduleMap, updateAllPortPositions]
+    [snap.definitionMap, snap.moduleMap, updateAllPortPositions]
   );
 
   // Add mutation observer to detect DOM changes that might affect port positions
@@ -318,8 +320,11 @@ export const App: React.FC = () => {
 
   const handleBackgroundClick = useCallback(
     (e: React.MouseEvent) => {
-      // Only cancel if clicking directly on the ModuleArea, not on a module or connection
-      if (e.target === e.currentTarget && connectionStart) {
+      // Check if we're clicking the module area or the connections overlay
+      if (
+        (e.target === e.currentTarget || e.target === moduleAreaRef.current) &&
+        connectionStart
+      ) {
         setConnectionStart(null);
         setTempConnection(null);
       }
@@ -381,6 +386,15 @@ export const App: React.FC = () => {
     snap.definitionMap,
   ]);
 
+  // Update port positions when transform changes
+  const handleTransform = useCallback(
+    ({ scale }: { scale: number }) => {
+      requestAnimationFrame(updateAllPortPositions);
+      setCurrentScale(scale);
+    },
+    [updateAllPortPositions]
+  );
+
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <Workspace>
@@ -400,8 +414,46 @@ export const App: React.FC = () => {
           onMouseMove={handleMouseMove}
           onClick={handleBackgroundClick}
         >
-          <canvas ref={canvasRef} style={{ display: "none" }} />
-          <ConnectionsOverlay>
+          <TransformWrapper
+            onTransform={handleTransform}
+            onCancelConnection={() => {
+              setConnectionStart(null);
+              setTempConnection(null);
+            }}
+          >
+            <canvas ref={canvasRef} style={{ display: "none" }} />
+            {snap.modules.map((module) => {
+              const definition = snap.definitionMap.get(module.definitionId);
+              if (!definition) return null;
+
+              return (
+                <BaseModule
+                  key={module.id}
+                  id={module.id}
+                  definition={definition}
+                  position={module.position}
+                  parameters={module.parameters}
+                  inputs={moduleInputs[module.id]}
+                  onParameterChange={(name, value) =>
+                    actions.updateModuleParameter(module.id, name, value)
+                  }
+                  onStartConnectionFrom={handleStartConnection}
+                  onDelete={actions.removeModule}
+                  outputCanvasRef={
+                    definition.id === "output" ? canvasRef : undefined
+                  }
+                />
+              );
+            })}
+          </TransformWrapper>
+
+          <ConnectionsOverlay
+            style={{
+              position: "absolute",
+              width: moduleAreaRef.current?.clientWidth ?? "100%",
+              height: moduleAreaRef.current?.clientHeight ?? "100%",
+            }}
+          >
             {snap.connections.map((connection) => {
               const fromPos =
                 portPositions[
@@ -427,6 +479,7 @@ export const App: React.FC = () => {
                   d={createConnectionPath(fromPos, toPos)}
                   onClick={() => handleRemoveConnection(connection.id)}
                   $isError={!isValid}
+                  $scale={currentScale}
                 />
               );
             })}
@@ -446,33 +499,10 @@ export const App: React.FC = () => {
                       ] || tempConnection
                     : tempConnection
                 )}
+                $scale={currentScale}
               />
             )}
           </ConnectionsOverlay>
-
-          {snap.modules.map((module) => {
-            const definition = snap.definitionMap.get(module.definitionId);
-            if (!definition) return null;
-
-            return (
-              <BaseModule
-                key={module.id}
-                id={module.id}
-                definition={definition}
-                position={module.position}
-                parameters={module.parameters}
-                inputs={moduleInputs[module.id]}
-                onParameterChange={(name, value) =>
-                  actions.updateModuleParameter(module.id, name, value)
-                }
-                onStartConnectionFrom={handleStartConnection}
-                onDelete={actions.removeModule}
-                outputCanvasRef={
-                  definition.id === "output" ? canvasRef : undefined
-                }
-              />
-            );
-          })}
         </ModuleArea>
       </Workspace>
     </DndContext>

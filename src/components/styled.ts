@@ -146,20 +146,17 @@ export const ConnectionsOverlay = styled.svg.withConfig({
   displayName: "ConnectionsOverlay",
 })`
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
   z-index: 2;
 `;
 
 export const ConnectionPath = styled.path.withConfig({
   displayName: "ConnectionPath",
-})<{ $isError?: boolean }>`
+})<{ $isError?: boolean; $scale: number }>`
   fill: none;
   stroke: ${(props) => (props.$isError ? "#ff4444" : "#666")};
-  stroke-width: 8;
+  stroke-width: ${(props) => 8 * props.$scale};
   pointer-events: auto;
   cursor: pointer;
   transition: stroke 0.2s ease;
@@ -190,9 +187,8 @@ export const ConnectionPath = styled.path.withConfig({
 export const TemporaryConnectionPath = styled(ConnectionPath).withConfig({
   displayName: "TemporaryConnectionPath",
 })`
-  stroke-dasharray: 8 10;
+  stroke-dasharray: ${(props) => `${8 * props.$scale} ${10 * props.$scale}`};
   stroke-opacity: 0.7;
-  stroke-width: 8;
   pointer-events: none;
 `;
 
