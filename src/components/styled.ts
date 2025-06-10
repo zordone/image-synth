@@ -16,12 +16,6 @@ export const LeftPanel = styled.div.withConfig({ displayName: "LeftPanel" })`
   padding: 16px;
 `;
 
-export const RightPanel = styled.div.withConfig({ displayName: "RightPanel" })`
-  background: #252526;
-  border-left: 1px solid #3c3c3c;
-  padding: 16px;
-`;
-
 export const ModuleArea = styled.div.withConfig({ displayName: "ModuleArea" })`
   flex: 1;
   position: relative;

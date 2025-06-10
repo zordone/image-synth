@@ -16,6 +16,7 @@ import {
   ErrorTooltip,
   ValueDisplay,
   DeleteButton,
+  CanvasOutput,
 } from "./styled";
 
 interface BaseModuleProps {
@@ -31,6 +32,7 @@ interface BaseModuleProps {
     isInput: boolean
   ) => void;
   onDelete?: (moduleId: string) => void;
+  outputCanvasRef?: React.RefObject<HTMLCanvasElement | null>;
 }
 
 export const BaseModule: React.FC<BaseModuleProps> = ({
@@ -42,6 +44,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
   onParameterChange,
   onStartConnectionFrom,
   onDelete,
+  outputCanvasRef,
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const { attributes, listeners, setNodeRef, transform, isDragging } =
@@ -94,6 +97,9 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
         transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
       };
 
+  // Get canvas ref from context if this is an output module
+  const isOutputModule = definition.id === "output";
+
   return (
     <ModuleContainer
       ref={setNodeRef}
@@ -116,6 +122,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
         )}
       </ModuleHeader>
       <ModuleBody>
+        {isOutputModule && <CanvasOutput ref={outputCanvasRef} />}
         <PortsContainer>
           {definition.inputs.map((input) => (
             <PortRow key={input.name} $isInput>

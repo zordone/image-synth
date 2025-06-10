@@ -10,10 +10,8 @@ import { calculateModuleInputs } from "../utils/renderer";
 import {
   Workspace,
   LeftPanel,
-  RightPanel,
   ModuleArea,
   ModuleMenuButton,
-  CanvasOutput,
   ConnectionsOverlay,
   ConnectionPath,
   TemporaryConnectionPath,
@@ -402,6 +400,7 @@ export const App: React.FC = () => {
           onMouseMove={handleMouseMove}
           onClick={handleBackgroundClick}
         >
+          <canvas ref={canvasRef} style={{ display: "none" }} />
           <ConnectionsOverlay>
             {snap.connections.map((connection) => {
               const fromPos =
@@ -468,14 +467,13 @@ export const App: React.FC = () => {
                 }
                 onStartConnectionFrom={handleStartConnection}
                 onDelete={actions.removeModule}
+                outputCanvasRef={
+                  definition.id === "output" ? canvasRef : undefined
+                }
               />
             );
           })}
         </ModuleArea>
-
-        <RightPanel>
-          <CanvasOutput ref={canvasRef} />
-        </RightPanel>
       </Workspace>
     </DndContext>
   );
