@@ -1,6 +1,6 @@
 # ImageSynth
 
-Modular syntesis-based image generator.
+Modular synthesis-based image generator.
 
 Add and connect simple modules to build complex images.
 
@@ -12,10 +12,10 @@ Mostly vibe coded using Claude Sonnet 3.5.
 
 ## Features
 
-- Image generation
-- Synthesis algorithms
-- Real-time manipulation
-- Local storage persistence
+- Image generation.
+- Synthesis algorithms.
+- Real-time manipulation.
+- Local storage persistence.
 
 ## Installation
 
@@ -23,7 +23,7 @@ Mostly vibe coded using Claude Sonnet 3.5.
 yarn install --immutable
 ```
 
-## Usage
+## Start
 
 ```bash
 yarn dev
