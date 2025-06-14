@@ -26,5 +26,5 @@ yarn install --immutable
 ## Usage
 
 ```bash
-yarn start
+yarn dev
 ```

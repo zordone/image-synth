@@ -12,7 +12,6 @@ import {
   PortLabel,
   ParameterRow,
   ParameterLabel,
-  RotaryEncoder,
   ErrorTooltip,
   DeleteButton,
   CanvasOutput,
