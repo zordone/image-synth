@@ -13,8 +13,8 @@ Mostly vibe coded using Claude Sonnet 3.5.
 ## Features
 
 - Image generation.
-- Synthesis algorithms.
 - Real-time manipulation.
+- Workspace zoom and panning.
 - Local storage persistence.
 
 ## Installation
