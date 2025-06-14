@@ -56,7 +56,7 @@ export const TransformWrapper: React.FC<TransformWrapperProps> = ({
     (e: WheelEvent) => {
       e.preventDefault();
 
-      newScale = Math.max(Math.min(newScale + e.deltaY / 400, 3), 0.1);
+      newScale = Math.max(Math.min(newScale - e.deltaY / 400, 3), 0.1);
 
       // Calculate cursor position relative to the container
       const container = contentRef.current?.parentElement;
@@ -83,6 +83,7 @@ export const TransformWrapper: React.FC<TransformWrapperProps> = ({
       // Only handle clicks directly on the container or content, not on child elements
       const isBackgroundClick =
         e.target === e.currentTarget || e.target === contentRef.current;
+
       if (!isBackgroundClick) return;
 
       if (isBackgroundClick) {

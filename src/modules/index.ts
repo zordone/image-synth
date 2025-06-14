@@ -36,7 +36,14 @@ export const NumberModule: ModuleDefinition = {
   inputs: [],
   outputs: [{ name: "Value", type: "number" }],
   parameters: [
-    { name: "Value", type: "number", min: -5, max: 5, step: 0.05, default: 0 },
+    {
+      name: "Value",
+      type: "number",
+      min: -10,
+      max: 10,
+      step: 0.05,
+      default: 0,
+    },
   ],
   calculate: (_, params) => {
     if (!isNumber(params.Value)) {
@@ -139,6 +146,33 @@ export const ClampModule: ModuleDefinition = {
       throw new Error("Invalid input types or parameters");
     }
     return { Result: Math.min(Math.max(inputs.Value, params.Min), params.Max) };
+  },
+};
+
+export const ClipModule: ModuleDefinition = {
+  id: "clip",
+  type: "Math",
+  name: "Clip",
+  inputs: [{ name: "Value", type: "number", required: true }],
+  outputs: [{ name: "Result", type: "number" }],
+  parameters: [
+    {
+      name: "Threshold",
+      type: "number",
+      default: 0.5,
+      min: -10,
+      max: 10,
+      step: 0.01,
+    },
+  ],
+  calculate: (inputs, params) => {
+    if (!validateRequiredInputs(inputs, ClipModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.Value) || !isNumber(params.Threshold)) {
+      throw new Error("Invalid input types or parameters");
+    }
+    return { Result: inputs.Value >= params.Threshold ? 1 : 0 };
   },
 };
 
@@ -278,6 +312,7 @@ export const AngleModule: ModuleDefinition = {
     }
     const dx = inputs.X2 - inputs.X1;
     const dy = inputs.Y2 - inputs.Y1;
+
     return { Angle: Math.atan2(dy, dx) };
   },
 };
@@ -317,6 +352,7 @@ export const moduleRegistry: ModuleDefinition[] = [
   DivideModule,
   MixModule,
   ClampModule,
+  ClipModule,
   LengthModule,
   AngleModule,
   TrigonometryModule,

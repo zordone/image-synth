@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import type { ModuleDefinition, ModuleValue } from "../types/module";
-import { validateInput, isNumber } from "../types/module";
+import { validateInput } from "../types/module";
 import {
   ModuleContainer,
   ModuleHeader,
@@ -14,9 +14,9 @@ import {
   ParameterLabel,
   RotaryEncoder,
   ErrorTooltip,
-  ValueDisplay,
   DeleteButton,
   CanvasOutput,
+  ParameterInput,
 } from "./styled";
 
 interface BaseModuleProps {
@@ -116,7 +116,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       <ModuleHeader {...attributes} {...listeners}>
         {definition.name}
         {onDelete && (
-          <DeleteButton onClick={() => onDelete(id)}>×</DeleteButton>
+          <DeleteButton onClick={() => onDelete(id)}>Ｘ</DeleteButton>
         )}
       </ModuleHeader>
       <ModuleBody>
@@ -147,26 +147,25 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
           ))}
         </PortsContainer>
 
-        {definition.type === "Input" && definition.id === "number" && (
-          <ValueDisplay>
-            {isNumber(parameters.Value) ? parameters.Value.toFixed(3) : "0.000"}
-          </ValueDisplay>
-        )}
-
         {definition.parameters.map((param) => (
           <ParameterRow key={param.name}>
-            <ParameterLabel>{param.name}</ParameterLabel>
-            {param.type === "number" && (
-              <RotaryEncoder
-                min={param.min ?? 0}
-                max={param.max ?? 1}
-                step={param.step ?? 0.01}
-                value={(parameters[param.name] as number) ?? param.default ?? 0}
-                onChange={(e) =>
-                  onParameterChange(param.name, parseFloat(e.target.value))
-                }
-              />
-            )}
+            <ParameterLabel>
+              {param.name}
+              {param.type === "number" && (
+                <ParameterInput
+                  type="number"
+                  min={param.min ?? 0}
+                  max={param.max ?? 1}
+                  step={param.step ?? 0.01}
+                  value={
+                    (parameters[param.name] as number) ?? param.default ?? 0
+                  }
+                  onChange={(e) =>
+                    onParameterChange(param.name, parseFloat(e.target.value))
+                  }
+                />
+              )}
+            </ParameterLabel>
           </ParameterRow>
         ))}
       </ModuleBody>

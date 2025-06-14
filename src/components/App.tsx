@@ -16,6 +16,8 @@ import {
   ConnectionsOverlay,
   ConnectionPath,
   TemporaryConnectionPath,
+  Logo,
+  LogoContainer,
 } from "./styled";
 import { renderToCanvas } from "../utils/renderer";
 
@@ -394,6 +396,10 @@ export const App: React.FC = () => {
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <Workspace>
         <LeftPanel>
+          <LogoContainer>
+            <Logo src="/favicon.png" alt="Logo" />
+            <h1>ImageSynth</h1>
+          </LogoContainer>
           {moduleRegistry.map((module) => (
             <ModuleMenuButton
               key={module.id}

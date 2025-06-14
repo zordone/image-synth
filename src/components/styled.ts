@@ -17,6 +17,24 @@ export const LeftPanel = styled.div.withConfig({ displayName: "LeftPanel" })`
   overflow-y: scroll;
 `;
 
+export const LogoContainer = styled.div.withConfig({
+  displayName: "LogoContainer",
+})`
+  display: grid;
+  grid-template-areas: "a b";
+  color: #ccd6dd;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+  filter: drop-shadow(0 0 5px #0008);
+  font: 0.72rem "Hanalei Fill", system-ui;
+`;
+
+export const Logo = styled.img.withConfig({ displayName: "Logo" })`
+  width: 100%;
+`;
+
 export const ModuleArea = styled.div.withConfig({ displayName: "ModuleArea" })`
   flex: 1;
   position: relative;
@@ -84,6 +102,7 @@ export const ModuleMenuButton = styled.button.withConfig({
   color: inherit;
   cursor: pointer;
   margin-bottom: 8px;
+  font: inherit;
 
   &:hover {
     background: #3c3c3c;
@@ -191,7 +210,6 @@ export const ConnectionPath = styled.path.withConfig({
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
-    font-size: 12px;
     white-space: nowrap;
     pointer-events: none;
     transform: translate(-50%, -100%);
@@ -218,15 +236,33 @@ export const ModuleBody = styled.div.withConfig({ displayName: "ModuleBody" })`
 export const ParameterRow = styled.div.withConfig({
   displayName: "ParameterRow",
 })`
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  /* empty for now */
 `;
 
-export const ParameterLabel = styled.span.withConfig({
+export const ParameterLabel = styled.label.withConfig({
   displayName: "ParameterLabel",
 })`
-  flex: 1;
+  /* empty for now */
+`;
+
+export const ParameterInput = styled.input.withConfig({
+  displayName: "ParameterInput",
+})`
+  background: #1e1e1e;
+  color: #e0e0e0;
+  padding: 4px 8px;
+  border: 1px solid #3c3c3c;
+  border-radius: 4px;
+  font-size: 12px;
+  text-align: center;
+  margin-left: 8px;
+  /* hide up/down buttons */
+  appearance: textfield;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    display: none;
+    margin: 0;
+  }
 `;
 
 export const CanvasOutput = styled.canvas.withConfig({
@@ -242,7 +278,7 @@ export const CanvasOutput = styled.canvas.withConfig({
 export const RotaryEncoder = styled.input.attrs({ type: "range" }).withConfig({
   displayName: "RotaryEncoder",
 })`
-  width: 60px;
+  width: fit-content;
   cursor: pointer;
   &:active {
     cursor: ew-resize;
@@ -261,7 +297,6 @@ export const ErrorTooltip = styled.div.withConfig({
   color: white;
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: 12px;
   white-space: nowrap;
   pointer-events: none;
   opacity: ${(props) => (props.$show ? 1 : 0)};
@@ -276,18 +311,6 @@ export const ErrorTooltip = styled.div.withConfig({
     border: 4px solid transparent;
     border-top-color: #ff4444;
   }
-`;
-
-export const ValueDisplay = styled.div.withConfig({
-  displayName: "ValueDisplay",
-})`
-  background: #1e1e1e;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 12px;
-  text-align: center;
-  margin: 4px 0;
 `;
 
 export const DeleteButton = styled.button.withConfig({

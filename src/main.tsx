@@ -4,6 +4,10 @@ import { App } from "./components/App";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+  :root {
+    font-size: 16px;
+  }
+
   * {
     box-sizing: border-box;
     margin: 0;
@@ -14,6 +18,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: system-ui, -apple-system, sans-serif;
     color: #ffffff;
     background: #1e1e1e;
+    font-family: "Jura", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
   }
 `;
 
