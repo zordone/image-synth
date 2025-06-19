@@ -74,6 +74,27 @@ export const AddModule: ModuleDefinition = {
   },
 };
 
+export const SubtractModule: ModuleDefinition = {
+  id: "subtract",
+  type: "Math",
+  name: "Subtract",
+  inputs: [
+    { name: "A", type: "number", required: true },
+    { name: "B", type: "number", required: true },
+  ],
+  outputs: [{ name: "Result", type: "number" }],
+  parameters: [],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, SubtractModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.A) || !isNumber(inputs.B)) {
+      throw new Error("Invalid input types");
+    }
+    return { Result: inputs.A - inputs.B };
+  },
+};
+
 export const MultiplyModule: ModuleDefinition = {
   id: "multiply",
   type: "Math",
@@ -348,6 +369,7 @@ export const moduleRegistry: ModuleDefinition[] = [
   CoordinateModule,
   NumberModule,
   AddModule,
+  SubtractModule,
   MultiplyModule,
   DivideModule,
   MixModule,
