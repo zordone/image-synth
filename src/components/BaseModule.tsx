@@ -10,21 +10,20 @@ import {
   PortRow,
   Port,
   PortLabel,
-  ParameterRow,
-  ParameterLabel,
   ErrorTooltip,
   DeleteButton,
   CanvasOutput,
-  ParameterInput,
 } from "./styled";
+import { InputControl } from "./InputControl";
 
 interface BaseModuleProps {
   id: string;
   definition: ModuleDefinition;
   position: { x: number; y: number };
-  parameters: Record<string, ModuleValue>;
-  inputs: Record<string, ModuleValue>;
-  onParameterChange: (name: string, value: ModuleValue) => void;
+  inputValues: Record<string, ModuleValue>; // Values for non-required inputs (formerly parameters)
+  connectedInputs: Record<string, ModuleValue>; // Values from connections
+  connections: Set<string>; // Set of input names that have connections
+  onInputValueChange: (name: string, value: ModuleValue) => void;
   onStartConnectionFrom: (
     moduleId: string,
     portName: string,
@@ -38,9 +37,10 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
   id,
   definition,
   position,
-  parameters,
-  inputs,
-  onParameterChange,
+  inputValues,
+  connectedInputs,
+  connections,
+  onInputValueChange,
   onStartConnectionFrom,
   onDelete,
   outputCanvasRef,
@@ -51,12 +51,17 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       id,
     });
 
+  // Combine inputValues and connectedInputs to get all input values
+  const allInputs = React.useMemo(() => {
+    return { ...inputValues, ...connectedInputs };
+  }, [inputValues, connectedInputs]);
+
   // Check for any missing required inputs or invalid input types
   const errors = React.useMemo(() => {
     const inputErrors = new Set<string>();
 
     definition.inputs.forEach((input) => {
-      const value = inputs[input.name];
+      const value = allInputs[input.name];
       if (input.required && value === undefined) {
         inputErrors.add(input.name);
       } else if (value !== undefined && !validateInput(value, input.type)) {
@@ -65,7 +70,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
     });
 
     return inputErrors;
-  }, [definition.inputs, inputs]);
+  }, [definition.inputs, allInputs]);
 
   // Generate error message
   const errorMessage = React.useMemo(() => {
@@ -76,7 +81,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       const input = definition.inputs.find((i) => i.name === inputName);
       if (!input) continue;
 
-      const value = inputs[inputName];
+      const value = allInputs[inputName];
       if (value === undefined && input.required) {
         messages.push(`Missing required input: ${inputName}`);
       } else if (value !== undefined && !validateInput(value, input.type)) {
@@ -84,7 +89,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       }
     }
     return messages.join("\n");
-  }, [errors, definition.inputs, inputs]);
+  }, [errors, definition.inputs, allInputs]);
 
   const style = transform
     ? {
@@ -121,18 +126,32 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
       <ModuleBody>
         {isOutputModule && <CanvasOutput ref={outputCanvasRef} />}
         <PortsContainer>
-          {definition.inputs.map((input) => (
-            <PortRow key={input.name} $isInput>
-              <Port
-                id={`port-${id}-${input.name}`}
-                $isInput
-                $type={input.type}
-                $isError={errors.has(input.name)}
-                onClick={() => onStartConnectionFrom(id, input.name, true)}
-              />
-              <PortLabel $isInput>{input.name}</PortLabel>
-            </PortRow>
-          ))}
+          {definition.inputs.map((input) => {
+            const isConnected = connections.has(input.name);
+            const isRequired = input.required;
+            return (
+              <PortRow key={input.name} $isInput>
+                <Port
+                  id={`port-${id}-${input.name}`}
+                  $isInput
+                  $type={input.type}
+                  $isError={errors.has(input.name)}
+                  onClick={() => onStartConnectionFrom(id, input.name, true)}
+                />
+                {isConnected || isRequired ? (
+                  // Just show the label when connected or required
+                  <PortLabel $isInput>{input.name}</PortLabel>
+                ) : (
+                  // Show editable input when not connected and not required
+                  <InputControl
+                    input={input}
+                    value={inputValues[input.name] ?? input.default}
+                    onChange={(value) => onInputValueChange(input.name, value)}
+                  />
+                )}
+              </PortRow>
+            );
+          })}
 
           {definition.outputs.map((output) => (
             <PortRow key={output.name}>
@@ -145,28 +164,6 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
             </PortRow>
           ))}
         </PortsContainer>
-
-        {definition.parameters.map((param) => (
-          <ParameterRow key={param.name}>
-            <ParameterLabel>
-              {param.name}
-              {param.type === "number" && (
-                <ParameterInput
-                  type="number"
-                  min={param.min ?? 0}
-                  max={param.max ?? 1}
-                  step={param.step ?? 0.01}
-                  value={
-                    (parameters[param.name] as number) ?? param.default ?? 0
-                  }
-                  onChange={(e) =>
-                    onParameterChange(param.name, parseFloat(e.target.value))
-                  }
-                />
-              )}
-            </ParameterLabel>
-          </ParameterRow>
-        ))}
       </ModuleBody>
     </ModuleContainer>
   );

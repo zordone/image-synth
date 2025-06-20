@@ -32,6 +32,24 @@ let initialState: AppState;
 
 if (savedState) {
   const parsed = JSON.parse(savedState);
+
+  // Migrate old modules that had 'parameters' to new 'inputValues' structure
+  if (parsed.modules) {
+    parsed.modules = parsed.modules.map(
+      (
+        module: ModuleInstance & { parameters?: Record<string, ModuleValue> }
+      ) => {
+        if (module.parameters && !module.inputValues) {
+          return {
+            ...module,
+            inputValues: module.parameters,
+          };
+        }
+        return module;
+      }
+    );
+  }
+
   initialState = {
     transform: {
       scale: 1,
@@ -115,14 +133,14 @@ export const actions = {
     }
   },
 
-  updateModuleParameter: (
+  updateModuleInputValue: (
     moduleId: string,
-    paramName: string,
+    inputName: string,
     value: ModuleValue
   ) => {
     const module = state.moduleMap.get(moduleId);
     if (module) {
-      module.parameters[paramName] = value;
+      module.inputValues[inputName] = value;
       state.lastUpdated = Date.now();
     }
   },

@@ -22,7 +22,6 @@ export const CoordinateModule: ModuleDefinition = {
     { name: "X", type: "number" },
     { name: "Y", type: "number" },
   ],
-  parameters: [],
   calculate: () => {
     // This will be handled by the canvas renderer
     return {};
@@ -33,11 +32,9 @@ export const NumberModule: ModuleDefinition = {
   id: "number",
   type: "Input",
   name: "Number",
-  inputs: [],
-  outputs: [{ name: "Value", type: "number" }],
-  parameters: [
+  inputs: [
     {
-      name: "Value",
+      name: "Number",
       type: "number",
       min: -10,
       max: 10,
@@ -45,11 +42,12 @@ export const NumberModule: ModuleDefinition = {
       default: 0,
     },
   ],
-  calculate: (_, params) => {
-    if (!isNumber(params.Value)) {
+  outputs: [{ name: "Result", type: "number" }],
+  calculate: (inputs) => {
+    if (!isNumber(inputs.Number)) {
       throw new Error("Invalid parameter value");
     }
-    return { Value: params.Value };
+    return { Result: inputs.Number };
   },
 };
 
@@ -59,10 +57,9 @@ export const AddModule: ModuleDefinition = {
   name: "Add",
   inputs: [
     { name: "A", type: "number", required: true },
-    { name: "B", type: "number", required: true },
+    { name: "B", type: "number", default: 0 },
   ],
   outputs: [{ name: "Result", type: "number" }],
-  parameters: [],
   calculate: (inputs) => {
     if (!validateRequiredInputs(inputs, AddModule)) {
       throw new Error("Missing required inputs");
@@ -79,11 +76,10 @@ export const SubtractModule: ModuleDefinition = {
   type: "Math",
   name: "Subtract",
   inputs: [
-    { name: "A", type: "number", required: true },
-    { name: "B", type: "number", required: true },
+    { name: "A", type: "number", default: 0 },
+    { name: "B", type: "number", default: 0 },
   ],
   outputs: [{ name: "Result", type: "number" }],
-  parameters: [],
   calculate: (inputs) => {
     if (!validateRequiredInputs(inputs, SubtractModule)) {
       throw new Error("Missing required inputs");
@@ -101,10 +97,9 @@ export const MultiplyModule: ModuleDefinition = {
   name: "Multiply",
   inputs: [
     { name: "A", type: "number", required: true },
-    { name: "B", type: "number", required: true },
+    { name: "B", type: "number", default: 1 },
   ],
   outputs: [{ name: "Result", type: "number" }],
-  parameters: [],
   calculate: (inputs) => {
     if (!validateRequiredInputs(inputs, MultiplyModule)) {
       throw new Error("Missing required inputs");
@@ -116,141 +111,20 @@ export const MultiplyModule: ModuleDefinition = {
   },
 };
 
-export const MixModule: ModuleDefinition = {
-  id: "mix",
-  type: "Math",
-  name: "Mix",
-  inputs: [
-    { name: "A", type: "number", required: true },
-    { name: "B", type: "number", required: true },
-  ],
-  outputs: [{ name: "Result", type: "number" }],
-  parameters: [
-    { name: "Factor", type: "number", min: 0, max: 1, default: 0.5 },
-  ],
-  calculate: (inputs, params) => {
-    if (!validateRequiredInputs(inputs, MixModule)) {
-      throw new Error("Missing required inputs");
-    }
-    if (
-      !isNumber(inputs.A) ||
-      !isNumber(inputs.B) ||
-      !isNumber(params.Factor)
-    ) {
-      throw new Error("Invalid input types or parameters");
-    }
-    return {
-      Result: inputs.A * (1 - params.Factor) + inputs.B * params.Factor,
-    };
-  },
-};
-
-export const ClampModule: ModuleDefinition = {
-  id: "clamp",
-  type: "Math",
-  name: "Clamp",
-  inputs: [{ name: "Value", type: "number", required: true }],
-  outputs: [{ name: "Result", type: "number" }],
-  parameters: [
-    { name: "Min", type: "number", default: 0 },
-    { name: "Max", type: "number", default: 1 },
-  ],
-  calculate: (inputs, params) => {
-    if (!validateRequiredInputs(inputs, ClampModule)) {
-      throw new Error("Missing required inputs");
-    }
-    if (
-      !isNumber(inputs.Value) ||
-      !isNumber(params.Min) ||
-      !isNumber(params.Max)
-    ) {
-      throw new Error("Invalid input types or parameters");
-    }
-    return { Result: Math.min(Math.max(inputs.Value, params.Min), params.Max) };
-  },
-};
-
-export const ClipModule: ModuleDefinition = {
-  id: "clip",
-  type: "Math",
-  name: "Clip",
-  inputs: [{ name: "Value", type: "number", required: true }],
-  outputs: [{ name: "Result", type: "number" }],
-  parameters: [
-    {
-      name: "Threshold",
-      type: "number",
-      default: 0.5,
-      min: -10,
-      max: 10,
-      step: 0.01,
-    },
-  ],
-  calculate: (inputs, params) => {
-    if (!validateRequiredInputs(inputs, ClipModule)) {
-      throw new Error("Missing required inputs");
-    }
-    if (!isNumber(inputs.Value) || !isNumber(params.Threshold)) {
-      throw new Error("Invalid input types or parameters");
-    }
-    return { Result: inputs.Value >= params.Threshold ? 1 : 0 };
-  },
-};
-
-export const RGBColorModule: ModuleDefinition = {
-  id: "rgbcolor",
-  type: "Color",
-  name: "RGB Color",
-  inputs: [
-    { name: "R", type: "number", default: 0 },
-    { name: "G", type: "number", default: 0 },
-    { name: "B", type: "number", default: 0 },
-  ],
-  outputs: [{ name: "Color", type: "color" }],
-  parameters: [],
-  calculate: (inputs) => {
-    if (!validateRequiredInputs(inputs, RGBColorModule)) {
-      throw new Error("Missing required inputs");
-    }
-    if (!isNumber(inputs.R) || !isNumber(inputs.G) || !isNumber(inputs.B)) {
-      throw new Error("Invalid input types");
-    }
-    return {
-      Color: {
-        r: Math.max(0, Math.min(1, inputs.R)),
-        g: Math.max(0, Math.min(1, inputs.G)),
-        b: Math.max(0, Math.min(1, inputs.B)),
-      },
-    };
-  },
-};
-
-export const OutputModule: ModuleDefinition = {
-  id: "output",
-  type: "Output",
-  name: "Output",
-  inputs: [{ name: "Image", type: "color", required: true }],
-  outputs: [], // No outputs since this is the final destination
-  parameters: [],
-  calculate: () => ({}), // No outputs to calculate
-};
-
 export const DivideModule: ModuleDefinition = {
   id: "divide",
   type: "Math",
   name: "Divide",
   inputs: [
-    { name: "A", type: "number", required: true },
-    { name: "B", type: "number", required: true },
+    { name: "A", type: "number", default: 1 },
+    { name: "B", type: "number", default: 1 },
   ],
   outputs: [
     { name: "Quotient", type: "number" },
     { name: "Whole", type: "number" },
     { name: "Remainder", type: "number" },
   ],
-  parameters: [],
   calculate: (inputs) => {
-    // Validate inputs
     if (!validateRequiredInputs(inputs, DivideModule)) {
       throw new Error("Missing required inputs");
     }
@@ -277,6 +151,122 @@ export const DivideModule: ModuleDefinition = {
   },
 };
 
+export const MixModule: ModuleDefinition = {
+  id: "mix",
+  type: "Math",
+  name: "Mix",
+  inputs: [
+    { name: "A", type: "number", default: 0 },
+    { name: "B", type: "number", default: 0 },
+    { name: "Factor", type: "number", min: 0, max: 1, default: 0.5 },
+  ],
+  outputs: [{ name: "Result", type: "number" }],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, MixModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (
+      !isNumber(inputs.A) ||
+      !isNumber(inputs.B) ||
+      !isNumber(inputs.Factor)
+    ) {
+      throw new Error("Invalid input types or parameters");
+    }
+    const factor = Math.max(0, Math.min(1, inputs.Factor));
+    return {
+      Result: inputs.A * (1 - factor) + inputs.B * factor,
+    };
+  },
+};
+
+export const ClampModule: ModuleDefinition = {
+  id: "clamp",
+  type: "Math",
+  name: "Clamp",
+  inputs: [
+    { name: "Value", type: "number", required: true },
+    { name: "Min", type: "number", default: 0, min: 0, max: 1, step: 0.05 },
+    { name: "Max", type: "number", default: 1, min: 0, max: 1, step: 0.05 },
+  ],
+  outputs: [{ name: "Result", type: "number" }],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, ClampModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (
+      !isNumber(inputs.Value) ||
+      !isNumber(inputs.Min) ||
+      !isNumber(inputs.Max)
+    ) {
+      throw new Error("Invalid input types or parameters");
+    }
+    return { Result: Math.min(Math.max(inputs.Value, inputs.Min), inputs.Max) };
+  },
+};
+
+export const ClipModule: ModuleDefinition = {
+  id: "clip",
+  type: "Math",
+  name: "Clip",
+  inputs: [
+    { name: "Value", type: "number", required: true },
+    {
+      name: "Threshold",
+      type: "number",
+      default: 0.5,
+      min: -10,
+      max: 10,
+      step: 0.01,
+    },
+  ],
+  outputs: [{ name: "Result", type: "number" }],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, ClipModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.Value) || !isNumber(inputs.Threshold)) {
+      throw new Error("Invalid input types or parameters");
+    }
+    return { Result: inputs.Value >= inputs.Threshold ? 1 : 0 };
+  },
+};
+
+export const RGBColorModule: ModuleDefinition = {
+  id: "rgbcolor",
+  type: "Color",
+  name: "RGB Color",
+  inputs: [
+    { name: "R", type: "number", default: 0, min: 0, max: 1, step: 0.05 },
+    { name: "G", type: "number", default: 0, min: 0, max: 1, step: 0.05 },
+    { name: "B", type: "number", default: 0, min: 0, max: 1, step: 0.05 },
+  ],
+  outputs: [{ name: "Color", type: "color" }],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, RGBColorModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.R) || !isNumber(inputs.G) || !isNumber(inputs.B)) {
+      throw new Error("Invalid input types");
+    }
+    return {
+      Color: {
+        r: Math.max(0, Math.min(1, inputs.R)),
+        g: Math.max(0, Math.min(1, inputs.G)),
+        b: Math.max(0, Math.min(1, inputs.B)),
+      },
+    };
+  },
+};
+
+export const OutputModule: ModuleDefinition = {
+  id: "output",
+  type: "Output",
+  name: "Output",
+  inputs: [{ name: "Image", type: "color", required: true }],
+  outputs: [], // No outputs since this is the final destination
+  calculate: () => ({}), // No outputs to calculate
+};
+
 export const LengthModule: ModuleDefinition = {
   id: "length",
   type: "Math",
@@ -288,7 +278,6 @@ export const LengthModule: ModuleDefinition = {
     { name: "Y2", type: "number", default: 0 },
   ],
   outputs: [{ name: "Length", type: "number" }],
-  parameters: [],
   calculate: (inputs) => {
     if (!validateRequiredInputs(inputs, LengthModule)) {
       throw new Error("Missing required inputs");
@@ -318,7 +307,6 @@ export const AngleModule: ModuleDefinition = {
     { name: "Y2", type: "number", default: 0 },
   ],
   outputs: [{ name: "Angle", type: "number" }],
-  parameters: [],
   calculate: (inputs) => {
     if (!validateRequiredInputs(inputs, AngleModule)) {
       throw new Error("Missing required inputs");
@@ -342,13 +330,12 @@ export const TrigonometryModule: ModuleDefinition = {
   id: "trigonometry",
   type: "Math",
   name: "Trigonometry",
-  inputs: [{ name: "Angle", type: "number", default: 0 }],
+  inputs: [{ name: "Angle", type: "number", required: true }],
   outputs: [
     { name: "Sin", type: "number" },
     { name: "Cos", type: "number" },
     { name: "Tan", type: "number" },
   ],
-  parameters: [],
   calculate: (inputs) => {
     if (!validateRequiredInputs(inputs, TrigonometryModule)) {
       throw new Error("Missing required inputs");

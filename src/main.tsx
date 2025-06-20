@@ -23,6 +23,10 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     font-style: normal;
   }
+
+  :focus-visible {
+    outline: 1px solid #86b2da;
+  }
 `;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

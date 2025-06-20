@@ -13,20 +13,15 @@ export interface ModuleInput {
   type: DataType;
   required?: boolean;
   default?: ModuleValue;
+  // For parameter-like inputs (optional inputs that can be edited)
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
 export interface ModuleOutput {
   name: string;
   type: DataType;
-}
-
-export interface ModuleParameter {
-  name: string;
-  type: DataType;
-  min?: number;
-  max?: number;
-  step?: number;
-  default?: ModuleValue;
 }
 
 // Helper type to infer output types from module definition
@@ -98,8 +93,7 @@ export type TypedModuleInputs<T extends { [key: string]: DataType }> = {
 
 // Helper type for module calculation function
 export type ModuleCalculator = (
-  inputs: Record<string, ModuleValue>,
-  parameters: Record<string, ModuleValue>
+  inputs: Record<string, ModuleValue>
 ) => Record<string, ModuleValue>;
 
 export interface ModuleDefinition {
@@ -108,7 +102,6 @@ export interface ModuleDefinition {
   name: string;
   inputs: ModuleInput[];
   outputs: ModuleOutput[];
-  parameters: ModuleParameter[];
   calculate: ModuleCalculator;
 }
 
@@ -119,7 +112,7 @@ export interface ModuleInstance {
     x: number;
     y: number;
   };
-  parameters: Record<string, ModuleValue>;
+  inputValues: Record<string, ModuleValue>; // Values for non-required inputs (formerly parameters)
 }
 
 export interface Connection {

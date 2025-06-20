@@ -57,6 +57,7 @@ export const ModuleContainer = styled.div.withConfig({
   z-index: 1;
   opacity: ${(props) => (props.$isDragging ? 0.7 : 1)};
   box-shadow: 0 0 15px #0008;
+  cursor: default;
 
   /* Enable pointer events for the header */
   & > *:first-child {
@@ -112,7 +113,9 @@ export const ModuleMenuButton = styled.button.withConfig({
 export const PortsContainer = styled.div.withConfig({
   displayName: "PortsContainer",
 })`
-  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 `;
 
 export const PortRow = styled.div.withConfig({ displayName: "PortRow" })<{
@@ -120,8 +123,6 @@ export const PortRow = styled.div.withConfig({ displayName: "PortRow" })<{
 }>`
   display: flex;
   align-items: center;
-  margin: 4px 0;
-  height: 24px;
   justify-content: ${(props) => (props.$isInput ? "flex-start" : "flex-end")};
 `;
 
@@ -154,10 +155,7 @@ export const Port = styled.div.withConfig({ displayName: "Port" })<{
   &::after {
     content: "";
     position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
+    inset: -6px;
   }
 
   &:hover {
@@ -318,13 +316,15 @@ export const DeleteButton = styled.button.withConfig({
 })`
   background: none;
   border: none;
+  border-radius: 4px;
   color: #666;
   font-size: 18px;
   cursor: pointer;
   padding: 0;
   line-height: 1;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: #ff4444;
   }
 `;

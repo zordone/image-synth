@@ -2,17 +2,21 @@
 
 Modular synthesis-based image generator.
 
-Add and connect simple modules to build complex images.
+![Screenshot](readme.png)
+
+## How does it work?
+
+Use the sidebar buttons to add modules to the workspace.
+
+Connect module outputs to the inputs of other modules.
+
+Reach the "Output" module eventually to display the final image.
+
+## Try it out!
 
 [**Live Demo**](https://zordone.github.io/image-synth/)
 
 (You might want to try some of the [examples](https://github.com/zordone/image-synth/blob/main/examples.md).)
-
-![Screenshot](readme.png)
-
-## AI Disclaimer
-
-Mostly generated using Claude Sonnet 3.5 with minimal manual fixes and polish.
 
 ## Features
 
@@ -20,6 +24,10 @@ Mostly generated using Claude Sonnet 3.5 with minimal manual fixes and polish.
 - Real-time manipulation.
 - Workspace zoom and panning.
 - Local storage persistence.
+
+## AI Disclaimer
+
+Mostly generated using Claude Sonnet 3.5 and 4, with minimal manual fixes and polish.
 
 ## Installation
 

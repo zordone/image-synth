@@ -75,398 +75,130 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
 
 ```json
 {
+  "transform": {
+    "scale": 1.3949999999999925,
+    "x": -15.24250660938037,
+    "y": -132.9771761401165
+  },
   "modules": [
     {
-      "id": "coordinate-1749908131973",
+      "id": "coordinate-1750445449239",
       "definitionId": "coordinate",
       "position": {
-        "x": -27,
-        "y": 578
+        "x": 37,
+        "y": 357
       },
-      "parameters": {}
+      "inputValues": {}
     },
     {
-      "id": "length-1749908139918",
+      "id": "length-1750445455689",
       "definitionId": "length",
       "position": {
-        "x": 319,
-        "y": 314
+        "x": 218,
+        "y": 315
       },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749908152607",
-      "definitionId": "number",
-      "position": {
-        "x": -15,
-        "y": 426
-      },
-      "parameters": {
-        "Value": 0.5
+      "inputValues": {
+        "X1": 0,
+        "Y1": 0,
+        "X2": 0.5,
+        "Y2": 0.5
       }
     },
     {
-      "id": "angle-1749908172489",
-      "definitionId": "angle",
+      "id": "subtract-1750445483775",
+      "definitionId": "subtract",
       "position": {
-        "x": 315,
-        "y": 628
+        "x": 635,
+        "y": 345
       },
-      "parameters": {}
+      "inputValues": {
+        "B": 0,
+        "A": 1
+      }
     },
     {
-      "id": "rgbcolor-1749908237393",
+      "id": "rgbcolor-1750445533227",
       "definitionId": "rgbcolor",
       "position": {
-        "x": 1710,
-        "y": 439
+        "x": 821,
+        "y": 330
       },
-      "parameters": {}
+      "inputValues": {
+        "R": 0,
+        "G": 0,
+        "B": 0
+      }
     },
     {
       "id": "output",
       "definitionId": "output",
       "position": {
-        "x": 1862,
-        "y": 392
+        "x": 1007,
+        "y": 281
       },
-      "parameters": {}
+      "inputValues": {}
     },
     {
-      "id": "multiply-1749908484927",
-      "definitionId": "multiply",
-      "position": {
-        "x": 452,
-        "y": 685
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749908507788",
-      "definitionId": "number",
-      "position": {
-        "x": 311,
-        "y": 857
-      },
-      "parameters": {
-        "Value": 8
-      }
-    },
-    {
-      "id": "trigonometry-1749908598635",
-      "definitionId": "trigonometry",
-      "position": {
-        "x": 593,
-        "y": 657
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749908650127",
-      "definitionId": "number",
-      "position": {
-        "x": 1074,
-        "y": 526
-      },
-      "parameters": {
-        "Value": 0.15
-      }
-    },
-    {
-      "id": "add-1749908660170",
-      "definitionId": "add",
-      "position": {
-        "x": 1218,
-        "y": 594
-      },
-      "parameters": {}
-    },
-    {
-      "id": "multiply-1749909171285",
-      "definitionId": "multiply",
-      "position": {
-        "x": 462,
-        "y": 245
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749909181236",
-      "definitionId": "number",
-      "position": {
-        "x": 312,
-        "y": 164
-      },
-      "parameters": {
-        "Value": -1.65
-      }
-    },
-    {
-      "id": "clip-1749909254502",
+      "id": "clip-1750445613332",
       "definitionId": "clip",
       "position": {
-        "x": 1357,
-        "y": 596
+        "x": 409,
+        "y": 346
       },
-      "parameters": {
-        "Threshold": -0.32
+      "inputValues": {
+        "Threshold": 0.44999999999999996
       }
-    },
-    {
-      "id": "add-1749909312190",
-      "definitionId": "add",
-      "position": {
-        "x": 1081,
-        "y": 677
-      },
-      "parameters": {}
-    },
-    {
-      "id": "multiply-1749909428395",
-      "definitionId": "multiply",
-      "position": {
-        "x": 769,
-        "y": 679
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749909446362",
-      "definitionId": "number",
-      "position": {
-        "x": 618,
-        "y": 860
-      },
-      "parameters": {
-        "Value": 0.3
-      }
-    },
-    {
-      "id": "clip-1749910494465",
-      "definitionId": "clip",
-      "position": {
-        "x": 1041,
-        "y": 261
-      },
-      "parameters": {
-        "Threshold": -0.12
-      }
-    },
-    {
-      "id": "number-1749910542714",
-      "definitionId": "number",
-      "position": {
-        "x": 1074,
-        "y": 111
-      },
-      "parameters": {
-        "Value": 0.75
-      }
-    },
-    {
-      "id": "multiply-1749910548776",
-      "definitionId": "multiply",
-      "position": {
-        "x": 1220,
-        "y": 197
-      },
-      "parameters": {}
     }
   ],
   "connections": [
     {
-      "id": "coordinate-1749908131973-X-length-1749908139918-X2",
-      "fromModuleId": "coordinate-1749908131973",
+      "id": "coordinate-1750445449239-X-length-1750445455689-X1",
+      "fromModuleId": "coordinate-1750445449239",
       "fromOutputName": "X",
-      "toModuleId": "length-1749908139918",
-      "toInputName": "X2"
-    },
-    {
-      "id": "coordinate-1749908131973-Y-length-1749908139918-Y2",
-      "fromModuleId": "coordinate-1749908131973",
-      "fromOutputName": "Y",
-      "toModuleId": "length-1749908139918",
-      "toInputName": "Y2"
-    },
-    {
-      "id": "number-1749908152607-Value-length-1749908139918-X1",
-      "fromModuleId": "number-1749908152607",
-      "fromOutputName": "Value",
-      "toModuleId": "length-1749908139918",
+      "toModuleId": "length-1750445455689",
       "toInputName": "X1"
     },
     {
-      "id": "number-1749908152607-Value-length-1749908139918-Y1",
-      "fromModuleId": "number-1749908152607",
-      "fromOutputName": "Value",
-      "toModuleId": "length-1749908139918",
-      "toInputName": "Y1"
-    },
-    {
-      "id": "coordinate-1749908131973-X-angle-1749908172489-X2",
-      "fromModuleId": "coordinate-1749908131973",
-      "fromOutputName": "X",
-      "toModuleId": "angle-1749908172489",
-      "toInputName": "X2"
-    },
-    {
-      "id": "coordinate-1749908131973-Y-angle-1749908172489-Y2",
-      "fromModuleId": "coordinate-1749908131973",
+      "id": "coordinate-1750445449239-Y-length-1750445455689-Y1",
+      "fromModuleId": "coordinate-1750445449239",
       "fromOutputName": "Y",
-      "toModuleId": "angle-1749908172489",
-      "toInputName": "Y2"
-    },
-    {
-      "id": "number-1749908152607-Value-angle-1749908172489-X1",
-      "fromModuleId": "number-1749908152607",
-      "fromOutputName": "Value",
-      "toModuleId": "angle-1749908172489",
-      "toInputName": "X1"
-    },
-    {
-      "id": "number-1749908152607-Value-angle-1749908172489-Y1",
-      "fromModuleId": "number-1749908152607",
-      "fromOutputName": "Value",
-      "toModuleId": "angle-1749908172489",
+      "toModuleId": "length-1750445455689",
       "toInputName": "Y1"
     },
     {
-      "id": "rgbcolor-1749908237393-Color-output-Image",
-      "fromModuleId": "rgbcolor-1749908237393",
+      "id": "rgbcolor-1750445533227-Color-output-Image",
+      "fromModuleId": "rgbcolor-1750445533227",
       "fromOutputName": "Color",
       "toModuleId": "output",
       "toInputName": "Image"
     },
     {
-      "id": "angle-1749908172489-Angle-multiply-1749908484927-A",
-      "fromModuleId": "angle-1749908172489",
-      "fromOutputName": "Angle",
-      "toModuleId": "multiply-1749908484927",
-      "toInputName": "A"
-    },
-    {
-      "id": "number-1749908507788-Value-multiply-1749908484927-B",
-      "fromModuleId": "number-1749908507788",
-      "fromOutputName": "Value",
-      "toModuleId": "multiply-1749908484927",
-      "toInputName": "B"
-    },
-    {
-      "id": "multiply-1749908484927-Result-trigonometry-1749908598635-Angle",
-      "fromModuleId": "multiply-1749908484927",
-      "fromOutputName": "Result",
-      "toModuleId": "trigonometry-1749908598635",
-      "toInputName": "Angle"
-    },
-    {
-      "id": "length-1749908139918-Length-multiply-1749909171285-B",
-      "fromModuleId": "length-1749908139918",
+      "id": "length-1750445455689-Length-clip-1750445613332-Value",
+      "fromModuleId": "length-1750445455689",
       "fromOutputName": "Length",
-      "toModuleId": "multiply-1749909171285",
-      "toInputName": "B"
-    },
-    {
-      "id": "number-1749909181236-Value-multiply-1749909171285-A",
-      "fromModuleId": "number-1749909181236",
-      "fromOutputName": "Value",
-      "toModuleId": "multiply-1749909171285",
-      "toInputName": "A"
-    },
-    {
-      "id": "add-1749908660170-Result-clip-1749909254502-Value",
-      "fromModuleId": "add-1749908660170",
-      "fromOutputName": "Result",
-      "toModuleId": "clip-1749909254502",
+      "toModuleId": "clip-1750445613332",
       "toInputName": "Value"
     },
     {
-      "id": "clip-1749909254502-Result-rgbcolor-1749908237393-R",
-      "fromModuleId": "clip-1749909254502",
+      "id": "subtract-1750445483775-Result-rgbcolor-1750445533227-G",
+      "fromModuleId": "subtract-1750445483775",
       "fromOutputName": "Result",
-      "toModuleId": "rgbcolor-1749908237393",
-      "toInputName": "R"
-    },
-    {
-      "id": "add-1749909312190-Result-add-1749908660170-B",
-      "fromModuleId": "add-1749909312190",
-      "fromOutputName": "Result",
-      "toModuleId": "add-1749908660170",
-      "toInputName": "B"
-    },
-    {
-      "id": "number-1749908650127-Value-add-1749908660170-A",
-      "fromModuleId": "number-1749908650127",
-      "fromOutputName": "Value",
-      "toModuleId": "add-1749908660170",
-      "toInputName": "A"
-    },
-    {
-      "id": "multiply-1749909428395-Result-add-1749909312190-B",
-      "fromModuleId": "multiply-1749909428395",
-      "fromOutputName": "Result",
-      "toModuleId": "add-1749909312190",
-      "toInputName": "B"
-    },
-    {
-      "id": "number-1749909446362-Value-multiply-1749909428395-B",
-      "fromModuleId": "number-1749909446362",
-      "fromOutputName": "Value",
-      "toModuleId": "multiply-1749909428395",
-      "toInputName": "B"
-    },
-    {
-      "id": "multiply-1749909171285-Result-add-1749909312190-A",
-      "fromModuleId": "multiply-1749909171285",
-      "fromOutputName": "Result",
-      "toModuleId": "add-1749909312190",
-      "toInputName": "A"
-    },
-    {
-      "id": "trigonometry-1749908598635-Cos-multiply-1749909428395-A",
-      "fromModuleId": "trigonometry-1749908598635",
-      "fromOutputName": "Cos",
-      "toModuleId": "multiply-1749909428395",
-      "toInputName": "A"
-    },
-    {
-      "id": "multiply-1749909171285-Result-clip-1749910494465-Value",
-      "fromModuleId": "multiply-1749909171285",
-      "fromOutputName": "Result",
-      "toModuleId": "clip-1749910494465",
-      "toInputName": "Value"
-    },
-    {
-      "id": "clip-1749910494465-Result-multiply-1749910548776-B",
-      "fromModuleId": "clip-1749910494465",
-      "fromOutputName": "Result",
-      "toModuleId": "multiply-1749910548776",
-      "toInputName": "B"
-    },
-    {
-      "id": "number-1749910542714-Value-multiply-1749910548776-A",
-      "fromModuleId": "number-1749910542714",
-      "fromOutputName": "Value",
-      "toModuleId": "multiply-1749910548776",
-      "toInputName": "A"
-    },
-    {
-      "id": "multiply-1749910548776-Result-rgbcolor-1749908237393-G",
-      "fromModuleId": "multiply-1749910548776",
-      "fromOutputName": "Result",
-      "toModuleId": "rgbcolor-1749908237393",
+      "toModuleId": "rgbcolor-1750445533227",
       "toInputName": "G"
+    },
+    {
+      "id": "clip-1750445613332-Result-subtract-1750445483775-B",
+      "fromModuleId": "clip-1750445613332",
+      "fromOutputName": "Result",
+      "toModuleId": "subtract-1750445483775",
+      "toInputName": "B"
     }
   ],
-  "lastUpdated": 1749910601098,
+  "lastUpdated": 1750445710456,
   "moduleMap": {},
   "connectionMap": {},
   "connectionsByInput": {},
-  "definitionMap": {},
-  "transform": {
-    "scale": 0.7875000000000008,
-    "x": 46.82966611953259,
-    "y": 49.80392542605949
-  }
+  "definitionMap": {}
 }
 ```
 
@@ -475,153 +207,162 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
 ```json
 {
   "transform": {
-    "scale": 0.8622323801403385,
-    "x": 17.866594015822102,
-    "y": 77.57022920098393
+    "scale": 0.8322323801403385,
+    "x": 71.98651196642777,
+    "y": 130.87534625649562
   },
   "modules": [
     {
       "id": "coordinate-1749819397323",
       "definitionId": "coordinate",
       "position": {
-        "x": -6,
-        "y": 587
+        "x": -15,
+        "y": 468
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "length-1749819404701",
       "definitionId": "length",
       "position": {
-        "x": 240,
-        "y": 120
+        "x": 203,
+        "y": 189
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "number-1749819409200",
       "definitionId": "number",
       "position": {
-        "x": 2,
-        "y": 253
+        "x": -47,
+        "y": 166
       },
       "parameters": {
-        "Value": 0.5
+        "Value": 0.5,
+        "Number": 0.5
+      },
+      "inputValues": {
+        "Value": 0.5,
+        "Number": 0.5
       }
     },
     {
       "id": "angle-1749819441403",
       "definitionId": "angle",
       "position": {
-        "x": 237,
-        "y": 458
+        "x": 202,
+        "y": 426
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "output",
       "definitionId": "output",
       "position": {
         "x": 1729,
-        "y": 356
+        "y": 285
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "rgbcolor-1749819468222",
       "definitionId": "rgbcolor",
       "position": {
-        "x": 1581,
-        "y": 438
+        "x": 1573,
+        "y": 386
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "divide-1749819528088",
       "definitionId": "divide",
       "position": {
-        "x": 383,
-        "y": 458
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749819545017",
-      "definitionId": "number",
-      "position": {
-        "x": 230,
-        "y": 682
+        "x": 336,
+        "y": 430
       },
       "parameters": {
-        "Value": 6.2831853072
+        "B": 6.28
+      },
+      "inputValues": {
+        "B": 6.28
       }
     },
     {
       "id": "add-1749820259684",
       "definitionId": "add",
       "position": {
-        "x": 551,
-        "y": 513
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749820287907",
-      "definitionId": "number",
-      "position": {
-        "x": 392,
-        "y": 682
+        "x": 502,
+        "y": 452
       },
       "parameters": {
-        "Value": 0.5
+        "B": 0.5
+      },
+      "inputValues": {
+        "B": 0.5
       }
     },
     {
       "id": "multiply-1749820346738",
       "definitionId": "multiply",
       "position": {
-        "x": 702,
-        "y": 511
+        "x": 687,
+        "y": 461
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "number-1749820358239",
       "definitionId": "number",
       "position": {
-        "x": 539,
-        "y": 809
+        "x": 481,
+        "y": 646
       },
       "parameters": {
-        "Value": 0.3
+        "Value": 0.3,
+        "Number": 0.3
+      },
+      "inputValues": {
+        "Value": 0.3,
+        "Number": 0.3
       }
     },
     {
       "id": "add-1749820383758",
       "definitionId": "add",
       "position": {
-        "x": 845,
-        "y": 395
+        "x": 829,
+        "y": 387
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "divide-1749820410026",
       "definitionId": "divide",
       "position": {
-        "x": 985,
-        "y": 492
+        "x": 960,
+        "y": 448
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "clip-1749821536820",
       "definitionId": "clip",
       "position": {
-        "x": 1142,
-        "y": 529
+        "x": 1121,
+        "y": 471
       },
       "parameters": {
+        "Threshold": 0.15
+      },
+      "inputValues": {
         "Threshold": 0.15
       }
     },
@@ -629,41 +370,43 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "id": "number-1749821871295",
       "definitionId": "number",
       "position": {
-        "x": 1,
-        "y": 394
+        "x": -46,
+        "y": 317
       },
       "parameters": {
-        "Value": 0.5
+        "Value": 0.5,
+        "Number": 0.5
+      },
+      "inputValues": {
+        "Value": 0.5,
+        "Number": 0.5
       }
     },
     {
       "id": "divide-1749849390459",
       "definitionId": "divide",
       "position": {
-        "x": 1029,
-        "y": 117
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749849410060",
-      "definitionId": "number",
-      "position": {
-        "x": 884,
-        "y": 196
+        "x": 994,
+        "y": 103
       },
       "parameters": {
-        "Value": 0.1
+        "B": 0.1
+      },
+      "inputValues": {
+        "B": 0.1
       }
     },
     {
       "id": "clip-1749849619576",
       "definitionId": "clip",
       "position": {
-        "x": 1187,
-        "y": 168
+        "x": 1162,
+        "y": 139
       },
       "parameters": {
+        "Threshold": 0.04
+      },
+      "inputValues": {
         "Threshold": 0.04
       }
     },
@@ -671,56 +414,38 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "id": "multiply-1749849640299",
       "definitionId": "multiply",
       "position": {
-        "x": 1368,
-        "y": 171
+        "x": 1392,
+        "y": 319
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "add-1749849896922",
       "definitionId": "add",
       "position": {
-        "x": 886,
-        "y": -10
+        "x": 860,
+        "y": 98
       },
-      "parameters": {}
+      "parameters": {},
+      "inputValues": {}
     },
     {
       "id": "multiply-1749850475399",
       "definitionId": "multiply",
       "position": {
-        "x": 749,
-        "y": 171
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749850497143",
-      "definitionId": "number",
-      "position": {
-        "x": 605,
-        "y": 196
+        "x": 691,
+        "y": 225
       },
       "parameters": {
-        "Value": 1.2
+        "B": 1.2
+      },
+      "inputValues": {
+        "B": 1.2
       }
     }
   ],
   "connections": [
-    {
-      "id": "number-1749819409200-Value-length-1749819404701-X1",
-      "fromModuleId": "number-1749819409200",
-      "fromOutputName": "Value",
-      "toModuleId": "length-1749819404701",
-      "toInputName": "X1"
-    },
-    {
-      "id": "number-1749821871295-Value-length-1749819404701-Y1",
-      "fromModuleId": "number-1749821871295",
-      "fromOutputName": "Value",
-      "toModuleId": "length-1749819404701",
-      "toInputName": "Y1"
-    },
     {
       "id": "coordinate-1749819397323-X-length-1749819404701-X2",
       "fromModuleId": "coordinate-1749819397323",
@@ -734,20 +459,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "fromOutputName": "Y",
       "toModuleId": "length-1749819404701",
       "toInputName": "Y2"
-    },
-    {
-      "id": "number-1749819409200-Value-angle-1749819441403-X1",
-      "fromModuleId": "number-1749819409200",
-      "fromOutputName": "Value",
-      "toModuleId": "angle-1749819441403",
-      "toInputName": "X1"
-    },
-    {
-      "id": "number-1749821871295-Value-angle-1749819441403-Y1",
-      "fromModuleId": "number-1749821871295",
-      "fromOutputName": "Value",
-      "toModuleId": "angle-1749819441403",
-      "toInputName": "Y1"
     },
     {
       "id": "coordinate-1749819397323-X-angle-1749819441403-X2",
@@ -771,13 +482,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "toInputName": "Image"
     },
     {
-      "id": "number-1749819545017-Value-divide-1749819528088-B",
-      "fromModuleId": "number-1749819545017",
-      "fromOutputName": "Value",
-      "toModuleId": "divide-1749819528088",
-      "toInputName": "B"
-    },
-    {
       "id": "angle-1749819441403-Angle-divide-1749819528088-A",
       "fromModuleId": "angle-1749819441403",
       "fromOutputName": "Angle",
@@ -792,16 +496,9 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "toInputName": "A"
     },
     {
-      "id": "number-1749820287907-Value-add-1749820259684-B",
-      "fromModuleId": "number-1749820287907",
-      "fromOutputName": "Value",
-      "toModuleId": "add-1749820259684",
-      "toInputName": "B"
-    },
-    {
-      "id": "number-1749820358239-Value-multiply-1749820346738-B",
+      "id": "number-1749820358239-Result-multiply-1749820346738-B",
       "fromModuleId": "number-1749820358239",
-      "fromOutputName": "Value",
+      "fromOutputName": "Result",
       "toModuleId": "multiply-1749820346738",
       "toInputName": "B"
     },
@@ -827,9 +524,9 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "toInputName": "A"
     },
     {
-      "id": "number-1749820358239-Value-divide-1749820410026-B",
+      "id": "number-1749820358239-Result-divide-1749820410026-B",
       "fromModuleId": "number-1749820358239",
-      "fromOutputName": "Value",
+      "fromOutputName": "Result",
       "toModuleId": "divide-1749820410026",
       "toInputName": "B"
     },
@@ -846,13 +543,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "fromOutputName": "Result",
       "toModuleId": "multiply-1749820346738",
       "toInputName": "A"
-    },
-    {
-      "id": "number-1749849410060-Value-divide-1749849390459-B",
-      "fromModuleId": "number-1749849410060",
-      "fromOutputName": "Value",
-      "toModuleId": "divide-1749849390459",
-      "toInputName": "B"
     },
     {
       "id": "divide-1749849390459-Remainder-clip-1749849619576-Value",
@@ -890,25 +580,11 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "toInputName": "A"
     },
     {
-      "id": "add-1749820259684-Result-multiply-1749850475399-B",
-      "fromModuleId": "add-1749820259684",
-      "fromOutputName": "Result",
-      "toModuleId": "multiply-1749850475399",
-      "toInputName": "B"
-    },
-    {
       "id": "multiply-1749850475399-Result-add-1749849896922-B",
       "fromModuleId": "multiply-1749850475399",
       "fromOutputName": "Result",
       "toModuleId": "add-1749849896922",
       "toInputName": "B"
-    },
-    {
-      "id": "number-1749850497143-Value-multiply-1749850475399-A",
-      "fromModuleId": "number-1749850497143",
-      "fromOutputName": "Value",
-      "toModuleId": "multiply-1749850475399",
-      "toInputName": "A"
     },
     {
       "id": "multiply-1749849640299-Result-rgbcolor-1749819468222-B",
@@ -930,9 +606,44 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "fromOutputName": "Result",
       "toModuleId": "rgbcolor-1749819468222",
       "toInputName": "R"
+    },
+    {
+      "id": "number-1749819409200-Result-length-1749819404701-X1",
+      "fromModuleId": "number-1749819409200",
+      "fromOutputName": "Result",
+      "toModuleId": "length-1749819404701",
+      "toInputName": "X1"
+    },
+    {
+      "id": "number-1749819409200-Result-angle-1749819441403-X1",
+      "fromModuleId": "number-1749819409200",
+      "fromOutputName": "Result",
+      "toModuleId": "angle-1749819441403",
+      "toInputName": "X1"
+    },
+    {
+      "id": "number-1749821871295-Result-length-1749819404701-Y1",
+      "fromModuleId": "number-1749821871295",
+      "fromOutputName": "Result",
+      "toModuleId": "length-1749819404701",
+      "toInputName": "Y1"
+    },
+    {
+      "id": "number-1749821871295-Result-angle-1749819441403-Y1",
+      "fromModuleId": "number-1749821871295",
+      "fromOutputName": "Result",
+      "toModuleId": "angle-1749819441403",
+      "toInputName": "Y1"
+    },
+    {
+      "id": "add-1749820259684-Result-multiply-1749850475399-A",
+      "fromModuleId": "add-1749820259684",
+      "fromOutputName": "Result",
+      "toModuleId": "multiply-1749850475399",
+      "toInputName": "A"
     }
   ],
-  "lastUpdated": 1749851928377,
+  "lastUpdated": 1750446153725,
   "moduleMap": {},
   "connectionMap": {},
   "connectionsByInput": {},
@@ -945,167 +656,471 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
 ```json
 {
   "transform": {
-    "scale": 0.8774999999999975,
-    "x": 12.185677835136403,
-    "y": 27.961201215236542
+    "scale": 0.7425000000000007,
+    "x": 22.077781665612292,
+    "y": 72.29791483724443
   },
   "modules": [
     {
-      "id": "coordinate-1749549857985",
+      "id": "coordinate-1750447008602",
       "definitionId": "coordinate",
       "position": {
-        "x": 11,
-        "y": 265
+        "x": -14,
+        "y": 395
       },
-      "parameters": {}
+      "inputValues": {}
     },
     {
-      "id": "number-1749549861318",
-      "definitionId": "number",
+      "id": "length-1750447023734",
+      "definitionId": "length",
       "position": {
-        "x": 27,
-        "y": 408
+        "x": 159,
+        "y": 270
       },
-      "parameters": {
-        "Value": 0.5
+      "inputValues": {
+        "X1": 0,
+        "Y1": 0,
+        "X2": 0.5,
+        "Y2": 0.5
       }
     },
     {
-      "id": "number-1749549869436",
-      "definitionId": "number",
+      "id": "angle-1750447038168",
+      "definitionId": "angle",
       "position": {
-        "x": 28,
-        "y": 554
+        "x": 158,
+        "y": 488
       },
-      "parameters": {
-        "Value": 0.5
+      "inputValues": {
+        "X1": 0,
+        "Y1": 0,
+        "X2": 0.5,
+        "Y2": 0.5
       }
     },
     {
-      "id": "rgbcolor-1749549949040",
+      "id": "multiply-1750447065271",
+      "definitionId": "multiply",
+      "position": {
+        "x": 616,
+        "y": 299
+      },
+      "inputValues": {
+        "B": -1.4
+      }
+    },
+    {
+      "id": "multiply-1750447081076",
+      "definitionId": "multiply",
+      "position": {
+        "x": 325,
+        "y": 546
+      },
+      "inputValues": {
+        "B": 8
+      }
+    },
+    {
+      "id": "trigonometry-1750447102321",
+      "definitionId": "trigonometry",
+      "position": {
+        "x": 545,
+        "y": 537
+      },
+      "inputValues": {}
+    },
+    {
+      "id": "multiply-1750447114856",
+      "definitionId": "multiply",
+      "position": {
+        "x": 718,
+        "y": 549
+      },
+      "inputValues": {
+        "B": 0.15
+      }
+    },
+    {
+      "id": "add-1750447155326",
+      "definitionId": "add",
+      "position": {
+        "x": 323,
+        "y": 784
+      },
+      "inputValues": {
+        "B": 2.85
+      }
+    },
+    {
+      "id": "trigonometry-1750447200277",
+      "definitionId": "trigonometry",
+      "position": {
+        "x": 547,
+        "y": 778
+      },
+      "inputValues": {}
+    },
+    {
+      "id": "multiply-1750447214914",
+      "definitionId": "multiply",
+      "position": {
+        "x": 716,
+        "y": 790
+      },
+      "inputValues": {
+        "B": 0.25
+      }
+    },
+    {
+      "id": "add-1750447234831",
+      "definitionId": "add",
+      "position": {
+        "x": 1052,
+        "y": 710
+      },
+      "inputValues": {
+        "B": 0
+      }
+    },
+    {
+      "id": "add-1750447285766",
+      "definitionId": "add",
+      "position": {
+        "x": 1051,
+        "y": 395
+      },
+      "inputValues": {
+        "B": 0
+      }
+    },
+    {
+      "id": "clip-1750447317751",
+      "definitionId": "clip",
+      "position": {
+        "x": 1149,
+        "y": 138
+      },
+      "inputValues": {
+        "Threshold": -0.24
+      }
+    },
+    {
+      "id": "multiply-1750447345753",
+      "definitionId": "multiply",
+      "position": {
+        "x": 1353,
+        "y": 138
+      },
+      "inputValues": {
+        "B": 0.75
+      }
+    },
+    {
+      "id": "add-1750447368506",
+      "definitionId": "add",
+      "position": {
+        "x": 1186,
+        "y": 395
+      },
+      "inputValues": {
+        "B": 0.15
+      }
+    },
+    {
+      "id": "clip-1750447385737",
+      "definitionId": "clip",
+      "position": {
+        "x": 1319,
+        "y": 386
+      },
+      "inputValues": {
+        "Threshold": -0.32
+      }
+    },
+    {
+      "id": "add-1750447408071",
+      "definitionId": "add",
+      "position": {
+        "x": 1187,
+        "y": 710
+      },
+      "inputValues": {
+        "B": 0
+      }
+    },
+    {
+      "id": "number-1750447447858",
+      "definitionId": "number",
+      "position": {
+        "x": 963,
+        "y": 558
+      },
+      "inputValues": {
+        "Number": 0.15000000000000002
+      }
+    },
+    {
+      "id": "clip-1750447580433",
+      "definitionId": "clip",
+      "position": {
+        "x": 1322,
+        "y": 701
+      },
+      "inputValues": {
+        "Threshold": -0.28
+      }
+    },
+    {
+      "id": "multiply-1750447603450",
+      "definitionId": "multiply",
+      "position": {
+        "x": 1526,
+        "y": 700
+      },
+      "inputValues": {
+        "B": 0.6
+      }
+    },
+    {
+      "id": "add-1750447621300",
+      "definitionId": "add",
+      "position": {
+        "x": 1722,
+        "y": 467
+      },
+      "inputValues": {
+        "B": 0
+      }
+    },
+    {
+      "id": "rgbcolor-1750447643069",
       "definitionId": "rgbcolor",
       "position": {
-        "x": 768,
-        "y": 397
+        "x": 1867,
+        "y": 379
       },
-      "parameters": {}
+      "inputValues": {
+        "R": 0,
+        "G": 0,
+        "B": 0
+      }
     },
     {
       "id": "output",
       "definitionId": "output",
       "position": {
-        "x": 943,
-        "y": 336
+        "x": 2047,
+        "y": 328
       },
-      "parameters": {}
-    },
-    {
-      "id": "length-1750356259526",
-      "definitionId": "length",
-      "position": {
-        "x": 211,
-        "y": 376
-      },
-      "parameters": {}
-    },
-    {
-      "id": "clip-1750356295661",
-      "definitionId": "clip",
-      "position": {
-        "x": 381,
-        "y": 497
-      },
-      "parameters": {
-        "Threshold": 0.45
-      }
-    },
-    {
-      "id": "subtract-1750356789611",
-      "definitionId": "subtract",
-      "position": {
-        "x": 596,
-        "y": 410
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1750356800711",
-      "definitionId": "number",
-      "position": {
-        "x": 414,
-        "y": 351
-      },
-      "parameters": {
-        "Value": 1
-      }
+      "inputValues": {}
     }
   ],
   "connections": [
     {
-      "id": "coordinate-1749549857985-X-length-1750356259526-X1",
-      "fromModuleId": "coordinate-1749549857985",
+      "id": "coordinate-1750447008602-X-length-1750447023734-X1",
+      "fromModuleId": "coordinate-1750447008602",
       "fromOutputName": "X",
-      "toModuleId": "length-1750356259526",
+      "toModuleId": "length-1750447023734",
       "toInputName": "X1"
     },
     {
-      "id": "coordinate-1749549857985-Y-length-1750356259526-Y1",
-      "fromModuleId": "coordinate-1749549857985",
+      "id": "coordinate-1750447008602-Y-length-1750447023734-Y1",
+      "fromModuleId": "coordinate-1750447008602",
       "fromOutputName": "Y",
-      "toModuleId": "length-1750356259526",
+      "toModuleId": "length-1750447023734",
       "toInputName": "Y1"
     },
     {
-      "id": "number-1749549861318-Value-length-1750356259526-X2",
-      "fromModuleId": "number-1749549861318",
-      "fromOutputName": "Value",
-      "toModuleId": "length-1750356259526",
-      "toInputName": "X2"
+      "id": "coordinate-1750447008602-X-angle-1750447038168-X1",
+      "fromModuleId": "coordinate-1750447008602",
+      "fromOutputName": "X",
+      "toModuleId": "angle-1750447038168",
+      "toInputName": "X1"
     },
     {
-      "id": "number-1749549869436-Value-length-1750356259526-Y2",
-      "fromModuleId": "number-1749549869436",
-      "fromOutputName": "Value",
-      "toModuleId": "length-1750356259526",
-      "toInputName": "Y2"
+      "id": "coordinate-1750447008602-Y-angle-1750447038168-Y1",
+      "fromModuleId": "coordinate-1750447008602",
+      "fromOutputName": "Y",
+      "toModuleId": "angle-1750447038168",
+      "toInputName": "Y1"
     },
     {
-      "id": "length-1750356259526-Length-clip-1750356295661-Value",
-      "fromModuleId": "length-1750356259526",
+      "id": "length-1750447023734-Length-multiply-1750447065271-A",
+      "fromModuleId": "length-1750447023734",
       "fromOutputName": "Length",
-      "toModuleId": "clip-1750356295661",
+      "toModuleId": "multiply-1750447065271",
+      "toInputName": "A"
+    },
+    {
+      "id": "angle-1750447038168-Angle-multiply-1750447081076-A",
+      "fromModuleId": "angle-1750447038168",
+      "fromOutputName": "Angle",
+      "toModuleId": "multiply-1750447081076",
+      "toInputName": "A"
+    },
+    {
+      "id": "multiply-1750447081076-Result-trigonometry-1750447102321-Angle",
+      "fromModuleId": "multiply-1750447081076",
+      "fromOutputName": "Result",
+      "toModuleId": "trigonometry-1750447102321",
+      "toInputName": "Angle"
+    },
+    {
+      "id": "trigonometry-1750447102321-Cos-multiply-1750447114856-A",
+      "fromModuleId": "trigonometry-1750447102321",
+      "fromOutputName": "Cos",
+      "toModuleId": "multiply-1750447114856",
+      "toInputName": "A"
+    },
+    {
+      "id": "multiply-1750447081076-Result-add-1750447155326-A",
+      "fromModuleId": "multiply-1750447081076",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447155326",
+      "toInputName": "A"
+    },
+    {
+      "id": "add-1750447155326-Result-trigonometry-1750447200277-Angle",
+      "fromModuleId": "add-1750447155326",
+      "fromOutputName": "Result",
+      "toModuleId": "trigonometry-1750447200277",
+      "toInputName": "Angle"
+    },
+    {
+      "id": "trigonometry-1750447200277-Cos-multiply-1750447214914-A",
+      "fromModuleId": "trigonometry-1750447200277",
+      "fromOutputName": "Cos",
+      "toModuleId": "multiply-1750447214914",
+      "toInputName": "A"
+    },
+    {
+      "id": "multiply-1750447214914-Result-add-1750447234831-B",
+      "fromModuleId": "multiply-1750447214914",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447234831",
+      "toInputName": "B"
+    },
+    {
+      "id": "multiply-1750447065271-Result-add-1750447234831-A",
+      "fromModuleId": "multiply-1750447065271",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447234831",
+      "toInputName": "A"
+    },
+    {
+      "id": "multiply-1750447114856-Result-add-1750447285766-B",
+      "fromModuleId": "multiply-1750447114856",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447285766",
+      "toInputName": "B"
+    },
+    {
+      "id": "multiply-1750447065271-Result-add-1750447285766-A",
+      "fromModuleId": "multiply-1750447065271",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447285766",
+      "toInputName": "A"
+    },
+    {
+      "id": "multiply-1750447065271-Result-clip-1750447317751-Value",
+      "fromModuleId": "multiply-1750447065271",
+      "fromOutputName": "Result",
+      "toModuleId": "clip-1750447317751",
       "toInputName": "Value"
     },
     {
-      "id": "rgbcolor-1749549949040-Color-output-Image",
-      "fromModuleId": "rgbcolor-1749549949040",
+      "id": "clip-1750447317751-Result-multiply-1750447345753-A",
+      "fromModuleId": "clip-1750447317751",
+      "fromOutputName": "Result",
+      "toModuleId": "multiply-1750447345753",
+      "toInputName": "A"
+    },
+    {
+      "id": "add-1750447285766-Result-add-1750447368506-A",
+      "fromModuleId": "add-1750447285766",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447368506",
+      "toInputName": "A"
+    },
+    {
+      "id": "add-1750447368506-Result-clip-1750447385737-Value",
+      "fromModuleId": "add-1750447368506",
+      "fromOutputName": "Result",
+      "toModuleId": "clip-1750447385737",
+      "toInputName": "Value"
+    },
+    {
+      "id": "add-1750447234831-Result-add-1750447408071-B",
+      "fromModuleId": "add-1750447234831",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447408071",
+      "toInputName": "B"
+    },
+    {
+      "id": "number-1750447447858-Result-add-1750447368506-B",
+      "fromModuleId": "number-1750447447858",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447368506",
+      "toInputName": "B"
+    },
+    {
+      "id": "number-1750447447858-Result-add-1750447408071-A",
+      "fromModuleId": "number-1750447447858",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447408071",
+      "toInputName": "A"
+    },
+    {
+      "id": "add-1750447408071-Result-clip-1750447580433-Value",
+      "fromModuleId": "add-1750447408071",
+      "fromOutputName": "Result",
+      "toModuleId": "clip-1750447580433",
+      "toInputName": "Value"
+    },
+    {
+      "id": "clip-1750447580433-Result-multiply-1750447603450-A",
+      "fromModuleId": "clip-1750447580433",
+      "fromOutputName": "Result",
+      "toModuleId": "multiply-1750447603450",
+      "toInputName": "A"
+    },
+    {
+      "id": "multiply-1750447603450-Result-add-1750447621300-B",
+      "fromModuleId": "multiply-1750447603450",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447621300",
+      "toInputName": "B"
+    },
+    {
+      "id": "clip-1750447385737-Result-add-1750447621300-A",
+      "fromModuleId": "clip-1750447385737",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750447621300",
+      "toInputName": "A"
+    },
+    {
+      "id": "add-1750447621300-Result-rgbcolor-1750447643069-R",
+      "fromModuleId": "add-1750447621300",
+      "fromOutputName": "Result",
+      "toModuleId": "rgbcolor-1750447643069",
+      "toInputName": "R"
+    },
+    {
+      "id": "rgbcolor-1750447643069-Color-output-Image",
+      "fromModuleId": "rgbcolor-1750447643069",
       "fromOutputName": "Color",
       "toModuleId": "output",
       "toInputName": "Image"
     },
     {
-      "id": "number-1750356800711-Value-subtract-1750356789611-A",
-      "fromModuleId": "number-1750356800711",
-      "fromOutputName": "Value",
-      "toModuleId": "subtract-1750356789611",
-      "toInputName": "A"
-    },
-    {
-      "id": "clip-1750356295661-Result-subtract-1750356789611-B",
-      "fromModuleId": "clip-1750356295661",
+      "id": "multiply-1750447345753-Result-rgbcolor-1750447643069-G",
+      "fromModuleId": "multiply-1750447345753",
       "fromOutputName": "Result",
-      "toModuleId": "subtract-1750356789611",
-      "toInputName": "B"
-    },
-    {
-      "id": "subtract-1750356789611-Result-rgbcolor-1749549949040-G",
-      "fromModuleId": "subtract-1750356789611",
-      "fromOutputName": "Result",
-      "toModuleId": "rgbcolor-1749549949040",
+      "toModuleId": "rgbcolor-1750447643069",
       "toInputName": "G"
     }
   ],
-  "lastUpdated": 1750356842296,
+  "lastUpdated": 1750448350650,
   "moduleMap": {},
   "connectionMap": {},
   "connectionsByInput": {},
@@ -1113,406 +1128,324 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
 }
 ```
 
-## Triginometry test
+## Checkerboard
 
 ```json
 {
   "transform": {
-    "scale": 0.7749999999999949,
-    "x": -58.987726905235036,
-    "y": 111.8541648864063
+    "scale": 0.9449999999999978,
+    "x": 78.82558823529371,
+    "y": 46.775294117646695
   },
   "modules": [
     {
-      "id": "coordinate-1749579968549",
+      "id": "coordinate-1750459523467",
       "definitionId": "coordinate",
       "position": {
-        "x": 101,
-        "y": 483
+        "x": 238,
+        "y": 212
       },
-      "parameters": {}
+      "inputValues": {}
     },
     {
-      "id": "angle-1749579971016",
-      "definitionId": "angle",
+      "id": "divide-1750459526269",
+      "definitionId": "divide",
       "position": {
-        "x": 385,
-        "y": 392
+        "x": 484,
+        "y": 91
       },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749579975202",
-      "definitionId": "number",
-      "position": {
-        "x": 105,
-        "y": 129
-      },
-      "parameters": {
-        "Value": 0.45
+      "inputValues": {
+        "B": 1
       }
     },
     {
-      "id": "number-1749579987552",
+      "id": "number-1750459540138",
       "definitionId": "number",
       "position": {
-        "x": 105,
-        "y": 300
+        "x": -51,
+        "y": 335
       },
-      "parameters": {
-        "Value": 0.5
+      "inputValues": {
+        "Number": 4
+      }
+    },
+    {
+      "id": "divide-1750459561570",
+      "definitionId": "divide",
+      "position": {
+        "x": 479,
+        "y": 515
+      },
+      "inputValues": {
+        "B": 1
+      }
+    },
+    {
+      "id": "rgbcolor-1750459597410",
+      "definitionId": "rgbcolor",
+      "position": {
+        "x": 1345,
+        "y": 321
+      },
+      "inputValues": {
+        "R": 0,
+        "G": 0,
+        "B": 0
       }
     },
     {
       "id": "output",
       "definitionId": "output",
       "position": {
-        "x": 1497,
-        "y": 278
+        "x": 1487,
+        "y": 256
       },
-      "parameters": {}
+      "inputValues": {}
     },
     {
-      "id": "trigonometry-1749580037922",
-      "definitionId": "trigonometry",
+      "id": "divide-1750459687202",
+      "definitionId": "divide",
       "position": {
-        "x": 536,
-        "y": 411
+        "x": 640,
+        "y": 198
       },
-      "parameters": {}
-    },
-    {
-      "id": "rgbcolor-1749580053007",
-      "definitionId": "rgbcolor",
-      "position": {
-        "x": 1342,
-        "y": 379
-      },
-      "parameters": {}
-    },
-    {
-      "id": "length-1749580282889",
-      "definitionId": "length",
-      "position": {
-        "x": 386,
-        "y": 166
-      },
-      "parameters": {}
-    },
-    {
-      "id": "multiply-1749580351827",
-      "definitionId": "multiply",
-      "position": {
-        "x": 542,
-        "y": -6
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749580359710",
-      "definitionId": "number",
-      "position": {
-        "x": 386,
-        "y": -11
-      },
-      "parameters": {
-        "Value": 0.5
+      "inputValues": {
+        "B": 1
       }
     },
     {
-      "id": "multiply-1749580378029",
-      "definitionId": "multiply",
+      "id": "clip-1750459767735",
+      "definitionId": "clip",
       "position": {
-        "x": 694,
-        "y": 149
+        "x": 798,
+        "y": 236
       },
-      "parameters": {}
+      "inputValues": {
+        "Threshold": 0.49999999999999956
+      }
     },
     {
-      "id": "multiply-1749580464499",
-      "definitionId": "multiply",
+      "id": "divide-1750459845276",
+      "definitionId": "divide",
       "position": {
-        "x": 859,
-        "y": 211
+        "x": 638,
+        "y": 394
       },
-      "parameters": {}
+      "inputValues": {
+        "B": 1
+      }
     },
     {
-      "id": "add-1749580575108",
+      "id": "clip-1750459864508",
+      "definitionId": "clip",
+      "position": {
+        "x": 795,
+        "y": 399
+      },
+      "inputValues": {
+        "Threshold": 0.5
+      }
+    },
+    {
+      "id": "add-1750460238978",
       "definitionId": "add",
       "position": {
-        "x": 862,
-        "y": 398
+        "x": 1204,
+        "y": 331
       },
-      "parameters": {}
-    },
-    {
-      "id": "divide-1749580667599",
-      "definitionId": "divide",
-      "position": {
-        "x": 1019,
-        "y": 470
-      },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749580685567",
-      "definitionId": "number",
-      "position": {
-        "x": 376,
-        "y": 677
-      },
-      "parameters": {
-        "Value": 0.85
+      "inputValues": {
+        "B": 0
       }
     },
     {
-      "id": "mix-1749580865695",
+      "id": "mix-1750460298004",
       "definitionId": "mix",
       "position": {
-        "x": 1172,
-        "y": 486
+        "x": 1030,
+        "y": 218
       },
-      "parameters": {
-        "Factor": 0.73
+      "inputValues": {
+        "A": 0,
+        "B": 0,
+        "Factor": 0.5
       }
     },
     {
-      "id": "divide-1749580957398",
+      "id": "mix-1750460313610",
+      "definitionId": "mix",
+      "position": {
+        "x": 1031,
+        "y": 399
+      },
+      "inputValues": {
+        "A": 0,
+        "B": 0,
+        "Factor": 0.5
+      }
+    },
+    {
+      "id": "divide-1750460723048",
       "definitionId": "divide",
       "position": {
-        "x": 1161,
-        "y": 242
+        "x": 230,
+        "y": 337
       },
-      "parameters": {}
-    },
-    {
-      "id": "number-1749580966782",
-      "definitionId": "number",
-      "position": {
-        "x": 1023,
-        "y": 284
-      },
-      "parameters": {
-        "Value": 0.35
+      "inputValues": {
+        "B": 1,
+        "A": 2
       }
-    },
-    {
-      "id": "multiply-1749581247097",
-      "definitionId": "multiply",
-      "position": {
-        "x": 570,
-        "y": 612
-      },
-      "parameters": {}
     }
   ],
   "connections": [
     {
-      "id": "coordinate-1749579968549-X-angle-1749579971016-X2",
-      "fromModuleId": "coordinate-1749579968549",
+      "id": "coordinate-1750459523467-X-divide-1750459526269-A",
+      "fromModuleId": "coordinate-1750459523467",
       "fromOutputName": "X",
-      "toModuleId": "angle-1749579971016",
-      "toInputName": "X2"
+      "toModuleId": "divide-1750459526269",
+      "toInputName": "A"
     },
     {
-      "id": "coordinate-1749579968549-Y-angle-1749579971016-Y2",
-      "fromModuleId": "coordinate-1749579968549",
+      "id": "coordinate-1750459523467-Y-divide-1750459561570-A",
+      "fromModuleId": "coordinate-1750459523467",
       "fromOutputName": "Y",
-      "toModuleId": "angle-1749579971016",
-      "toInputName": "Y2"
+      "toModuleId": "divide-1750459561570",
+      "toInputName": "A"
     },
     {
-      "id": "number-1749579975202-Value-angle-1749579971016-X1",
-      "fromModuleId": "number-1749579975202",
-      "fromOutputName": "Value",
-      "toModuleId": "angle-1749579971016",
-      "toInputName": "X1"
-    },
-    {
-      "id": "number-1749579987552-Value-angle-1749579971016-Y1",
-      "fromModuleId": "number-1749579987552",
-      "fromOutputName": "Value",
-      "toModuleId": "angle-1749579971016",
-      "toInputName": "Y1"
-    },
-    {
-      "id": "angle-1749579971016-Angle-trigonometry-1749580037922-Angle",
-      "fromModuleId": "angle-1749579971016",
-      "fromOutputName": "Angle",
-      "toModuleId": "trigonometry-1749580037922",
-      "toInputName": "Angle"
-    },
-    {
-      "id": "rgbcolor-1749580053007-Color-output-Image",
-      "fromModuleId": "rgbcolor-1749580053007",
+      "id": "rgbcolor-1750459597410-Color-output-Image",
+      "fromModuleId": "rgbcolor-1750459597410",
       "fromOutputName": "Color",
       "toModuleId": "output",
       "toInputName": "Image"
     },
     {
-      "id": "number-1749579975202-Value-length-1749580282889-X1",
-      "fromModuleId": "number-1749579975202",
-      "fromOutputName": "Value",
-      "toModuleId": "length-1749580282889",
-      "toInputName": "X1"
-    },
-    {
-      "id": "number-1749579987552-Value-length-1749580282889-Y1",
-      "fromModuleId": "number-1749579987552",
-      "fromOutputName": "Value",
-      "toModuleId": "length-1749580282889",
-      "toInputName": "Y1"
-    },
-    {
-      "id": "coordinate-1749579968549-X-length-1749580282889-X2",
-      "fromModuleId": "coordinate-1749579968549",
-      "fromOutputName": "X",
-      "toModuleId": "length-1749580282889",
-      "toInputName": "X2"
-    },
-    {
-      "id": "coordinate-1749579968549-Y-length-1749580282889-Y2",
-      "fromModuleId": "coordinate-1749579968549",
-      "fromOutputName": "Y",
-      "toModuleId": "length-1749580282889",
-      "toInputName": "Y2"
-    },
-    {
-      "id": "length-1749580282889-Length-multiply-1749580351827-B",
-      "fromModuleId": "length-1749580282889",
-      "fromOutputName": "Length",
-      "toModuleId": "multiply-1749580351827",
+      "id": "divide-1750460723048-Quotient-divide-1750459687202-B",
+      "fromModuleId": "divide-1750460723048",
+      "fromOutputName": "Quotient",
+      "toModuleId": "divide-1750459687202",
       "toInputName": "B"
     },
     {
-      "id": "number-1749580359710-Value-multiply-1749580351827-A",
-      "fromModuleId": "number-1749580359710",
-      "fromOutputName": "Value",
-      "toModuleId": "multiply-1749580351827",
-      "toInputName": "A"
-    },
-    {
-      "id": "multiply-1749580351827-Result-multiply-1749580378029-A",
-      "fromModuleId": "multiply-1749580351827",
-      "fromOutputName": "Result",
-      "toModuleId": "multiply-1749580378029",
-      "toInputName": "A"
-    },
-    {
-      "id": "trigonometry-1749580037922-Tan-multiply-1749580378029-B",
-      "fromModuleId": "trigonometry-1749580037922",
-      "fromOutputName": "Tan",
-      "toModuleId": "multiply-1749580378029",
-      "toInputName": "B"
-    },
-    {
-      "id": "multiply-1749580378029-Result-multiply-1749580464499-A",
-      "fromModuleId": "multiply-1749580378029",
-      "fromOutputName": "Result",
-      "toModuleId": "multiply-1749580464499",
-      "toInputName": "A"
-    },
-    {
-      "id": "trigonometry-1749580037922-Sin-multiply-1749580464499-B",
-      "fromModuleId": "trigonometry-1749580037922",
-      "fromOutputName": "Sin",
-      "toModuleId": "multiply-1749580464499",
-      "toInputName": "B"
-    },
-    {
-      "id": "multiply-1749580378029-Result-add-1749580575108-A",
-      "fromModuleId": "multiply-1749580378029",
-      "fromOutputName": "Result",
-      "toModuleId": "add-1749580575108",
-      "toInputName": "A"
-    },
-    {
-      "id": "trigonometry-1749580037922-Sin-add-1749580575108-B",
-      "fromModuleId": "trigonometry-1749580037922",
-      "fromOutputName": "Sin",
-      "toModuleId": "add-1749580575108",
-      "toInputName": "B"
-    },
-    {
-      "id": "add-1749580575108-Result-divide-1749580667599-A",
-      "fromModuleId": "add-1749580575108",
-      "fromOutputName": "Result",
-      "toModuleId": "divide-1749580667599",
-      "toInputName": "A"
-    },
-    {
-      "id": "divide-1749580667599-Remainder-rgbcolor-1749580053007-G",
-      "fromModuleId": "divide-1749580667599",
+      "id": "divide-1750459526269-Remainder-divide-1750459687202-A",
+      "fromModuleId": "divide-1750459526269",
       "fromOutputName": "Remainder",
-      "toModuleId": "rgbcolor-1749580053007",
-      "toInputName": "G"
-    },
-    {
-      "id": "divide-1749580667599-Remainder-mix-1749580865695-B",
-      "fromModuleId": "divide-1749580667599",
-      "fromOutputName": "Remainder",
-      "toModuleId": "mix-1749580865695",
-      "toInputName": "B"
-    },
-    {
-      "id": "mix-1749580865695-Result-rgbcolor-1749580053007-B",
-      "fromModuleId": "mix-1749580865695",
-      "fromOutputName": "Result",
-      "toModuleId": "rgbcolor-1749580053007",
-      "toInputName": "B"
-    },
-    {
-      "id": "divide-1749580667599-Whole-mix-1749580865695-A",
-      "fromModuleId": "divide-1749580667599",
-      "fromOutputName": "Whole",
-      "toModuleId": "mix-1749580865695",
+      "toModuleId": "divide-1750459687202",
       "toInputName": "A"
     },
     {
-      "id": "number-1749580966782-Value-divide-1749580957398-B",
-      "fromModuleId": "number-1749580966782",
-      "fromOutputName": "Value",
-      "toModuleId": "divide-1749580957398",
+      "id": "divide-1750459687202-Quotient-clip-1750459767735-Value",
+      "fromModuleId": "divide-1750459687202",
+      "fromOutputName": "Quotient",
+      "toModuleId": "clip-1750459767735",
+      "toInputName": "Value"
+    },
+    {
+      "id": "divide-1750460723048-Quotient-divide-1750459845276-B",
+      "fromModuleId": "divide-1750460723048",
+      "fromOutputName": "Quotient",
+      "toModuleId": "divide-1750459845276",
       "toInputName": "B"
     },
     {
-      "id": "divide-1749580957398-Remainder-rgbcolor-1749580053007-R",
-      "fromModuleId": "divide-1749580957398",
+      "id": "divide-1750459561570-Remainder-divide-1750459845276-A",
+      "fromModuleId": "divide-1750459561570",
       "fromOutputName": "Remainder",
-      "toModuleId": "rgbcolor-1749580053007",
+      "toModuleId": "divide-1750459845276",
+      "toInputName": "A"
+    },
+    {
+      "id": "divide-1750459845276-Quotient-clip-1750459864508-Value",
+      "fromModuleId": "divide-1750459845276",
+      "fromOutputName": "Quotient",
+      "toModuleId": "clip-1750459864508",
+      "toInputName": "Value"
+    },
+    {
+      "id": "divide-1750460723048-Quotient-divide-1750459561570-B",
+      "fromModuleId": "divide-1750460723048",
+      "fromOutputName": "Quotient",
+      "toModuleId": "divide-1750459561570",
+      "toInputName": "B"
+    },
+    {
+      "id": "clip-1750459767735-Result-mix-1750460298004-A",
+      "fromModuleId": "clip-1750459767735",
+      "fromOutputName": "Result",
+      "toModuleId": "mix-1750460298004",
+      "toInputName": "A"
+    },
+    {
+      "id": "clip-1750459864508-Result-mix-1750460298004-Factor",
+      "fromModuleId": "clip-1750459864508",
+      "fromOutputName": "Result",
+      "toModuleId": "mix-1750460298004",
+      "toInputName": "Factor"
+    },
+    {
+      "id": "clip-1750459767735-Result-mix-1750460313610-Factor",
+      "fromModuleId": "clip-1750459767735",
+      "fromOutputName": "Result",
+      "toModuleId": "mix-1750460313610",
+      "toInputName": "Factor"
+    },
+    {
+      "id": "clip-1750459864508-Result-mix-1750460313610-A",
+      "fromModuleId": "clip-1750459864508",
+      "fromOutputName": "Result",
+      "toModuleId": "mix-1750460313610",
+      "toInputName": "A"
+    },
+    {
+      "id": "mix-1750460298004-Result-add-1750460238978-A",
+      "fromModuleId": "mix-1750460298004",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750460238978",
+      "toInputName": "A"
+    },
+    {
+      "id": "mix-1750460313610-Result-add-1750460238978-B",
+      "fromModuleId": "mix-1750460313610",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750460238978",
+      "toInputName": "B"
+    },
+    {
+      "id": "add-1750460238978-Result-rgbcolor-1750459597410-R",
+      "fromModuleId": "add-1750460238978",
+      "fromOutputName": "Result",
+      "toModuleId": "rgbcolor-1750459597410",
       "toInputName": "R"
     },
     {
-      "id": "multiply-1749580464499-Result-divide-1749580957398-A",
-      "fromModuleId": "multiply-1749580464499",
+      "id": "add-1750460238978-Result-rgbcolor-1750459597410-G",
+      "fromModuleId": "add-1750460238978",
       "fromOutputName": "Result",
-      "toModuleId": "divide-1749580957398",
-      "toInputName": "A"
+      "toModuleId": "rgbcolor-1750459597410",
+      "toInputName": "G"
     },
     {
-      "id": "multiply-1749581247097-Result-divide-1749580667599-B",
-      "fromModuleId": "multiply-1749581247097",
+      "id": "add-1750460238978-Result-rgbcolor-1750459597410-B",
+      "fromModuleId": "add-1750460238978",
       "fromOutputName": "Result",
-      "toModuleId": "divide-1749580667599",
+      "toModuleId": "rgbcolor-1750459597410",
       "toInputName": "B"
     },
     {
-      "id": "coordinate-1749579968549-X-multiply-1749581247097-A",
-      "fromModuleId": "coordinate-1749579968549",
-      "fromOutputName": "X",
-      "toModuleId": "multiply-1749581247097",
-      "toInputName": "A"
+      "id": "number-1750459540138-Result-divide-1750460723048-B",
+      "fromModuleId": "number-1750459540138",
+      "fromOutputName": "Result",
+      "toModuleId": "divide-1750460723048",
+      "toInputName": "B"
     },
     {
-      "id": "number-1749580685567-Value-multiply-1749581247097-B",
-      "fromModuleId": "number-1749580685567",
-      "fromOutputName": "Value",
-      "toModuleId": "multiply-1749581247097",
+      "id": "divide-1750460723048-Quotient-divide-1750459526269-B",
+      "fromModuleId": "divide-1750460723048",
+      "fromOutputName": "Quotient",
+      "toModuleId": "divide-1750459526269",
       "toInputName": "B"
     }
   ],
-  "lastUpdated": 1749581589810,
+  "lastUpdated": 1750461521655,
   "moduleMap": {},
   "connectionMap": {},
   "connectionsByInput": {},

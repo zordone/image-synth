@@ -262,10 +262,11 @@ export const App: React.FC = () => {
         return; // Prevent adding multiple output modules
       }
 
-      const parameters: Record<string, ModuleValue> = {};
-      definition.parameters.forEach((param) => {
-        if (param.default !== undefined) {
-          parameters[param.name] = param.default;
+      const inputValues: Record<string, ModuleValue> = {};
+      definition.inputs.forEach((input) => {
+        // Only add default values for non-required inputs (former parameters)
+        if (!input.required && input.default !== undefined) {
+          inputValues[input.name] = input.default;
         }
       });
 
@@ -276,7 +277,7 @@ export const App: React.FC = () => {
             : `${definitionId}-${Date.now()}`,
         definitionId,
         position: { x: 100, y: 100 },
-        parameters,
+        inputValues,
       });
 
       // Update port positions after adding a module
@@ -426,16 +427,33 @@ export const App: React.FC = () => {
               const definition = snap.definitionMap.get(module.definitionId);
               if (!definition) return null;
 
+              // Determine which inputs are connected
+              const connectedInputs = new Set<string>();
+              const inputValuesFromConnections: Record<string, ModuleValue> =
+                {};
+
+              snap.connections.forEach((connection) => {
+                if (connection.toModuleId === module.id) {
+                  connectedInputs.add(connection.toInputName);
+                  // Get the value from the connected module
+                  if (moduleInputs[module.id]) {
+                    inputValuesFromConnections[connection.toInputName] =
+                      moduleInputs[module.id][connection.toInputName];
+                  }
+                }
+              });
+
               return (
                 <BaseModule
                   key={module.id}
                   id={module.id}
                   definition={definition}
                   position={module.position}
-                  parameters={module.parameters}
-                  inputs={moduleInputs[module.id]}
-                  onParameterChange={(name, value) =>
-                    actions.updateModuleParameter(module.id, name, value)
+                  inputValues={module.inputValues}
+                  connectedInputs={inputValuesFromConnections}
+                  connections={connectedInputs}
+                  onInputValueChange={(name, value) =>
+                    actions.updateModuleInputValue(module.id, name, value)
                   }
                   onStartConnectionFrom={handleStartConnection}
                   onDelete={actions.removeModule}

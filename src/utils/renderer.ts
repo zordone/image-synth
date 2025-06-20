@@ -5,7 +5,6 @@ import type {
   Color,
   ModuleDefinition,
 } from "../types/module";
-import { moduleRegistry } from "../modules";
 
 interface ModuleGraph {
   modules: ReadonlyArray<ModuleInstance>;
@@ -58,8 +57,14 @@ function calculateModule(
         y
       );
       inputs[input.name] = sourceOutputs[connection.fromOutputName];
-    } else if (input.default !== undefined) {
-      inputs[input.name] = input.default;
+    } else {
+      // Use the stored value for this input, or fall back to default
+      const storedValue = module.inputValues[input.name];
+      if (storedValue !== undefined) {
+        inputs[input.name] = storedValue;
+      } else if (input.default !== undefined) {
+        inputs[input.name] = input.default;
+      }
     }
   });
 
@@ -80,7 +85,7 @@ function calculateModule(
   }
 
   // Calculate module outputs
-  const result = definition.calculate(inputs, module.parameters);
+  const result = definition.calculate(inputs);
   cache.set(moduleId, result);
   return result;
 }
@@ -141,7 +146,7 @@ export function calculateModuleInputs(
   const module = graph.moduleMap.get(moduleId);
   if (!module) return {};
 
-  const definition = moduleRegistry.find((m) => m.id === module.definitionId);
+  const definition = graph.definitionMap.get(module.definitionId);
   if (!definition) return {};
 
   const inputs: Record<string, ModuleValue> = {};
