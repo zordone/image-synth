@@ -28,9 +28,8 @@ function calculateModule(
   y: number
 ): Record<string, ModuleValue> {
   // Return cached results if available
-  if (cache.has(moduleId)) {
-    return cache.get(moduleId)!;
-  }
+  const cachedResult = cache.get(moduleId);
+  if (cachedResult) return cachedResult;
 
   const module = graph.moduleMap.get(moduleId);
   if (!module) return {};
@@ -59,12 +58,7 @@ function calculateModule(
       inputs[input.name] = sourceOutputs[connection.fromOutputName];
     } else {
       // Use the stored value for this input, or fall back to default
-      const storedValue = module.inputValues[input.name];
-      if (storedValue !== undefined) {
-        inputs[input.name] = storedValue;
-      } else if (input.default !== undefined) {
-        inputs[input.name] = input.default;
-      }
+      inputs[input.name] = module.inputValues[input.name] ?? input.default;
     }
   });
 
@@ -106,9 +100,10 @@ export function renderToCanvas(canvas: HTMLCanvasElement, graph: ModuleGraph) {
     return;
   }
 
+  const cache = new Map<string, Record<string, ModuleValue>>();
   for (let y = 0; y < canvas.height; y++) {
     for (let x = 0; x < canvas.width; x++) {
-      const cache = new Map<string, Record<string, ModuleValue>>();
+      cache.clear();
 
       // Calculate normalized coordinates
       const normalizedX = x / canvas.width;

@@ -6,6 +6,11 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
 
 ```json
 {
+  "transform": {
+    "scale": 1.6399999999999932,
+    "x": 158.40000000000032,
+    "y": -182.11999999999648
+  },
   "modules": [
     {
       "id": "coordinate-1749906537447",
@@ -14,7 +19,7 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 48,
         "y": 314
       },
-      "parameters": {}
+      "inputValues": {}
     },
     {
       "id": "rgbcolor-1749906543232",
@@ -23,7 +28,9 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 301,
         "y": 299
       },
-      "parameters": {}
+      "inputValues": {
+        "G": 0
+      }
     },
     {
       "id": "output",
@@ -32,7 +39,7 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 551,
         "y": 258
       },
-      "parameters": {}
+      "inputValues": {}
     }
   ],
   "connections": [
@@ -58,16 +65,11 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "toInputName": "Image"
     }
   ],
-  "lastUpdated": 1749906560637,
+  "lastUpdated": 1750615875455,
   "moduleMap": {},
   "connectionMap": {},
   "connectionsByInput": {},
-  "definitionMap": {},
-  "transform": {
-    "scale": 1.6399999999999932,
-    "x": -41.59999999999965,
-    "y": -245.11999999999648
-  }
+  "definitionMap": {}
 }
 ```
 
@@ -202,6 +204,331 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
 }
 ```
 
+## Checkerboard
+
+```json
+{
+  "transform": {
+    "scale": 0.9449999999999978,
+    "x": 78.82558823529371,
+    "y": 46.775294117646695
+  },
+  "modules": [
+    {
+      "id": "coordinate-1750459523467",
+      "definitionId": "coordinate",
+      "position": {
+        "x": 238,
+        "y": 212
+      },
+      "inputValues": {}
+    },
+    {
+      "id": "divide-1750459526269",
+      "definitionId": "divide",
+      "position": {
+        "x": 484,
+        "y": 91
+      },
+      "inputValues": {
+        "B": 1
+      }
+    },
+    {
+      "id": "number-1750459540138",
+      "definitionId": "number",
+      "position": {
+        "x": -51,
+        "y": 335
+      },
+      "inputValues": {
+        "Number": 4
+      }
+    },
+    {
+      "id": "divide-1750459561570",
+      "definitionId": "divide",
+      "position": {
+        "x": 479,
+        "y": 515
+      },
+      "inputValues": {
+        "B": 1
+      }
+    },
+    {
+      "id": "rgbcolor-1750459597410",
+      "definitionId": "rgbcolor",
+      "position": {
+        "x": 1345,
+        "y": 321
+      },
+      "inputValues": {
+        "R": 0,
+        "G": 0,
+        "B": 0
+      }
+    },
+    {
+      "id": "output",
+      "definitionId": "output",
+      "position": {
+        "x": 1487,
+        "y": 256
+      },
+      "inputValues": {}
+    },
+    {
+      "id": "divide-1750459687202",
+      "definitionId": "divide",
+      "position": {
+        "x": 640,
+        "y": 198
+      },
+      "inputValues": {
+        "B": 1
+      }
+    },
+    {
+      "id": "clip-1750459767735",
+      "definitionId": "clip",
+      "position": {
+        "x": 798,
+        "y": 236
+      },
+      "inputValues": {
+        "Threshold": 0.49999999999999956
+      }
+    },
+    {
+      "id": "divide-1750459845276",
+      "definitionId": "divide",
+      "position": {
+        "x": 638,
+        "y": 394
+      },
+      "inputValues": {
+        "B": 1
+      }
+    },
+    {
+      "id": "clip-1750459864508",
+      "definitionId": "clip",
+      "position": {
+        "x": 795,
+        "y": 399
+      },
+      "inputValues": {
+        "Threshold": 0.5
+      }
+    },
+    {
+      "id": "add-1750460238978",
+      "definitionId": "add",
+      "position": {
+        "x": 1204,
+        "y": 331
+      },
+      "inputValues": {
+        "B": 0
+      }
+    },
+    {
+      "id": "mix-1750460298004",
+      "definitionId": "mix",
+      "position": {
+        "x": 1030,
+        "y": 218
+      },
+      "inputValues": {
+        "A": 0,
+        "B": 0,
+        "Factor": 0.5
+      }
+    },
+    {
+      "id": "mix-1750460313610",
+      "definitionId": "mix",
+      "position": {
+        "x": 1031,
+        "y": 399
+      },
+      "inputValues": {
+        "A": 0,
+        "B": 0,
+        "Factor": 0.5
+      }
+    },
+    {
+      "id": "divide-1750460723048",
+      "definitionId": "divide",
+      "position": {
+        "x": 230,
+        "y": 337
+      },
+      "inputValues": {
+        "B": 1,
+        "A": 2
+      }
+    }
+  ],
+  "connections": [
+    {
+      "id": "coordinate-1750459523467-X-divide-1750459526269-A",
+      "fromModuleId": "coordinate-1750459523467",
+      "fromOutputName": "X",
+      "toModuleId": "divide-1750459526269",
+      "toInputName": "A"
+    },
+    {
+      "id": "coordinate-1750459523467-Y-divide-1750459561570-A",
+      "fromModuleId": "coordinate-1750459523467",
+      "fromOutputName": "Y",
+      "toModuleId": "divide-1750459561570",
+      "toInputName": "A"
+    },
+    {
+      "id": "rgbcolor-1750459597410-Color-output-Image",
+      "fromModuleId": "rgbcolor-1750459597410",
+      "fromOutputName": "Color",
+      "toModuleId": "output",
+      "toInputName": "Image"
+    },
+    {
+      "id": "divide-1750460723048-Quotient-divide-1750459687202-B",
+      "fromModuleId": "divide-1750460723048",
+      "fromOutputName": "Quotient",
+      "toModuleId": "divide-1750459687202",
+      "toInputName": "B"
+    },
+    {
+      "id": "divide-1750459526269-Remainder-divide-1750459687202-A",
+      "fromModuleId": "divide-1750459526269",
+      "fromOutputName": "Remainder",
+      "toModuleId": "divide-1750459687202",
+      "toInputName": "A"
+    },
+    {
+      "id": "divide-1750459687202-Quotient-clip-1750459767735-Value",
+      "fromModuleId": "divide-1750459687202",
+      "fromOutputName": "Quotient",
+      "toModuleId": "clip-1750459767735",
+      "toInputName": "Value"
+    },
+    {
+      "id": "divide-1750460723048-Quotient-divide-1750459845276-B",
+      "fromModuleId": "divide-1750460723048",
+      "fromOutputName": "Quotient",
+      "toModuleId": "divide-1750459845276",
+      "toInputName": "B"
+    },
+    {
+      "id": "divide-1750459561570-Remainder-divide-1750459845276-A",
+      "fromModuleId": "divide-1750459561570",
+      "fromOutputName": "Remainder",
+      "toModuleId": "divide-1750459845276",
+      "toInputName": "A"
+    },
+    {
+      "id": "divide-1750459845276-Quotient-clip-1750459864508-Value",
+      "fromModuleId": "divide-1750459845276",
+      "fromOutputName": "Quotient",
+      "toModuleId": "clip-1750459864508",
+      "toInputName": "Value"
+    },
+    {
+      "id": "divide-1750460723048-Quotient-divide-1750459561570-B",
+      "fromModuleId": "divide-1750460723048",
+      "fromOutputName": "Quotient",
+      "toModuleId": "divide-1750459561570",
+      "toInputName": "B"
+    },
+    {
+      "id": "clip-1750459767735-Result-mix-1750460298004-A",
+      "fromModuleId": "clip-1750459767735",
+      "fromOutputName": "Result",
+      "toModuleId": "mix-1750460298004",
+      "toInputName": "A"
+    },
+    {
+      "id": "clip-1750459864508-Result-mix-1750460298004-Factor",
+      "fromModuleId": "clip-1750459864508",
+      "fromOutputName": "Result",
+      "toModuleId": "mix-1750460298004",
+      "toInputName": "Factor"
+    },
+    {
+      "id": "clip-1750459767735-Result-mix-1750460313610-Factor",
+      "fromModuleId": "clip-1750459767735",
+      "fromOutputName": "Result",
+      "toModuleId": "mix-1750460313610",
+      "toInputName": "Factor"
+    },
+    {
+      "id": "clip-1750459864508-Result-mix-1750460313610-A",
+      "fromModuleId": "clip-1750459864508",
+      "fromOutputName": "Result",
+      "toModuleId": "mix-1750460313610",
+      "toInputName": "A"
+    },
+    {
+      "id": "mix-1750460298004-Result-add-1750460238978-A",
+      "fromModuleId": "mix-1750460298004",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750460238978",
+      "toInputName": "A"
+    },
+    {
+      "id": "mix-1750460313610-Result-add-1750460238978-B",
+      "fromModuleId": "mix-1750460313610",
+      "fromOutputName": "Result",
+      "toModuleId": "add-1750460238978",
+      "toInputName": "B"
+    },
+    {
+      "id": "add-1750460238978-Result-rgbcolor-1750459597410-R",
+      "fromModuleId": "add-1750460238978",
+      "fromOutputName": "Result",
+      "toModuleId": "rgbcolor-1750459597410",
+      "toInputName": "R"
+    },
+    {
+      "id": "add-1750460238978-Result-rgbcolor-1750459597410-G",
+      "fromModuleId": "add-1750460238978",
+      "fromOutputName": "Result",
+      "toModuleId": "rgbcolor-1750459597410",
+      "toInputName": "G"
+    },
+    {
+      "id": "add-1750460238978-Result-rgbcolor-1750459597410-B",
+      "fromModuleId": "add-1750460238978",
+      "fromOutputName": "Result",
+      "toModuleId": "rgbcolor-1750459597410",
+      "toInputName": "B"
+    },
+    {
+      "id": "number-1750459540138-Result-divide-1750460723048-B",
+      "fromModuleId": "number-1750459540138",
+      "fromOutputName": "Result",
+      "toModuleId": "divide-1750460723048",
+      "toInputName": "B"
+    },
+    {
+      "id": "divide-1750460723048-Quotient-divide-1750459526269-B",
+      "fromModuleId": "divide-1750460723048",
+      "fromOutputName": "Quotient",
+      "toModuleId": "divide-1750459526269",
+      "toInputName": "B"
+    }
+  ],
+  "lastUpdated": 1750461521655,
+  "moduleMap": {},
+  "connectionMap": {},
+  "connectionsByInput": {},
+  "definitionMap": {}
+}
+```
+
 ## Double spiral
 
 ```json
@@ -219,7 +546,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": -15,
         "y": 468
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
@@ -229,7 +555,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 203,
         "y": 189
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
@@ -238,10 +563,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "position": {
         "x": -47,
         "y": 166
-      },
-      "parameters": {
-        "Value": 0.5,
-        "Number": 0.5
       },
       "inputValues": {
         "Value": 0.5,
@@ -255,7 +576,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 202,
         "y": 426
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
@@ -265,7 +585,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 1729,
         "y": 285
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
@@ -275,18 +594,14 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 1573,
         "y": 386
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
       "id": "divide-1749819528088",
       "definitionId": "divide",
       "position": {
-        "x": 336,
+        "x": 350,
         "y": 430
-      },
-      "parameters": {
-        "B": 6.28
       },
       "inputValues": {
         "B": 6.28
@@ -299,9 +614,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 502,
         "y": 452
       },
-      "parameters": {
-        "B": 0.5
-      },
       "inputValues": {
         "B": 0.5
       }
@@ -313,7 +625,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 687,
         "y": 461
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
@@ -322,10 +633,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "position": {
         "x": 481,
         "y": 646
-      },
-      "parameters": {
-        "Value": 0.3,
-        "Number": 0.3
       },
       "inputValues": {
         "Value": 0.3,
@@ -339,7 +646,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 829,
         "y": 387
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
@@ -349,7 +655,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 960,
         "y": 448
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
@@ -358,9 +663,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "position": {
         "x": 1121,
         "y": 471
-      },
-      "parameters": {
-        "Threshold": 0.15
       },
       "inputValues": {
         "Threshold": 0.15
@@ -372,10 +674,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "position": {
         "x": -46,
         "y": 317
-      },
-      "parameters": {
-        "Value": 0.5,
-        "Number": 0.5
       },
       "inputValues": {
         "Value": 0.5,
@@ -389,9 +687,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 994,
         "y": 103
       },
-      "parameters": {
-        "B": 0.1
-      },
       "inputValues": {
         "B": 0.1
       }
@@ -402,9 +697,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "position": {
         "x": 1162,
         "y": 139
-      },
-      "parameters": {
-        "Threshold": 0.04
       },
       "inputValues": {
         "Threshold": 0.04
@@ -417,7 +709,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 1392,
         "y": 319
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
@@ -427,7 +718,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
         "x": 860,
         "y": 98
       },
-      "parameters": {},
       "inputValues": {}
     },
     {
@@ -436,9 +726,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "position": {
         "x": 691,
         "y": 225
-      },
-      "parameters": {
-        "B": 1.2
       },
       "inputValues": {
         "B": 1.2
@@ -643,7 +930,7 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
       "toInputName": "A"
     }
   ],
-  "lastUpdated": 1750446153725,
+  "lastUpdated": 1750616044139,
   "moduleMap": {},
   "connectionMap": {},
   "connectionsByInput": {},
@@ -1121,331 +1408,6 @@ Since we don't have a UI for saving/loading multiple synths yet, you'll have to 
     }
   ],
   "lastUpdated": 1750448350650,
-  "moduleMap": {},
-  "connectionMap": {},
-  "connectionsByInput": {},
-  "definitionMap": {}
-}
-```
-
-## Checkerboard
-
-```json
-{
-  "transform": {
-    "scale": 0.9449999999999978,
-    "x": 78.82558823529371,
-    "y": 46.775294117646695
-  },
-  "modules": [
-    {
-      "id": "coordinate-1750459523467",
-      "definitionId": "coordinate",
-      "position": {
-        "x": 238,
-        "y": 212
-      },
-      "inputValues": {}
-    },
-    {
-      "id": "divide-1750459526269",
-      "definitionId": "divide",
-      "position": {
-        "x": 484,
-        "y": 91
-      },
-      "inputValues": {
-        "B": 1
-      }
-    },
-    {
-      "id": "number-1750459540138",
-      "definitionId": "number",
-      "position": {
-        "x": -51,
-        "y": 335
-      },
-      "inputValues": {
-        "Number": 4
-      }
-    },
-    {
-      "id": "divide-1750459561570",
-      "definitionId": "divide",
-      "position": {
-        "x": 479,
-        "y": 515
-      },
-      "inputValues": {
-        "B": 1
-      }
-    },
-    {
-      "id": "rgbcolor-1750459597410",
-      "definitionId": "rgbcolor",
-      "position": {
-        "x": 1345,
-        "y": 321
-      },
-      "inputValues": {
-        "R": 0,
-        "G": 0,
-        "B": 0
-      }
-    },
-    {
-      "id": "output",
-      "definitionId": "output",
-      "position": {
-        "x": 1487,
-        "y": 256
-      },
-      "inputValues": {}
-    },
-    {
-      "id": "divide-1750459687202",
-      "definitionId": "divide",
-      "position": {
-        "x": 640,
-        "y": 198
-      },
-      "inputValues": {
-        "B": 1
-      }
-    },
-    {
-      "id": "clip-1750459767735",
-      "definitionId": "clip",
-      "position": {
-        "x": 798,
-        "y": 236
-      },
-      "inputValues": {
-        "Threshold": 0.49999999999999956
-      }
-    },
-    {
-      "id": "divide-1750459845276",
-      "definitionId": "divide",
-      "position": {
-        "x": 638,
-        "y": 394
-      },
-      "inputValues": {
-        "B": 1
-      }
-    },
-    {
-      "id": "clip-1750459864508",
-      "definitionId": "clip",
-      "position": {
-        "x": 795,
-        "y": 399
-      },
-      "inputValues": {
-        "Threshold": 0.5
-      }
-    },
-    {
-      "id": "add-1750460238978",
-      "definitionId": "add",
-      "position": {
-        "x": 1204,
-        "y": 331
-      },
-      "inputValues": {
-        "B": 0
-      }
-    },
-    {
-      "id": "mix-1750460298004",
-      "definitionId": "mix",
-      "position": {
-        "x": 1030,
-        "y": 218
-      },
-      "inputValues": {
-        "A": 0,
-        "B": 0,
-        "Factor": 0.5
-      }
-    },
-    {
-      "id": "mix-1750460313610",
-      "definitionId": "mix",
-      "position": {
-        "x": 1031,
-        "y": 399
-      },
-      "inputValues": {
-        "A": 0,
-        "B": 0,
-        "Factor": 0.5
-      }
-    },
-    {
-      "id": "divide-1750460723048",
-      "definitionId": "divide",
-      "position": {
-        "x": 230,
-        "y": 337
-      },
-      "inputValues": {
-        "B": 1,
-        "A": 2
-      }
-    }
-  ],
-  "connections": [
-    {
-      "id": "coordinate-1750459523467-X-divide-1750459526269-A",
-      "fromModuleId": "coordinate-1750459523467",
-      "fromOutputName": "X",
-      "toModuleId": "divide-1750459526269",
-      "toInputName": "A"
-    },
-    {
-      "id": "coordinate-1750459523467-Y-divide-1750459561570-A",
-      "fromModuleId": "coordinate-1750459523467",
-      "fromOutputName": "Y",
-      "toModuleId": "divide-1750459561570",
-      "toInputName": "A"
-    },
-    {
-      "id": "rgbcolor-1750459597410-Color-output-Image",
-      "fromModuleId": "rgbcolor-1750459597410",
-      "fromOutputName": "Color",
-      "toModuleId": "output",
-      "toInputName": "Image"
-    },
-    {
-      "id": "divide-1750460723048-Quotient-divide-1750459687202-B",
-      "fromModuleId": "divide-1750460723048",
-      "fromOutputName": "Quotient",
-      "toModuleId": "divide-1750459687202",
-      "toInputName": "B"
-    },
-    {
-      "id": "divide-1750459526269-Remainder-divide-1750459687202-A",
-      "fromModuleId": "divide-1750459526269",
-      "fromOutputName": "Remainder",
-      "toModuleId": "divide-1750459687202",
-      "toInputName": "A"
-    },
-    {
-      "id": "divide-1750459687202-Quotient-clip-1750459767735-Value",
-      "fromModuleId": "divide-1750459687202",
-      "fromOutputName": "Quotient",
-      "toModuleId": "clip-1750459767735",
-      "toInputName": "Value"
-    },
-    {
-      "id": "divide-1750460723048-Quotient-divide-1750459845276-B",
-      "fromModuleId": "divide-1750460723048",
-      "fromOutputName": "Quotient",
-      "toModuleId": "divide-1750459845276",
-      "toInputName": "B"
-    },
-    {
-      "id": "divide-1750459561570-Remainder-divide-1750459845276-A",
-      "fromModuleId": "divide-1750459561570",
-      "fromOutputName": "Remainder",
-      "toModuleId": "divide-1750459845276",
-      "toInputName": "A"
-    },
-    {
-      "id": "divide-1750459845276-Quotient-clip-1750459864508-Value",
-      "fromModuleId": "divide-1750459845276",
-      "fromOutputName": "Quotient",
-      "toModuleId": "clip-1750459864508",
-      "toInputName": "Value"
-    },
-    {
-      "id": "divide-1750460723048-Quotient-divide-1750459561570-B",
-      "fromModuleId": "divide-1750460723048",
-      "fromOutputName": "Quotient",
-      "toModuleId": "divide-1750459561570",
-      "toInputName": "B"
-    },
-    {
-      "id": "clip-1750459767735-Result-mix-1750460298004-A",
-      "fromModuleId": "clip-1750459767735",
-      "fromOutputName": "Result",
-      "toModuleId": "mix-1750460298004",
-      "toInputName": "A"
-    },
-    {
-      "id": "clip-1750459864508-Result-mix-1750460298004-Factor",
-      "fromModuleId": "clip-1750459864508",
-      "fromOutputName": "Result",
-      "toModuleId": "mix-1750460298004",
-      "toInputName": "Factor"
-    },
-    {
-      "id": "clip-1750459767735-Result-mix-1750460313610-Factor",
-      "fromModuleId": "clip-1750459767735",
-      "fromOutputName": "Result",
-      "toModuleId": "mix-1750460313610",
-      "toInputName": "Factor"
-    },
-    {
-      "id": "clip-1750459864508-Result-mix-1750460313610-A",
-      "fromModuleId": "clip-1750459864508",
-      "fromOutputName": "Result",
-      "toModuleId": "mix-1750460313610",
-      "toInputName": "A"
-    },
-    {
-      "id": "mix-1750460298004-Result-add-1750460238978-A",
-      "fromModuleId": "mix-1750460298004",
-      "fromOutputName": "Result",
-      "toModuleId": "add-1750460238978",
-      "toInputName": "A"
-    },
-    {
-      "id": "mix-1750460313610-Result-add-1750460238978-B",
-      "fromModuleId": "mix-1750460313610",
-      "fromOutputName": "Result",
-      "toModuleId": "add-1750460238978",
-      "toInputName": "B"
-    },
-    {
-      "id": "add-1750460238978-Result-rgbcolor-1750459597410-R",
-      "fromModuleId": "add-1750460238978",
-      "fromOutputName": "Result",
-      "toModuleId": "rgbcolor-1750459597410",
-      "toInputName": "R"
-    },
-    {
-      "id": "add-1750460238978-Result-rgbcolor-1750459597410-G",
-      "fromModuleId": "add-1750460238978",
-      "fromOutputName": "Result",
-      "toModuleId": "rgbcolor-1750459597410",
-      "toInputName": "G"
-    },
-    {
-      "id": "add-1750460238978-Result-rgbcolor-1750459597410-B",
-      "fromModuleId": "add-1750460238978",
-      "fromOutputName": "Result",
-      "toModuleId": "rgbcolor-1750459597410",
-      "toInputName": "B"
-    },
-    {
-      "id": "number-1750459540138-Result-divide-1750460723048-B",
-      "fromModuleId": "number-1750459540138",
-      "fromOutputName": "Result",
-      "toModuleId": "divide-1750460723048",
-      "toInputName": "B"
-    },
-    {
-      "id": "divide-1750460723048-Quotient-divide-1750459526269-B",
-      "fromModuleId": "divide-1750460723048",
-      "fromOutputName": "Quotient",
-      "toModuleId": "divide-1750459526269",
-      "toInputName": "B"
-    }
-  ],
-  "lastUpdated": 1750461521655,
   "moduleMap": {},
   "connectionMap": {},
   "connectionsByInput": {},

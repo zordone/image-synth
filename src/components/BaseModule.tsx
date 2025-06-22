@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
+import { useSnapshot } from "valtio";
+import { state } from "../store";
 import type { ModuleDefinition, ModuleValue } from "../types/module";
 import { validateInput } from "../types/module";
 import {
@@ -46,6 +48,7 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
   outputCanvasRef,
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const snap = useSnapshot(state);
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
       id,
@@ -93,9 +96,9 @@ export const BaseModule: React.FC<BaseModuleProps> = ({
 
   const style = transform
     ? {
-        transform: `translate3d(${position.x + transform.x}px, ${
-          position.y + transform.y
-        }px, 0)`,
+        transform: `translate3d(${
+          position.x + transform.x / snap.transform.scale
+        }px, ${position.y + transform.y / snap.transform.scale}px, 0)`,
       }
     : {
         transform: `translate3d(${position.x}px, ${position.y}px, 0)`,

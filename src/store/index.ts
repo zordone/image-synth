@@ -7,6 +7,15 @@ import type {
 } from "../types/module";
 import { moduleRegistry } from "../modules";
 
+const defaultGraphJson = `{"transform":{"scale":1.59,"x":0.6,"y":-180.3},"modules":[{"id":"coordinate-1749906537447","definitionId":
+"coordinate","position":{"x":48,"y":314},"inputValues":{}},{"id":"rgbcolor-1749906543232","definitionId":"rgbcolor","position":{"x":
+301,"y":299},"inputValues":{"G":0.5}},{"id":"output","definitionId":"output","position":{"x":551,"y":258},"inputValues":{}}],
+"connections":[{"id":"coordinate-1749906537447-X-rgbcolor-1749906543232-R","fromModuleId":"coordinate-1749906537447","fromOutputName":
+"X","toModuleId":"rgbcolor-1749906543232","toInputName":"R"},{"id":"coordinate-1749906537447-Y-rgbcolor-1749906543232-B","fromModuleId":
+"coordinate-1749906537447","fromOutputName":"Y","toModuleId":"rgbcolor-1749906543232","toInputName":"B"},{"id":
+"rgbcolor-1749906543232-Color-output-Image","fromModuleId":"rgbcolor-1749906543232","fromOutputName":"Color","toModuleId":"output",
+"toInputName":"Image"}],"lastUpdated":1750615875455,"moduleMap":{},"connectionMap":{},"connectionsByInput":{},"definitionMap":{}}`;
+
 interface AppState {
   modules: ModuleInstance[];
   connections: Connection[];
@@ -27,13 +36,14 @@ const definitionMap = new Map<string, ModuleDefinition>();
 moduleRegistry.forEach((def) => definitionMap.set(def.id, def));
 
 // Load initial state from localStorage or use empty state
-const savedState = localStorage.getItem("imageSynthState");
+const savedState = localStorage.getItem("imageSynthState") ?? defaultGraphJson;
 let initialState: AppState;
 
 if (savedState) {
   const parsed = JSON.parse(savedState);
 
-  // Migrate old modules that had 'parameters' to new 'inputValues' structure
+  // Migrate old modules that had 'parameters' to new 'inputValues' structure.
+  // Remove later when all old saved states are migrated.
   if (parsed.modules) {
     parsed.modules = parsed.modules.map(
       (
@@ -45,6 +55,7 @@ if (savedState) {
             inputValues: module.parameters,
           };
         }
+        delete module.parameters;
         return module;
       }
     );

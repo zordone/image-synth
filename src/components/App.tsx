@@ -127,16 +127,20 @@ export const App: React.FC = () => {
       const module = snap.moduleMap.get(moduleId);
 
       if (module) {
+        // Convert screen delta to world delta by dividing by scale
+        const worldDeltaX = delta.x / snap.transform.scale;
+        const worldDeltaY = delta.y / snap.transform.scale;
+
         actions.updateModulePosition(
           moduleId,
-          module.position.x + delta.x,
-          module.position.y + delta.y
+          module.position.x + worldDeltaX,
+          module.position.y + worldDeltaY
         );
         // Update port positions after module movement
         requestAnimationFrame(updateAllPortPositions);
       }
     },
-    [snap.moduleMap, updateAllPortPositions]
+    [snap.moduleMap, updateAllPortPositions, snap.transform.scale]
   );
 
   const validateConnection = useCallback(
@@ -270,20 +274,26 @@ export const App: React.FC = () => {
         }
       });
 
+      // Calculate position at top-left of visible workspace area
+      // Inverse transform to get world coordinates from screen coordinates
+      const margin = 20; // Small margin from the edge
+      const worldX = (margin - snap.transform.x) / snap.transform.scale;
+      const worldY = (margin - snap.transform.y) / snap.transform.scale;
+
       actions.addModule({
         id:
           definitionId === "output"
             ? "output"
             : `${definitionId}-${Date.now()}`,
         definitionId,
-        position: { x: 100, y: 100 },
+        position: { x: worldX, y: worldY },
         inputValues,
       });
 
       // Update port positions after adding a module
       requestAnimationFrame(updateAllPortPositions);
     },
-    [snap.definitionMap, snap.moduleMap, updateAllPortPositions]
+    [snap.definitionMap, snap.moduleMap, updateAllPortPositions, snap.transform]
   );
 
   // Add mutation observer to detect DOM changes that might affect port positions

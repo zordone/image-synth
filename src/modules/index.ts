@@ -1,5 +1,5 @@
 import type { ModuleDefinition, ModuleValue } from "../types/module";
-import { isNumber, validateInput } from "../types/module";
+import { isColor, isNumber, validateInput } from "../types/module";
 
 // Helper to validate all required inputs
 function validateRequiredInputs(
@@ -11,6 +11,15 @@ function validateRequiredInputs(
     const value = inputs[input.name];
     return value !== undefined && validateInput(value, input.type);
   });
+}
+
+function limit(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+function mix(value1: number, value2: number, factor: number): number {
+  factor = limit(factor, 0, 1);
+  return value1 * (1 - factor) + value2 * factor;
 }
 
 export const CoordinateModule: ModuleDefinition = {
@@ -151,6 +160,69 @@ export const DivideModule: ModuleDefinition = {
   },
 };
 
+export const AbsoluteModule: ModuleDefinition = {
+  id: "absolute",
+  type: "Math",
+  name: "Absolute",
+  inputs: [{ name: "A", type: "number", required: true }],
+  outputs: [{ name: "Result", type: "number" }],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, AbsoluteModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.A)) {
+      throw new Error("Invalid input types or parameters");
+    }
+    return {
+      Result: Math.abs(inputs.A),
+    };
+  },
+};
+
+export const MinimumModule: ModuleDefinition = {
+  id: "minimum",
+  type: "Math",
+  name: "Minimum",
+  inputs: [
+    { name: "A", type: "number", required: true },
+    { name: "B", type: "number", default: 0 },
+  ],
+  outputs: [{ name: "Result", type: "number" }],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, MinimumModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.A) || !isNumber(inputs.B)) {
+      throw new Error("Invalid input types or parameters");
+    }
+    return {
+      Result: Math.min(inputs.A, inputs.B),
+    };
+  },
+};
+
+export const MaximumModule: ModuleDefinition = {
+  id: "maximum",
+  type: "Math",
+  name: "Maximum",
+  inputs: [
+    { name: "A", type: "number", required: true },
+    { name: "B", type: "number", default: 0 },
+  ],
+  outputs: [{ name: "Result", type: "number" }],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, MaximumModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (!isNumber(inputs.A) || !isNumber(inputs.B)) {
+      throw new Error("Invalid input types or parameters");
+    }
+    return {
+      Result: Math.max(inputs.A, inputs.B),
+    };
+  },
+};
+
 export const MixModule: ModuleDefinition = {
   id: "mix",
   type: "Math",
@@ -174,7 +246,7 @@ export const MixModule: ModuleDefinition = {
     }
     const factor = Math.max(0, Math.min(1, inputs.Factor));
     return {
-      Result: inputs.A * (1 - factor) + inputs.B * factor,
+      Result: mix(inputs.A, inputs.B, factor),
     };
   },
 };
@@ -200,7 +272,9 @@ export const ClampModule: ModuleDefinition = {
     ) {
       throw new Error("Invalid input types or parameters");
     }
-    return { Result: Math.min(Math.max(inputs.Value, inputs.Min), inputs.Max) };
+    return {
+      Result: limit(inputs.Value, inputs.Min, inputs.Max),
+    };
   },
 };
 
@@ -250,21 +324,50 @@ export const RGBColorModule: ModuleDefinition = {
     }
     return {
       Color: {
-        r: Math.max(0, Math.min(1, inputs.R)),
-        g: Math.max(0, Math.min(1, inputs.G)),
-        b: Math.max(0, Math.min(1, inputs.B)),
+        r: limit(inputs.R, 0, 1),
+        g: limit(inputs.G, 0, 1),
+        b: limit(inputs.B, 0, 1),
       },
     };
   },
 };
 
-export const OutputModule: ModuleDefinition = {
-  id: "output",
-  type: "Output",
-  name: "Output",
-  inputs: [{ name: "Image", type: "color", required: true }],
-  outputs: [], // No outputs since this is the final destination
-  calculate: () => ({}), // No outputs to calculate
+export const ColorMixModule: ModuleDefinition = {
+  id: "colormix",
+  type: "Color",
+  name: "Color Mix",
+  inputs: [
+    { name: "Color1", type: "color", required: true },
+    { name: "Color2", type: "color", required: true },
+    {
+      name: "Factor",
+      type: "number",
+      min: 0,
+      max: 1,
+      default: 0.5,
+      step: 0.05,
+    },
+  ],
+  outputs: [{ name: "Color", type: "color" }],
+  calculate: (inputs) => {
+    if (!validateRequiredInputs(inputs, ColorMixModule)) {
+      throw new Error("Missing required inputs");
+    }
+    if (
+      !isNumber(inputs.Factor) ||
+      !isColor(inputs.Color1) ||
+      !isColor(inputs.Color2)
+    ) {
+      throw new Error("Invalid input types");
+    }
+    return {
+      Color: {
+        r: mix(inputs.Color1.r, inputs.Color2.r, inputs.Factor),
+        g: mix(inputs.Color1.g, inputs.Color2.g, inputs.Factor),
+        b: mix(inputs.Color1.b, inputs.Color2.b, inputs.Factor),
+      },
+    };
+  },
 };
 
 export const LengthModule: ModuleDefinition = {
@@ -321,7 +424,6 @@ export const AngleModule: ModuleDefinition = {
     }
     const dx = inputs.X2 - inputs.X1;
     const dy = inputs.Y2 - inputs.Y1;
-
     return { Angle: Math.atan2(dy, dx) };
   },
 };
@@ -343,13 +445,21 @@ export const TrigonometryModule: ModuleDefinition = {
     if (!isNumber(inputs.Angle)) {
       throw new Error("Invalid input type");
     }
-    const angle = inputs.Angle;
     return {
-      Sin: Math.sin(angle),
-      Cos: Math.cos(angle),
-      Tan: Math.tan(angle),
+      Sin: Math.sin(inputs.Angle),
+      Cos: Math.cos(inputs.Angle),
+      Tan: Math.tan(inputs.Angle),
     };
   },
+};
+
+export const OutputModule: ModuleDefinition = {
+  id: "output",
+  type: "Output",
+  name: "Output",
+  inputs: [{ name: "Image", type: "color", required: true }],
+  outputs: [], // No outputs since this is the final destination
+  calculate: () => ({}), // No outputs to calculate
 };
 
 export const moduleRegistry: ModuleDefinition[] = [
@@ -359,6 +469,9 @@ export const moduleRegistry: ModuleDefinition[] = [
   SubtractModule,
   MultiplyModule,
   DivideModule,
+  AbsoluteModule,
+  MinimumModule,
+  MaximumModule,
   MixModule,
   ClampModule,
   ClipModule,
@@ -366,5 +479,6 @@ export const moduleRegistry: ModuleDefinition[] = [
   AngleModule,
   TrigonometryModule,
   RGBColorModule,
+  ColorMixModule,
   OutputModule,
 ];

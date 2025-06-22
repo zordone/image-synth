@@ -28,7 +28,7 @@ export const LogoContainer = styled.div.withConfig({
   margin-bottom: 1rem;
   opacity: 0.5;
   filter: drop-shadow(0 0 5px #0008);
-  font: 0.72rem "Hanalei Fill", system-ui;
+  font: 0.82rem "Hanalei Fill", system-ui;
 `;
 
 export const Logo = styled.img.withConfig({ displayName: "Logo" })`
@@ -163,8 +163,8 @@ export const Port = styled.div.withConfig({ displayName: "Port" })<{
       props.$isError
         ? "#ff6666"
         : props.$type === "color"
-        ? "#e39ff6"
-        : "#999"};
+        ? "#c700ff"
+        : "#0086ff"};
   }
 `;
 
@@ -188,7 +188,7 @@ export const ConnectionPath = styled.path.withConfig({
   displayName: "ConnectionPath",
 })<{ $isError?: boolean }>`
   fill: none;
-  stroke: ${(props) => (props.$isError ? "#ff4444" : "#666")};
+  stroke: ${(props) => (props.$isError ? "#f00" : "#666")};
   stroke-width: calc(8px * var(--scale, 1));
   pointer-events: auto;
   cursor: pointer;
@@ -197,7 +197,7 @@ export const ConnectionPath = styled.path.withConfig({
   filter: drop-shadow(0 0 1px #000a);
 
   &:hover {
-    stroke: ${(props) => (props.$isError ? "#ff6666" : "#999")};
+    stroke: ${(props) => (props.$isError ? "#f00" : "#933")};
   }
 
   /* Add tooltip on hover if error */
