@@ -328,3 +328,10 @@ export const DeleteButton = styled.button.withConfig({
     color: #ff4444;
   }
 `;
+
+export const VersionNumber = styled.div.withConfig({
+  displayName: "VersionNumber",
+})`
+  font-size: 0.7rem;
+  color: #666;
+`;

@@ -18,8 +18,10 @@ import {
   TemporaryConnectionPath,
   Logo,
   LogoContainer,
+  VersionNumber,
 } from "./styled";
 import { renderToCanvas } from "../utils/renderer";
+import { version } from "../../package.json";
 
 interface Point {
   x: number;
@@ -419,6 +421,7 @@ export const App: React.FC = () => {
               {module.name}
             </ModuleMenuButton>
           ))}
+          <VersionNumber>v{version}</VersionNumber>
         </LeftPanel>
 
         <ModuleArea
